@@ -1,24 +1,52 @@
 <html>
 
-
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-    crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ==" crossorigin="" />
+  <link href="https://fonts.googleapis.com/css?family=MedievalSharp" rel="stylesheet">
   <style>
     body {
       margin: 0;
+      font-family: 'MedievalSharp', cursive;
+    }
+
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+      font-family: 'MedievalSharp', cursive;
+      background: #333;
+      color: white;
     }
 
     #mapid {
       height: 100vh;
+    }
+
+    .info-menu {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      background: #333;
+      width: 200px;
+      height: 100vh;
+      color: white;
+      transition: transform 0.3s;
+      /* transform: translateX(100%); */
+    }
+
+    .info-menu-active {
+    /*  transform: translateX(0); */
     }
   </style>
 </head>
 
 <body>
   <div id="mapid"></div>
-  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-    crossorigin=""></script>
+  <div class="info-menu">
+    <div>
+      Map Layer Buttons
+    </div>
+    <div id="info"></div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log==" crossorigin=""></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="script.js"></script>
 </body>
