@@ -25,6 +25,8 @@ async function getPageDetails (pageID) {
   return articleDetails
 }
 
+// http://gameofthrones.wikia.com/api/v1/Articles/AsSimpleJson/?id=2039
+
 module.exports = {
   searchWiki,
   getPageDetails

@@ -26,7 +26,7 @@ app.use(async (ctx, next) => {
 })
 
 app.on('error', (err, ctx) => {
-  console.error(`Request Error - ${err.message}`, err)
+  console.error(`Request Error ${ctx.url} - ${err.message}`, err)
 })
 
 
