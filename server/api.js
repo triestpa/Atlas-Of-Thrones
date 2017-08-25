@@ -22,6 +22,12 @@ router.get('/locations', async ctx => {
   ctx.body = locations
 })
 
+router.get('/search', async ctx => {
+  const term = ctx.query.term
+  const results = await database.searchLocations(term)
+  ctx.body = results
+})
+
 router.get('/error', async ctx => {
   throw new Error('Intentional Error')
 })

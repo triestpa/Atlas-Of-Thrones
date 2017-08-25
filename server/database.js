@@ -21,14 +21,14 @@ function close () {
 }
 
 async function queryTime () {
-  timeQuery = 'SELECT NOW() as now'
-  response = await client.query('SELECT NOW() as now')
+  let timeQuery = 'SELECT NOW() as now'
+  let response = await client.query('SELECT NOW() as now')
   return response.rows[0]
 }
 
 async function getRoads () {
-  roadsQuery = `SELECT ST_AsGeoJSON(geom), name from roads;`
-  response = await client.query(roadsQuery)
+  let roadsQuery = `SELECT ST_AsGeoJSON(geom), name from roads;`
+  let response = await client.query(roadsQuery)
 
   let roads = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
@@ -39,8 +39,8 @@ async function getRoads () {
 }
 
 async function getLocations () {
-  locationQuery = `SELECT ST_AsGeoJSON(geom), name, type from locations;`
-  response = await client.query(locationQuery)
+  let locationQuery = `SELECT ST_AsGeoJSON(geom), name, type from locations;`
+  let response = await client.query(locationQuery)
 
   let locations = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
@@ -51,10 +51,20 @@ async function getLocations () {
   return locations
 }
 
+async function searchLocations (term) {
+  let locationSearchQuery = `
+    SELECT name, id
+    FROM locations
+    WHERE UPPER(name) LIKE UPPER('%${term}%');`
+  let response = await client.query(locationSearchQuery)
+  return response.rows
+}
+
 
 module.exports = {
   connect,
   queryTime,
   getRoads,
-  getLocations
+  getLocations,
+  searchLocations
 }
