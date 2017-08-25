@@ -11,11 +11,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "0.16.2",
     "dotenv": "4.0.0",
     "koa": "2.3.0",
     "koa-mount": "3.0.0",
     "koa-router": "7.2.1",
     "koa-static": "4.0.1",
-    "pg": "7.2.0"
+    "pg": "7.2.0",
+    "redis": "2.8.0"
   }
 }
