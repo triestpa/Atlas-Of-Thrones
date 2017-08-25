@@ -1,21 +1,16 @@
 const Router = require('koa-router')
 const database = require('./database')
-const wikia = require('./wikia')
+const wiki = require('./wiki')
 const cache = require('./cache')
 const router = new Router()
 
 // Check cache before continuing to any endpoint handlers
 router.use(async (ctx, next) => {
-  try {
-    const cachedResponse = await cache.get(ctx.path + ctx.search)
-    if (cachedResponse) {
-      ctx.body = JSON.parse(cachedResponse)
-    } else {
-      await next() // Only continue if result not in cache
-    }
-  } catch (err) {
-    console.error('Cache Error', err)
-    await next()
+  const cachedResponse = await cache.get(ctx.path + ctx.search)
+  if (cachedResponse) {
+    ctx.body = JSON.parse(cachedResponse)
+  } else {
+    await next() // Only continue if result not in cache
   }
 })
 
@@ -45,24 +40,36 @@ router.get('/locations', async ctx => {
   ctx.body = locations
 })
 
-
-router.get('/politicalClaims', async ctx => {
-  console.log('HERE')
-  const boundaries = await database.getPoliticalBoundaries()
-  ctx.body = boundaries
-})
-
-router.get('/search', async ctx => {
+router.get('/locations/search', async ctx => {
   const term = ctx.query.term
   const results = await database.searchLocations(term)
   ctx.body = results
 })
 
+router.get('/political/boundaries', async ctx => {
+  console.log('HERE')
+  const boundaries = await database.getPoliticalBoundaries()
+  ctx.body = boundaries
+})
+
+router.get('/political/size', async ctx => {
+  const id = ctx.query.id
+  const results = await database.getRegionSize('political', id)
+  ctx.body = results
+})
+
+
 router.get('/details', async ctx => {
-  const term = ctx.query.term
-  const resultId = await wikia.searchWiki(term)
-  const details = await wikia.getPageDetails(resultId)
-  ctx.body = details
+  try {
+    const name = ctx.query.name
+    const resultId = await wiki.searchWiki(name)
+    const details = await wiki.getPageDetails(resultId)
+    ctx.body = details
+  } catch (err) {
+    console.error(`Error fetching details for ${name}`, err.message)
+    ctx.status = 404
+  }
+
 })
 
 router.get('/error', async ctx => {
