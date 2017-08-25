@@ -1,0 +1,48 @@
+<html>
+
+
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin="" />
+  <style>
+    body {
+      margin: 0;
+    }
+
+    #mapid {
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="mapid"></div>
+
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js" integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+    var map = L.map('mapid').setView([51.505, -0.09], 13);
+
+    L.tileLayer(
+      'https://cartocdn-ashbu.global.ssl.fastly.net/ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+      }).addTo(map);
+
+    let [lat, lon] = [3.95, 19.08]
+    map.setView([lat, lon], 10);
+
+    async function getLocations () {
+      let response = await axios.get('/api/locations')
+      let locations = response.data
+      console.log(locations)
+      L.geoJSON(locations).addTo(map);
+    }
+
+    getLocations()
+  </script>
+</body>
+
+</html>
