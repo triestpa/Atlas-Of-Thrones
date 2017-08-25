@@ -21,16 +21,16 @@ function close () {
 }
 
 async function queryTime () {
-  let timeQuery = 'SELECT NOW() as now'
-  let response = await client.query('SELECT NOW() as now')
+  const timeQuery = 'SELECT NOW() as now'
+  const response = await client.query('SELECT NOW() as now')
   return response.rows[0]
 }
 
 async function getRoads () {
-  let roadsQuery = `SELECT ST_AsGeoJSON(geom), name from roads;`
-  let response = await client.query(roadsQuery)
+  const roadsQuery = `SELECT ST_AsGeoJSON(geog), name from roads;`
+  const response = await client.query(roadsQuery)
 
-  let roads = response.rows.map((row) => {
+  const roads = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
     return { geo: geojson, name: row.name, id: row.id }
   })
@@ -39,13 +39,13 @@ async function getRoads () {
 }
 
 async function getLocations (type) {
-  let locationQuery = `
-    SELECT ST_AsGeoJSON(geom), name, type
+  const locationQuery = `
+    SELECT ST_AsGeoJSON(geog), name, type
     FROM locations
-    WHERE type LIKE '${type}';`
-  let response = await client.query(locationQuery)
+    WHERE type = $1 AND name IS NOT NULL;`
+    const response = await client.query(locationQuery, [ type ])
 
-  let locations = response.rows.map((row) => {
+  const locations = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
     geojson.properties = { name: row.name, type: row.type, id: row.id }
     return geojson
@@ -54,11 +54,24 @@ async function getLocations (type) {
   return locations
 }
 
-async function getPoliticalBoundaries () {
-  let politicalQuery = `SELECT ST_AsGeoJSON(geom), name, claimedBy, id from political;`
-  let response = await client.query(politicalQuery)
+async function getRegionSize (table, id ) {
+  const sizeQuery = `
+    SELECT ST_AREA(geog) as size
+    FROM ${table}
+    WHERE id = $1;`
+  const response = await client.query(sizeQuery, [ id ])
 
-  let boundaries = response.rows.map((row) => {
+  return response.rows[0].size
+}
+
+async function getPoliticalBoundaries () {
+  const politicalQuery = `
+  SELECT ST_AsGeoJSON(geog), name, claimedBy, id
+  FROM political
+  WHERE name IS NOT NULL;`
+  const response = await client.query(politicalQuery)
+
+  const boundaries = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
     geojson.properties = { name: row.name, owner: row.claimedBy, id: row.id }
     return geojson
@@ -68,11 +81,11 @@ async function getPoliticalBoundaries () {
 }
 
 async function searchLocations (term) {
-  let locationSearchQuery = `
+  const locationSearchQuery = `
     SELECT name, id
     FROM locations
-    WHERE UPPER(name) LIKE UPPER('%${term}%');`
-  let response = await client.query(locationSearchQuery)
+    WHERE UPPER(name) LIKE UPPER($1);`
+  const response = await client.query(locationSearchQuery,[ `%${term}%` ])
   return response.rows
 }
 
@@ -82,5 +95,6 @@ module.exports = {
   getRoads,
   getLocations,
   searchLocations,
-  getPoliticalBoundaries
+  getPoliticalBoundaries,
+  getRegionSize
 }
