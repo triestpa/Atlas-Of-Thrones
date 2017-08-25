@@ -2,25 +2,12 @@ class MapController {
   constructor (mapId = 'mapid') {
     this.map = L.map(mapId).setView([51.505, -0.09], 13)
     this.api = new MapApi()
-    this.layers = {
-      castles: null,
-      cities: null,
-      towns: null,
-      ruins: null,
-      other: null,
-      political: null
-    }
-
-    const iconsize = [ 24, 56 ]
-    this.icons = {
-      castle: L.icon({ iconUrl: 'icons/castle.svg', iconSize: iconsize }),
-      village: L.icon({ iconUrl: 'icons/village.svg', iconSize: iconsize }),
-      city: L.icon({ iconUrl: 'icons/city.svg', iconSize: iconsize }),
-      ruins: L.icon({ iconUrl: 'icons/ruin.svg', iconSize: iconsize }),
-      location: L.icon({ iconUrl: 'icons/location.svg', iconSize: iconsize })
-    }
-
+    this.layers = { }
     this.loadMapData()
+  }
+
+  icon (iconUrl, iconSize = [ 24, 56 ]) {
+    return L.icon({ iconUrl, iconSize })
   }
 
   async loadMapData () {
@@ -32,27 +19,35 @@ class MapController {
     let [lat, lon] = [3.95, 19.08]
     this.map.setView([lat, lon], 4)
 
-    this.layers.castles = await this.loadLocationGeojson('Castle', this.icons.castle)
-    this.layers.cities = await this.loadLocationGeojson('City', this.icons.city),
-    this.layers.towns = await this.loadLocationGeojson('Town', this.icons.village),
-    this.layers.ruins = await this.loadLocationGeojson('Ruin', this.icons.ruins),
-    this.layers.other = await this.loadLocationGeojson('Other', this.icons.location)
+    const locations = [
+      [ 'castle', this.icon('icons/castle.svg') ],
+      [ 'city', this.icon('icons/city.svg') ],
+      [ 'town', this.icon('icons/village.svg') ],
+      [ 'ruin', this.icon('icons/ruin.svg') ],
+      [ 'other', this.icon('icons/location.svg') ]
+    ]
+
+    for (let location of locations) {
+      let [ name, icon ] = location
+      this.layers[name] =  await this.loadLocationGeojson(name, icon)
+    }
+
     this.layers.political = await this.loadBoundaryGeojson()
 
     this.layers.political.addTo(this.map)
-    this.layers.cities.addTo(this.map)
-    this.layers.towns.addTo(this.map)
-    this.layers.castles.addTo(this.map)
+    this.layers.city.addTo(this.map)
+    this.layers.town.addTo(this.map)
+    this.layers.castle.addTo(this.map)
 
-    this.map.removeLayer(this.layers.castles)
-    this.map.removeLayer(this.layers.towns)
+    this.map.removeLayer(this.layers.castle)
+    this.map.removeLayer(this.layers.town)
   }
 
   async showInfo (name, id, type) {
     const infoWindow = document.getElementById('info')
     infoWindow.innerHTML = `<h1>${name}</h1>`
 
-    if (id && type === 'region') {
+    if (id && type === 'regions') {
       let size = await this.api.getSize(id)
       infoWindow.innerHTML += `<div>Size: ${size}</div>`
     }
@@ -68,41 +63,38 @@ class MapController {
     }
   }
 
-  async loadLocationGeojson (type, icon) {
-    const locations =  await this.api.getLocations('Castle', this.icons.castle)
-    return L.geoJSON(locations, {
-      pointToLayer: function(feature, latlng) {
-        return L.marker(latlng, { icon })
-      },
-      onEachFeature: (feature, layer) => {
-        if (feature.properties) {
-          layer.bindPopup(feature.properties.name)
-        }
+  async geojsonLayer (geojson, type, icon) {
+    const properties = {}
 
-        layer.on({
-          click: async (e) => {
-            this.showInfo(feature.properties.name)
-          }
-        })
+    if (icon) {
+      properties.pointToLayer = function(feature, latlng) {
+        return L.marker(latlng, { icon })
       }
-    })
+    }
+
+    properties.onEachFeature = (feature, layer) => {
+      if (feature.properties) {
+        layer.bindPopup(feature.properties.name)
+      }
+
+      layer.on({
+        click: async (e) => {
+          this.showInfo(feature.properties.name, feature.properties.id, type)
+        }
+      })
+    }
+
+    return L.geoJSON(geojson, properties)
+  }
+
+  async loadLocationGeojson (type, icon) {
+    const locations =  await this.api.getLocations(type)
+    return this.geojsonLayer(locations, 'locations', icon)
   }
 
   async loadBoundaryGeojson () {
     const boundaries = await this.api.getPoliticalBoundaries()
-    return L.geoJSON(boundaries, {
-      onEachFeature: (feature, layer) => {
-        if (feature.properties) {
-          layer.bindPopup(feature.properties.name)
-        }
-
-        layer.on({
-          click: async (e) => {
-            this.showInfo(feature.properties.name, feature.properties.id, 'region')
-          }
-        })
-      }
-    })
+    return this.geojsonLayer(boundaries, 'regions')
   }
 }
 
@@ -118,7 +110,7 @@ class MapApi {
     return response.data
   }
 
-  async getLocations (type, icon) {
+  async getLocations (type) {
     return this.httpGet('locations', { type })
   }
 
@@ -128,6 +120,10 @@ class MapApi {
 
   async getRegionSize (id) {
     return this.httpGet('political/size', { id })
+  }
+
+  async getRoads () {
+    return this.httpGet('roads')
   }
 
   async getDetails (name) {
