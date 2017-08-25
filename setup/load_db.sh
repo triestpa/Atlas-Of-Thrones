@@ -1,5 +1,4 @@
 #!bin/bash
-psql -f setup_db.pgsql
 shp2pgsql -I -s 4326 ./data/GISofThrones/GoTRelease/Continents.shp continents | psql -d got_map
 shp2pgsql -I -s 4326 ./data/GISofThrones/GoTRelease/Islands.shp islands | psql -d got_map
 shp2pgsql -I -s 4326 ./data/GISofThrones/GoTRelease/Lakes.shp lakes | psql -d got_map
