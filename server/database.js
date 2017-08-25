@@ -32,23 +32,39 @@ async function getRoads () {
 
   let roads = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
-    return { geo: geojson, name: row.name }
+    return { geo: geojson, name: row.name, id: row.id }
   })
 
   return roads
 }
 
-async function getLocations () {
-  let locationQuery = `SELECT ST_AsGeoJSON(geom), name, type from locations;`
+async function getLocations (type) {
+  let locationQuery = `
+    SELECT ST_AsGeoJSON(geom), name, type
+    FROM locations
+    WHERE type LIKE '${type}';`
   let response = await client.query(locationQuery)
 
   let locations = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
-    geojson.properties = { name: row.name, type: row.type }
+    geojson.properties = { name: row.name, type: row.type, id: row.id }
     return geojson
   })
 
   return locations
+}
+
+async function getPoliticalBoundaries () {
+  let politicalQuery = `SELECT ST_AsGeoJSON(geom), name, claimedBy, id from political;`
+  let response = await client.query(politicalQuery)
+
+  let boundaries = response.rows.map((row) => {
+    let geojson = JSON.parse(row.st_asgeojson)
+    geojson.properties = { name: row.name, owner: row.claimedBy, id: row.id }
+    return geojson
+  })
+
+  return boundaries
 }
 
 async function searchLocations (term) {
@@ -60,11 +76,11 @@ async function searchLocations (term) {
   return response.rows
 }
 
-
 module.exports = {
   connect,
   queryTime,
   getRoads,
   getLocations,
-  searchLocations
+  searchLocations,
+  getPoliticalBoundaries
 }
