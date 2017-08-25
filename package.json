@@ -1,0 +1,21 @@
+{
+  "name": "got-map",
+  "version": "0.0.1",
+  "description": "A PostGIS powered Game of Thrones map.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "local": "NODE_ENV=local npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "4.0.0",
+    "koa": "2.3.0",
+    "koa-mount": "3.0.0",
+    "koa-router": "7.2.1",
+    "koa-static": "4.0.1",
+    "pg": "7.2.0"
+  }
+}
