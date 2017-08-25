@@ -42,7 +42,7 @@ async function getLocations (type) {
   const locationQuery = `
     SELECT ST_AsGeoJSON(geog), name, type
     FROM locations
-    WHERE type = $1 AND name IS NOT NULL;`
+    WHERE UPPER(type) = UPPER($1) AND name IS NOT NULL;`
     const response = await client.query(locationQuery, [ type ])
 
   const locations = response.rows.map((row) => {
