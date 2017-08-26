@@ -13,24 +13,23 @@ async function setupDB () {
   console.log(`Connected To ${client.database} at ${client.host}:${client.port}`)
 }
 
-function startServer() {
+function startServer () {
   app.listen(port)
 }
 
 // Logger
 app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  console.log(`${ctx.method} ${ctx.status} ${ctx.url} - ${ms}`);
+  const start = Date.now()
+  await next()
+  const ms = Date.now() - start
+  console.log(`${ctx.method} ${ctx.status} ${ctx.url} - ${ms}`)
 })
 
 app.on('error', (err, ctx) => {
   console.error(`Request Error ${ctx.url} - ${err.message}`, err)
 })
 
-
-publicPath = path.join(__dirname, '../public/')
+let publicPath = path.join(__dirname, '../public/')
 app.use(mount('/', serve(publicPath)))
 
 app.use(mount('/api', api.routes(), api.allowedMethods()))

@@ -21,7 +21,6 @@ function close () {
 }
 
 async function queryTime () {
-  const timeQuery = 'SELECT NOW() as now'
   const response = await client.query('SELECT NOW() as now')
   return response.rows[0]
 }
@@ -43,7 +42,7 @@ async function getLocations (type) {
     SELECT ST_AsGeoJSON(geog), name, type
     FROM locations
     WHERE UPPER(type) = UPPER($1) AND name IS NOT NULL;`
-    const response = await client.query(locationQuery, [ type ])
+  const response = await client.query(locationQuery, [ type ])
 
   const locations = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
@@ -54,7 +53,7 @@ async function getLocations (type) {
   return locations
 }
 
-async function getRegionSize (table, id ) {
+async function getRegionSize (table, id) {
   const sizeQuery = `
     SELECT ST_AREA(geog) as size
     FROM ${table}
@@ -91,6 +90,7 @@ async function searchLocations (term) {
 
 module.exports = {
   connect,
+  close,
   queryTime,
   getRoads,
   getLocations,

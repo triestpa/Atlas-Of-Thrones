@@ -58,7 +58,6 @@ router.get('/political/size', async ctx => {
   ctx.body = results
 })
 
-
 router.get('/details', async ctx => {
   try {
     const name = ctx.query.name
@@ -66,10 +65,9 @@ router.get('/details', async ctx => {
     const details = await wiki.getPageDetails(resultId)
     ctx.body = details
   } catch (err) {
-    console.error(`Error fetching details for ${name}`, err.message)
+    console.error(`Error fetching details for ${ctx.url}`, err.message)
     ctx.status = 404
   }
-
 })
 
 router.get('/error', async ctx => {
