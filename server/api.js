@@ -29,11 +29,6 @@ router.get('/time', async ctx => {
   ctx.body = time
 })
 
-router.get('/roads', async ctx => {
-  const roads = await database.getRoads()
-  ctx.body = roads
-})
-
 router.get('/locations', async ctx => {
   const type = ctx.query.type
   const locations = await database.getLocations(type)

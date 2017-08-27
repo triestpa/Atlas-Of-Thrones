@@ -24,10 +24,6 @@ export class MapApi {
     return this.httpGet('political/size', { id })
   }
 
-  async getRoads () {
-    return this.httpGet('roads')
-  }
-
   async getDetails (name) {
     this.cancelSource.cancel('Cancelled Ongoing Request')
     this.cancelSource = this.CancelToken.source()

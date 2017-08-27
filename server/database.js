@@ -25,18 +25,6 @@ async function queryTime () {
   return response.rows[0]
 }
 
-async function getRoads () {
-  const roadsQuery = `SELECT ST_AsGeoJSON(geog), name from roads;`
-  const response = await client.query(roadsQuery)
-
-  const roads = response.rows.map((row) => {
-    let geojson = JSON.parse(row.st_asgeojson)
-    return { geo: geojson, name: row.name, id: row.id }
-  })
-
-  return roads
-}
-
 async function getLocations (type) {
   const locationQuery = `
     SELECT ST_AsGeoJSON(geog), name, type
@@ -84,7 +72,7 @@ async function searchLocations (term) {
     SELECT name, id
     FROM locations
     WHERE UPPER(name) LIKE UPPER($1);`
-  const response = await client.query(locationSearchQuery,[ `%${term}%` ])
+  const response = await client.query(locationSearchQuery, [ `%${term}%` ])
   return response.rows
 }
 
