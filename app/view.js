@@ -39,10 +39,12 @@ export class ViewController {
       this.layers[name] = await this.loadLocationGeojson(name, icon)
     }
 
-    this.layers.political = await this.loadBoundaryGeojson()
+    const boundaries = await this.api.getPoliticalBoundaries()
+    this.layers.political = this.showBoundaryGeojson(boundaries)
 
-    this.addLayer('political')
     this.addLayer('city')
+    this.addLayer('town')
+    this.addLayer('political')
   }
 
   addLayer (name) {
@@ -58,9 +60,10 @@ export class ViewController {
     infoTitle.innerHTML = `<h1>${name}</h1>`
 
     const infoContent = document.getElementById('info-content')
+    infoContent.innerHTML = ''
     if (id && type === 'regions') {
       let size = await this.api.getRegionSize(id)
-      infoContent.innerHTML = `<div>Size: ${size}</div>`
+      infoContent.innerHTML += `<div>Size: ${size}</div>`
     }
 
     try {
@@ -94,9 +97,7 @@ export class ViewController {
     return L.geoJSON(locations, properties)
   }
 
-  async loadBoundaryGeojson () {
-    const boundaries = await this.api.getPoliticalBoundaries()
-
+  showBoundaryGeojson (geojson) {
     const properties = {}
     properties.onEachFeature = (feature, layer) => {
       layer.on({
@@ -107,7 +108,7 @@ export class ViewController {
       })
     }
 
-    return L.geoJSON(boundaries, properties)
+    return L.geoJSON(geojson, properties)
   }
 
   setHighlightedRegion (layer) {
@@ -122,5 +123,11 @@ export class ViewController {
         'color': 'red'
       })
     }
+  }
+
+  toggleInfo () {
+    console.log('toggle')
+    const infoContainer = document.getElementsByClassName('info-container')[0]
+    infoContainer.classList.toggle('info-active')
   }
 }

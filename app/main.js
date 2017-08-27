@@ -4,6 +4,8 @@ require('./styles.scss')
 const controller = new ViewController()
 controller.loadMapData()
 
+window.toggleInfo = controller.toggleInfo
+
 /* Search is too weak right now
 async function search (term) {
   let response = await axios.get('/api/locations/search', {
