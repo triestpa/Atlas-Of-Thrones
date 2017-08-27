@@ -1,0 +1,38 @@
+@import "~leaflet/dist/leaflet.css";
+
+body {
+  margin: 0;
+  font-family: 'MedievalSharp', cursive;
+  background: #333;
+}
+
+.leaflet-container {
+  background: #333;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  font-family: 'MedievalSharp', cursive;
+  background: #333;
+  color: white;
+}
+
+#mapid {
+  height: 100vh;
+}
+
+.info-menu {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: #333;
+  width: 200px;
+  height: 100vh;
+  color: white;
+  transition: transform 0.3s;
+  /* transform: translateX(100%); */
+}
+
+.info-menu-active {
+/*  transform: translateX(0); */
+}

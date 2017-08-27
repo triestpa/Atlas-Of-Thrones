@@ -1,9 +1,17 @@
-class ViewController {
+import L from 'leaflet'
+import { MapApi } from './api'
+
+export class ViewController {
   constructor (mapId = 'mapid') {
-    this.map = L.map(mapId).setView([51.505, -0.09], 13)
+    this.map = L.map(mapId, {
+      center: [ 5, 20 ],
+      zoom: 4,
+      maxZoom: 10,
+      minZoom: 4,
+      maxBounds: [ [ 50, -30 ], [ -45, 120 ] ]
+    })
     this.api = new MapApi()
     this.layers = { }
-    this.loadMapData()
     this.selectedRegion = null
   }
 
@@ -14,18 +22,16 @@ class ViewController {
   async loadMapData () {
     L.tileLayer(
       'https://cartocdn-ashbu.global.ssl.fastly.net/ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
-        maxZoom: 18
+        crs: L.CRS.EPSG4326
       }).addTo(this.map)
 
-    let [lat, lon] = [3.95, 19.08]
-    this.map.setView([lat, lon], 4)
-
+    const iconBaseURL = 'https://cdn.patricktriest.com/icons/'
     const locations = [
-      [ 'castle', this.icon('icons/castle.svg') ],
-      [ 'city', this.icon('icons/city.svg') ],
-      [ 'town', this.icon('icons/village.svg') ],
-      [ 'ruin', this.icon('icons/ruin.svg') ],
-      [ 'other', this.icon('icons/location.svg') ]
+      [ 'castle', this.icon(`${iconBaseURL}castle.svg`) ],
+      [ 'city', this.icon(`${iconBaseURL}city.svg`) ],
+      [ 'town', this.icon(`${iconBaseURL}village.svg`) ],
+      [ 'ruin', this.icon(`${iconBaseURL}ruin.svg`) ],
+      [ 'other', this.icon(`${iconBaseURL}location.svg`) ]
     ]
 
     for (let location of locations) {
@@ -111,91 +117,10 @@ class ViewController {
 
     this.selected = layer
     if (this.selected) {
+      this.selected.bringToFront()
       this.selected.setStyle({
         'color': 'red'
       })
     }
   }
 }
-
-class MapApi {
-  constructor (url = '/api/') {
-    this.url = url
-    this.CancelToken = axios.CancelToken
-    this.cancelSource = this.CancelToken.source()
-  }
-
-  async httpGet (endpoint = '', params = {}, cancelToken = null) {
-    const response = await axios.get(`${this.url}${endpoint}`, { params, cancelToken })
-    return response.data
-  }
-
-  async getLocations (type) {
-    return this.httpGet('locations', { type })
-  }
-
-  async getPoliticalBoundaries () {
-    return this.httpGet('political/boundaries')
-  }
-
-  async getRegionSize (id) {
-    return this.httpGet('political/size', { id })
-  }
-
-  async getRoads () {
-    return this.httpGet('roads')
-  }
-
-  async getDetails (name) {
-    this.cancelSource.cancel('Cancelled Ongoing Request')
-    this.cancelSource = this.CancelToken.source()
-    return this.httpGet('details', { name }, this.cancelSource.token)
-  }
-}
-
-const controller = new ViewController()
-
-/* Search is too weak right now
-async function search (term) {
-  let response = await axios.get('/api/locations/search', {
-    params: {
-      term
-    }
-  })
-
-  console.log(response)
-}
-*/
-
-/**
- * Filters
- *
- * cities
- * castles
- * town
- * ruin
- * location
- * roads
- * rivers
- * lakes
- * continents
- * islands
- */
-
-/**
-  * Sidebar content
-
-  http://gameofthrones.wikia.com/api/v1/Search/List/?query=winterfell&limit=25&namespaces=0%2C14
-
-  http://gameofthrones.wikia.com/api/v1/Articles/Details/?ids=2039&abstract=500&width=200&height=200
-
-  More endpoints -
-  closest town
-  closest castle
-  closest city
-
-  num cities
-  num castles
-  num towns
-  num ruins
-  */

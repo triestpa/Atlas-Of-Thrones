@@ -5,27 +5,36 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "local": "NODE_ENV=local npm start",
+    "local": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "patrick.triest@gmail.com",
   "license": "MIT",
   "dependencies": {
     "axios": "0.16.2",
     "dotenv": "4.0.0",
+    "kcors": "2.2.1",
     "koa": "2.3.0",
-    "koa-mount": "3.0.0",
     "koa-router": "7.2.1",
-    "koa-static": "4.0.1",
+    "leaflet": "1.2.0",
     "pg": "7.2.0",
-    "redis": "2.8.0"
+    "redis": "2.8.0",
+    "winston": "2.3.1"
   },
   "devDependencies": {
+    "babel-loader": "7.1.2",
+    "babili-webpack-plugin": "0.1.2",
+    "css-loader": "0.28.5",
     "eslint": "4.5.0",
     "eslint-config-standard": "10.2.1",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-node": "5.1.1",
     "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-standard": "3.0.1"
+    "eslint-plugin-standard": "3.0.1",
+    "node-sass": "4.5.3",
+    "sass-loader": "6.0.6",
+    "style-loader": "0.18.2",
+    "url-loader": "0.5.9",
+    "webpack": "3.5.5"
   }
 }
