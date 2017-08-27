@@ -1,36 +1,35 @@
 const Koa = require('koa')
-const serve = require('koa-static')
-const mount = require('koa-mount')
-const path = require('path')
+const cors = require('kcors')
 const database = require('./database')
 const api = require('./api')
+const log = require('./logger')
 
 const app = new Koa()
 const port = process.env.PORT
 
 async function setupDB () {
   const client = await database.connect()
-  console.log(`Connected To ${client.database} at ${client.host}:${client.port}`)
+  log.info(`Connected To ${client.database} at ${client.host}:${client.port}`)
 }
 
 function startServer () {
-  app.listen(port)
+  app.listen(port, () => {
+    log.info(`Server listening at ${port}`)
+  })
 }
 
-// Logger
 app.use(async (ctx, next) => {
   const start = Date.now()
   await next()
   const ms = Date.now() - start
-  console.log(`${ctx.method} ${ctx.status} ${ctx.url} - ${ms}`)
+  log.info(`${ctx.method} ${ctx.status} ${ctx.url} - ${ms}`)
 })
 
 app.on('error', (err, ctx) => {
-  console.error(`Request Error ${ctx.url} - ${err.message}`, err)
+  log.error(`Request Error ${ctx.url} - ${err.message}`, err)
 })
 
-let publicPath = path.join(__dirname, '../public/')
-app.use(mount('/', serve(publicPath)))
+app.use(cors({ origin: process.env.CORS_ORIGIN }))
 
-app.use(mount('/api', api.routes(), api.allowedMethods()))
-setupDB().then(startServer).catch(console.error)
+app.use(api.routes(), api.allowedMethods())
+setupDB().then(startServer).catch(log.error)
