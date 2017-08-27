@@ -6,6 +6,7 @@ body {
   margin: 0;
   font-family: 'MedievalSharp', cursive;
   background: #333;
+  overflow: hidden;
 }
 
 .leaflet-container {
@@ -25,6 +26,10 @@ body {
 
 #mapid {
   height: 100vh;
+  width: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
 }
 
 #info-title {
@@ -42,8 +47,8 @@ body {
 
 .info-container {
   position: absolute;
-  right: 0;
   bottom: 0;
+  left: 0;
   z-index: 1000;
   background: #333;
   width: 100%;
@@ -53,6 +58,6 @@ body {
   transform: translateY(calc(100% - #{$footerHeight}))
 }
 
-.info-menu-active {
+.info-active {
   transform: translateY(0);
 }
