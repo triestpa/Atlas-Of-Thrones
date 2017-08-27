@@ -1,5 +1,7 @@
 @import "~leaflet/dist/leaflet.css";
 
+$footerHeight: 100px;
+
 body {
   margin: 0;
   font-family: 'MedievalSharp', cursive;
@@ -10,29 +12,47 @@ body {
   background: #333;
 }
 
+.leaflet-popup {
+  bottom: 0 !important;
+}
+
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
   font-family: 'MedievalSharp', cursive;
   background: #333;
   color: white;
+  text-align: center;
 }
 
 #mapid {
   height: 100vh;
 }
 
-.info-menu {
+#info-title {
+  height: $footerHeight;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    max-width: 100%;
+    padding: 20px;
+    text-overflow: ellipsis;
+  }
+}
+
+.info-container {
   position: absolute;
   right: 0;
   bottom: 0;
   z-index: 1000;
   background: #333;
-  width: 200px;
-  height: 100vh;
+  width: 100%;
+  height: 80vh;
   color: white;
   transition: transform 0.3s;
-  /* transform: translateX(100%); */
+  transform: translateY(calc(100% - #{$footerHeight}))
 }
 
 .info-menu-active {
-/*  transform: translateX(0); */
+  transform: translateY(0);
 }

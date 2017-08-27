@@ -42,7 +42,6 @@ export class ViewController {
     this.layers.political = await this.loadBoundaryGeojson()
 
     this.addLayer('political')
-    // this.addLayer('castle')
     this.addLayer('city')
   }
 
@@ -55,17 +54,18 @@ export class ViewController {
   }
 
   async showInfo (name, id, type) {
-    const infoWindow = document.getElementById('info')
-    infoWindow.innerHTML = `<h1>${name}</h1>`
+    const infoTitle = document.getElementById('info-title')
+    infoTitle.innerHTML = `<h1>${name}</h1>`
 
+    const infoContent = document.getElementById('info-content')
     if (id && type === 'regions') {
       let size = await this.api.getRegionSize(id)
-      infoWindow.innerHTML += `<div>Size: ${size}</div>`
+      infoContent.innerHTML = `<div>Size: ${size}</div>`
     }
 
     try {
       let info = await this.api.getDetails(name)
-      infoWindow.innerHTML += `
+      infoContent.innerHTML += `
         <div>${info.abstract}...</div>
         <a href="http://gameofthrones.wikia.com${info.url}" target="_blank" rel="noopener">Read More</a>`
     } catch (e) {
@@ -78,11 +78,11 @@ export class ViewController {
 
     const properties = {}
     properties.pointToLayer = function (feature, latlng) {
-      return L.marker(latlng, { icon })
+      return L.marker(latlng, { icon, title: feature.properties.name })
     }
 
     properties.onEachFeature = (feature, layer) => {
-      layer.bindPopup(feature.properties.name)
+      layer.bindPopup(feature.properties.name, { closeButton: false })
       layer.on({
         click: async (e) => {
           this.showInfo(feature.properties.name, feature.properties.id, 'location')
