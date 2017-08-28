@@ -56,7 +56,7 @@ export class ViewController {
       let size = await this.api.getRegionSize(id)
       let sizeStr = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
       console.log(sizeStr)
-      infoContent.innerHTML += `<div>Size: ${sizeStr} km^2</div>`
+      infoContent.innerHTML += `<div>Size: ${sizeStr} km^2 (estimate)</div>`
 
       let castles = await this.api.getCastleCount(id)
       infoContent.innerHTML += `<div>Castles: ${castles}</div>`
@@ -128,19 +128,14 @@ export class ViewController {
   }
 
   toggleLayer (layerName) {
-    let layer = this.layers[layerName]
+    const layer = this.layers[layerName]
+    const button = document.getElementById(`${layerName}-toggle`)
+    button.classList.toggle('toggle-active')
+
     if (this.map.hasLayer(layer)) {
       this.map.removeLayer(layer)
     } else {
       this.map.addLayer(layer)
     }
-  }
-
-  addLayer (name) {
-    this.layers[name].addTo(this.map)
-  }
-
-  removeLayer (name) {
-    this.map.removeLayer(this.layers[name])
   }
 }

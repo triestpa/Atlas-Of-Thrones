@@ -73,11 +73,40 @@ body {
   transform: translateY(0);
 }
 
-#layer-buttons {
+#layer-panel{
   position: absolute;
   top: 0;
   right: 0;
-  padding: 30px;
+  padding: 12px;
   background: #222;
   z-index: 1000;
+  color: white;
+
+  h3 {
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
+
+#layer-buttons {
+  text-transform: uppercase;
+
+  :last-child {
+    border-bottom: 1px solid white;
+  }
+}
+
+.layer-button {
+  border-top: 1px solid white;
+  padding: 6px;
+  cursor: pointer;
+  user-select: none;
+
+
+}
+
+
+
+.toggle-active {
+  color: red;
 }
