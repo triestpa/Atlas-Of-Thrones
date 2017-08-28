@@ -51,7 +51,7 @@ async function getPoliticalBoundaries () {
 
   const boundaries = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
-    geojson.properties = { name: row.name, id: row.id }
+    geojson.properties = { name: row.name, id: Number(row.id) }
     return geojson
   })
 
