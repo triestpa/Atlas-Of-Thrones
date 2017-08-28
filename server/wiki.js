@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 async function searchWiki (term) {
-  let response = await axios.get('https://gameofthrones.wikia.com/api/v1/Search/List/',{
+  let response = await axios.get('https://gameofthrones.wikia.com/api/v1/Search/List/', {
     params: {
       query: term,
       limit: 1
@@ -12,7 +12,7 @@ async function searchWiki (term) {
 }
 
 async function getPageDetails (pageID) {
-  let response = await axios.get('http://gameofthrones.wikia.com/api/v1/Articles/Details/',{
+  let response = await axios.get('http://gameofthrones.wikia.com/api/v1/Articles/Details/', {
     params: {
       ids: pageID,
       abstract: 500,

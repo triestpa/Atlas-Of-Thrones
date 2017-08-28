@@ -41,15 +41,20 @@ router.get('/locations/search', async ctx => {
   ctx.body = results
 })
 
-router.get('/political/boundaries', async ctx => {
-  console.log('HERE')
+router.get('/locations/castles/count/', async ctx => {
+  const regionId = ctx.query.id
+  const results = await database.countCastles(regionId)
+  ctx.body = results
+})
+
+router.get('/boundaries', async ctx => {
   const boundaries = await database.getPoliticalBoundaries()
   ctx.body = boundaries
 })
 
-router.get('/political/size', async ctx => {
+router.get('/size', async ctx => {
   const id = ctx.query.id
-  const results = await database.getRegionSize('political', id)
+  const results = await database.getRegionSize(id)
   ctx.body = results
 })
 

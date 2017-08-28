@@ -1,4 +1,5 @@
 const postgres = require('pg')
+
 const dbUrl = process.env.DATABASE_URL
 let useSSL = true
 
@@ -41,30 +42,43 @@ async function getLocations (type) {
   return locations
 }
 
-async function getRegionSize (table, id) {
-  const sizeQuery = `
-    SELECT ST_AREA(geog) as size
-    FROM ${table}
-    WHERE id = $1;`
-  const response = await client.query(sizeQuery, [ id ])
-
-  return response.rows[0].size
-}
-
 async function getPoliticalBoundaries () {
-  const politicalQuery = `
+  const boundaryQuery = `
   SELECT ST_AsGeoJSON(geog), name, claimedBy, id
   FROM political
   WHERE name IS NOT NULL;`
-  const response = await client.query(politicalQuery)
+  const response = await client.query(boundaryQuery)
 
   const boundaries = response.rows.map((row) => {
     let geojson = JSON.parse(row.st_asgeojson)
-    geojson.properties = { name: row.name, owner: row.claimedBy, id: row.id }
+    geojson.properties = { name: row.name, id: row.id }
     return geojson
   })
 
   return boundaries
+}
+
+async function getRegionSize (id) {
+  const sizeQuery = `
+    SELECT ST_AREA(geog) as size
+    FROM political
+    WHERE id = $1;`
+  const response = await client.query(sizeQuery, [ id ])
+  const sqKm = response.rows[0].size * (10 ** -6)
+  return sqKm
+}
+
+async function countCastles (regionId) {
+  const countQuery = `
+  SELECT count(*)
+  FROM political, locations
+  WHERE ST_intersects(political.geog, locations.geog)
+  AND political.id = $1
+  AND locations.type = 'Castle'
+  `
+
+  const response = await client.query(countQuery, [ regionId ])
+  return response.rows[0].count
 }
 
 async function searchLocations (term) {
@@ -80,9 +94,9 @@ module.exports = {
   connect,
   close,
   queryTime,
-  getRoads,
   getLocations,
   searchLocations,
   getPoliticalBoundaries,
-  getRegionSize
+  getRegionSize,
+  countCastles
 }

@@ -3,8 +3,7 @@ import { CancelToken, get } from 'axios'
 export class MapApi {
   constructor (url = 'http://localhost:5000/') {
     this.url = url
-    this.CancelToken = CancelToken
-    this.cancelSource = this.CancelToken.source()
+    this.cancelToken = CancelToken.source()
   }
 
   async httpGet (endpoint = '', params = {}, cancelToken = null) {
@@ -17,16 +16,20 @@ export class MapApi {
   }
 
   async getPoliticalBoundaries () {
-    return this.httpGet('political/boundaries')
+    return this.httpGet('boundaries')
   }
 
   async getRegionSize (id) {
-    return this.httpGet('political/size', { id })
+    return this.httpGet('size', { id })
+  }
+
+  async getCastleCount (id) {
+    return this.httpGet('locations/castles/count', { id })
   }
 
   async getDetails (name) {
-    this.cancelSource.cancel('Cancelled Ongoing Request')
-    this.cancelSource = this.CancelToken.source()
-    return this.httpGet('details', { name }, this.cancelSource.token)
+    this.cancelToken.cancel('Cancelled Ongoing Request')
+    this.cancelToken = CancelToken.source()
+    return this.httpGet('details', { name }, this.cancelToken.token)
   }
 }
