@@ -28,6 +28,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  user-select: none;
 
   h1 {
     max-width: 100%;
@@ -38,6 +40,10 @@ body {
 
 #info-content {
   font-family: 'Lato', sans-serif;
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .info-container {
@@ -50,7 +56,8 @@ body {
   height: 80vh;
   color: white;
   transition: transform 0.3s;
-  transform: translateY(calc(100% - #{$footerHeight}))
+  transform: translateY(calc(100% - #{$footerHeight}));
+  overflow-y: scroll;
 }
 
 .info-active {
@@ -106,6 +113,7 @@ body {
 
 .leaflet-popup-content {
   user-select: none;
+  cursor: pointer;
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
