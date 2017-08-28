@@ -5,6 +5,10 @@ const controller = new ViewController()
 controller.loadMapData()
 
 window.toggleInfo = controller.toggleInfo
+window.toggleLayer = (layerName) => {
+  console.log(layerName)
+  controller.toggleLayer(layerName)
+}
 
 /* Search is too weak right now
 async function search (term) {

@@ -8,7 +8,7 @@ export class ViewController {
       zoom: 4,
       maxZoom: 10,
       minZoom: 4,
-      maxBounds: [ [ 50, -30 ], [ -45, 120 ] ]
+      maxBounds: [ [ 50, -30 ], [ -45, 100 ] ]
     })
     this.api = new MapApi()
     this.layers = { }
@@ -31,7 +31,6 @@ export class ViewController {
       [ 'city', this.icon(`${iconBaseURL}city.svg`) ],
       [ 'town', this.icon(`${iconBaseURL}village.svg`) ],
       [ 'ruin', this.icon(`${iconBaseURL}ruin.svg`) ],
-      [ 'other', this.icon(`${iconBaseURL}location.svg`) ]
     ]
 
     for (let location of locations) {
@@ -40,19 +39,11 @@ export class ViewController {
     }
 
     const boundaries = await this.api.getPoliticalBoundaries()
-    this.layers.political = this.showBoundaryGeojson(boundaries)
+    this.layers.boundaries = this.showBoundaryGeojson(boundaries)
 
-    this.addLayer('city')
-    this.addLayer('town')
-    this.addLayer('political')
-  }
-
-  addLayer (name) {
-    this.layers[name].addTo(this.map)
-  }
-
-  removeLayer (name) {
-    this.map.removeLayer(this.layers[name])
+    this.toggleLayer('city')
+    this.toggleLayer('town')
+    this.toggleLayer('boundaries')
   }
 
   async showInfo (name, id, type) {
@@ -63,7 +54,12 @@ export class ViewController {
     infoContent.innerHTML = ''
     if (id && type === 'regions') {
       let size = await this.api.getRegionSize(id)
-      infoContent.innerHTML += `<div>Size: ${size}</div>`
+      let sizeStr = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
+      console.log(sizeStr)
+      infoContent.innerHTML += `<div>Size: ${sizeStr} km^2</div>`
+
+      let castles = await this.api.getCastleCount(id)
+      infoContent.innerHTML += `<div>Castles: ${castles}</div>`
     }
 
     try {
@@ -113,7 +109,7 @@ export class ViewController {
 
   setHighlightedRegion (layer) {
     if (this.selected) {
-      this.layers.political.resetStyle(this.selected)
+      this.layers.boundaries.resetStyle(this.selected)
     }
 
     this.selected = layer
@@ -129,5 +125,22 @@ export class ViewController {
     console.log('toggle')
     const infoContainer = document.getElementsByClassName('info-container')[0]
     infoContainer.classList.toggle('info-active')
+  }
+
+  toggleLayer (layerName) {
+    let layer = this.layers[layerName]
+    if (this.map.hasLayer(layer)) {
+      this.map.removeLayer(layer)
+    } else {
+      this.map.addLayer(layer)
+    }
+  }
+
+  addLayer (name) {
+    this.layers[name].addTo(this.map)
+  }
+
+  removeLayer (name) {
+    this.map.removeLayer(this.layers[name])
   }
 }

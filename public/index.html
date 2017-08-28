@@ -11,14 +11,20 @@
 
 <body>
   <div id="mapid"></div>
+  <div id="layer-buttons">
+      Map Layer Buttons
+      <div onclick="toggleLayer('boundaries')">Boundaries</div>
+      <div onclick="toggleLayer('castle')">Castles</div>
+      <div onclick="toggleLayer('city')">Cities</div>
+      <div onclick="toggleLayer('town')">Towns</div>
+      <div onclick="toggleLayer('ruin')">Ruins</div>
+  </div>
   <div class="info-container">
     <div id="info-title" onclick="toggleInfo()">
       <h1>Tap The Map To View Info</h1>
     </div>
     <div id="info-content">
-      <div>
-          Map Layer Buttons
-      </div>
+
     </div>
   </div>
   <script src="bundle.js"></script>

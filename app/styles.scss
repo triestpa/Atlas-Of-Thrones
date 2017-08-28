@@ -24,6 +24,17 @@ body {
   text-align: center;
 }
 
+
+.leaflet-control-zoom {
+  border: none !important;
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  background: #333 !important;
+  color: white !important;
+  border: none;
+}
+
 #mapid {
   height: 100vh;
   width: 100%;
@@ -60,4 +71,13 @@ body {
 
 .info-active {
   transform: translateY(0);
+}
+
+#layer-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 30px;
+  background: #222;
+  z-index: 1000;
 }
