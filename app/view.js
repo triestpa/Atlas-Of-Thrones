@@ -31,6 +31,7 @@ export class ViewController {
       [ 'city', this.icon(`${iconBaseURL}city.svg`) ],
       [ 'town', this.icon(`${iconBaseURL}village.svg`) ],
       [ 'ruin', this.icon(`${iconBaseURL}ruin.svg`) ],
+      [ 'landmark', this.icon(`${iconBaseURL}ruin.svg`) ]
     ]
 
     for (let location of locations) {
@@ -64,9 +65,7 @@ export class ViewController {
 
     try {
       let info = await this.api.getDetails(name)
-      infoContent.innerHTML += `
-        <div>${info.abstract}...</div>
-        <a href="http://gameofthrones.wikia.com${info.url}" target="_blank" rel="noopener">Read More</a>`
+      infoContent.innerHTML += `<div>${info.summary}  <a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
     } catch (e) {
       console.log('Info Request Failed', e.message)
     }
