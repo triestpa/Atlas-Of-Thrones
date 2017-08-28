@@ -17,7 +17,10 @@ router.use(async (ctx, next) => {
 // Cache the response
 router.use(async (ctx, next) => {
   await next()
-  await cache.set(ctx.path + ctx.search, JSON.stringify(ctx.body))
+
+  if (ctx.body && ctx.status === 200) {
+    await cache.set(ctx.path + ctx.search, JSON.stringify(ctx.body))
+  }
 })
 
 router.get('/', async ctx => {
@@ -61,8 +64,7 @@ router.get('/size', async ctx => {
 router.get('/details', async ctx => {
   try {
     const name = ctx.query.name
-    const resultId = await wiki.searchWiki(name)
-    const details = await wiki.getPageDetails(resultId)
+    const details = await wiki.getArticleDetails(name)
     ctx.body = details
   } catch (err) {
     console.error(`Error fetching details for ${ctx.url}`, err.message)
