@@ -1,5 +1,5 @@
 #!bin/bash
 mkdir data
 cd data
-wget downloads.gvsig.org/download/documents/books/GISofThrones.zip
+wget https://cdn.patricktriest.com/shapefiles/GISofThrones.zip
 unzip -a GISofThrones.zip

@@ -2,7 +2,14 @@
 ### Atlas Of Thrones
 ##### An interactive "Game of Thrones" map powered by Leaflet, PostGIS, and Redis.
 
-#### Based of GIS files from -
+#### Basemap
+
+The basemap used for this app is from CARTO -
+https://carto.com/blog/game-of-thrones-basemap
+
+Credit: Textures and Icons from https://www.textures.com/ & https://thenounproject.com/.
+
+#### Location and Polygon Data is based of GIS files from -
 
 A Song of Ice and Fire Speculative World Map
 
@@ -22,7 +29,7 @@ The Areas outside the polygons of the file officialMapAreas.shp are the parts of
 
 
 #### License
-
+```
 This work is licensed under the Creative Commons Attribution-Non-Commercial-ShareAlike 3.0 Unported License.
 
 To view a copy of this license, visit www.creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA
@@ -41,6 +48,6 @@ Under the following terms:
     ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 
     No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
-
+```
 
 This map was created as a fan project and may be used in other fan based projects under the terms of the Creative Commons license. Thank you.
