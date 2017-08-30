@@ -53,6 +53,8 @@ export class ViewController {
 
     const infoContent = document.getElementById('info-content')
     infoContent.innerHTML = ''
+    let info = {}
+
     if (id && type === 'regions') {
       let size = await this.api.getRegionSize(id)
       let sizeStr = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
@@ -61,14 +63,13 @@ export class ViewController {
 
       let castles = await this.api.getCastleCount(id)
       infoContent.innerHTML += `<div>Castles: ${castles}</div>`
+
+      info = await this.api.getRegionDetails(id)
+    } else {
+      info = await this.api.getLocationDetails(id)
     }
 
-    try {
-      let info = await this.api.getDetails(name)
-      infoContent.innerHTML += `<div>${info.summary}  <a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
-    } catch (e) {
-      console.log('Info Request Failed', e.message)
-    }
+    infoContent.innerHTML += `<div>${info.summaryText}  <a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
   }
 
   async loadLocationGeojson (type, icon) {

@@ -6,8 +6,10 @@ export class MapApi {
     this.cancelToken = CancelToken.source()
   }
 
-  async httpGet (endpoint = '', params = {}, cancelToken = null) {
-    const response = await get(`${this.url}${endpoint}`, { params, cancelToken })
+  async httpGet (endpoint = '', params = {}) {
+    this.cancelToken.cancel('Cancelled Ongoing Request')
+    this.cancelToken = CancelToken.source()
+    const response = await get(`${this.url}${endpoint}`, { params, cancelToken: this.cancelToken.token })
     return response.data
   }
 
@@ -15,21 +17,23 @@ export class MapApi {
     return this.httpGet('locations', { type })
   }
 
+  async getLocationDetails (id) {
+    return this.httpGet('locations/summary', { id })
+  }
+
   async getPoliticalBoundaries () {
-    return this.httpGet('boundaries')
+    return this.httpGet('political/boundaries')
   }
 
   async getRegionSize (id) {
-    return this.httpGet('size', { id })
+    return this.httpGet('political/size', { id })
+  }
+
+  async getRegionDetails (id) {
+    return this.httpGet('political/summary', { id })
   }
 
   async getCastleCount (id) {
-    return this.httpGet('locations/castles/count', { id })
-  }
-
-  async getDetails (name) {
-    this.cancelToken.cancel('Cancelled Ongoing Request')
-    this.cancelToken = CancelToken.source()
-    return this.httpGet('details', { name }, this.cancelToken.token)
+    return this.httpGet('political/castles/count', { id })
   }
 }
