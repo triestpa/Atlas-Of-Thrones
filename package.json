@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "0.16.2",
     "dotenv": "4.0.0",
+    "fuse.js": "3.0.5",
     "kcors": "2.2.1",
     "koa": "2.3.0",
     "koa-router": "7.2.1",
