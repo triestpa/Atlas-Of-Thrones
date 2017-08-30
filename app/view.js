@@ -1,5 +1,6 @@
 import L from 'leaflet'
 import { MapApi } from './api'
+import { Search } from './search'
 
 export class ViewController {
   constructor (mapId = 'mapid') {
@@ -25,22 +26,32 @@ export class ViewController {
         crs: L.CRS.EPSG4326
       }).addTo(this.map)
 
-    const iconBaseURL = 'https://cdn.patricktriest.com/icons/'
+    const iconBaseURL = 'https://cdn.patricktriest.com/icons/atlas_of_thrones/'
     const locations = [
       [ 'castle', this.icon(`${iconBaseURL}castle.svg`) ],
       [ 'city', this.icon(`${iconBaseURL}city.svg`) ],
       [ 'town', this.icon(`${iconBaseURL}village.svg`) ],
       [ 'ruin', this.icon(`${iconBaseURL}ruin.svg`) ],
-      [ 'landmark', this.icon(`${iconBaseURL}ruin.svg`) ]
+      [ 'landmark', this.icon(`${iconBaseURL}misc.svg`) ]
     ]
+
+    let searchbase = []
 
     for (let location of locations) {
       let [ name, icon ] = location
-      this.layers[name] = await this.loadLocationGeojson(name, icon)
+      const geojson = await this.api.getLocations(name)
+      searchbase = searchbase.concat(geojson.map((entry) => entry.properties))
+      this.layers[name] = await this.addLocationGeojson(geojson, icon)
     }
 
     const boundaries = await this.api.getPoliticalBoundaries()
-    this.layers.boundaries = this.showBoundaryGeojson(boundaries)
+    searchbase = searchbase.concat(boundaries.map((entry) => {
+      return Object.assign({ type: 'Kingdom' }, entry.properties)
+    }))
+
+    this.layers.boundaries = this.addBoundaryGeojson(boundaries)
+
+    this.search = new Search(searchbase)
 
     this.toggleLayer('city')
     this.toggleLayer('town')
@@ -70,11 +81,15 @@ export class ViewController {
     }
 
     infoContent.innerHTML += `<div>${info.summaryText}  <a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
+
+    // Show info window if hidden, and on desktop
+    const infoContainer = document.getElementsByClassName('info-container')[0]
+    if (!infoContainer.classList.contains('info-active') && window.innerWidth > 600) {
+      this.toggleInfo()
+    }
   }
 
-  async loadLocationGeojson (type, icon) {
-    const locations = await this.api.getLocations(type)
-
+  async addLocationGeojson (locations, icon) {
     const properties = {}
     properties.pointToLayer = function (feature, latlng) {
       return L.marker(latlng, { icon, title: feature.properties.name })
@@ -93,7 +108,7 @@ export class ViewController {
     return L.geoJSON(locations, properties)
   }
 
-  showBoundaryGeojson (geojson) {
+  addBoundaryGeojson (geojson) {
     const properties = {}
     properties.onEachFeature = (feature, layer) => {
       layer.on({
@@ -122,7 +137,6 @@ export class ViewController {
   }
 
   toggleInfo () {
-    console.log('toggle')
     const infoContainer = document.getElementsByClassName('info-container')[0]
     infoContainer.classList.toggle('info-active')
   }
