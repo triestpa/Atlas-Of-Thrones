@@ -31,7 +31,6 @@ export class MapController {
     }
 
     properties.onEachFeature = (feature, layer) => {
-      // layer._leaflet_id = feature.properties.id
       layer.bindPopup(feature.properties.name, { closeButton: false })
       layer.on({
         click: async (e) => {
@@ -48,11 +47,9 @@ export class MapController {
   addBoundaryGeojson (geojson) {
     const properties = {}
     properties.onEachFeature = (feature, layer) => {
-      // layer._leaflet_id = feature.properties.id
       layer.on({
         click: async (e) => {
           this.locationClickCallback(feature.properties.name, feature.properties.id, 'regions')
-          // this.showInfo(feature.properties.name, feature.properties.id, 'regions')
           this.setHighlightedRegion(layer)
         }
       })
@@ -86,6 +83,7 @@ export class MapController {
     }
   }
 
+  /** Check if layer is added to map  */
   isLayerShowing (layerName) {
     return this.map.hasLayer(this.layers[layerName])
   }
@@ -95,6 +93,7 @@ export class MapController {
     return L.icon({ iconUrl, iconSize })
   }
 
+  /** Trigger "click" on layer with provided name */
   selectLocation (id, layerName) {
     const geojsonLayer = this.layers[layerName]
     const sublayers = geojsonLayer.getLayers()

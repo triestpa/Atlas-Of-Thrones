@@ -1,6 +1,5 @@
 const Router = require('koa-router')
 const database = require('./database')
-const wiki = require('./wiki')
 const cache = require('./cache')
 const router = new Router()
 
