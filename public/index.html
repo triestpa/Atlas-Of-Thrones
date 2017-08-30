@@ -15,17 +15,17 @@
   <div id="layer-panel">
     <h3>Layers</h3>
     <div id="layer-buttons">
-      <div class="layer-button" id="boundaries-toggle" onclick="toggleLayer('boundaries')">Boundaries</div>
-      <div class="layer-button" id="castle-toggle" onclick="toggleLayer('castle')">Castles</div>
-      <div class="layer-button" id="city-toggle" onclick="toggleLayer('city')">Cities</div>
-      <div class="layer-button" id="town-toggle" onclick="toggleLayer('town')">Towns</div>
-      <div class="layer-button" id="ruin-toggle" onclick="toggleLayer('ruin')">Ruins</div>
-      <div class="layer-button" id="landmark-toggle" onclick="toggleLayer('landmark')">Landmark</div>
+      <div class="layer-button" id="boundaries-toggle" onclick="controller.toggleMapLayer('boundaries')">Kingdoms</div>
+      <div class="layer-button" id="castle-toggle" onclick="controller.toggleMapLayer('castle')">Castles</div>
+      <div class="layer-button" id="city-toggle" onclick="controller.toggleMapLayer('city')">Cities</div>
+      <div class="layer-button" id="town-toggle" onclick="controller.toggleMapLayer('town')">Towns</div>
+      <div class="layer-button" id="ruin-toggle" onclick="controller.toggleMapLayer('ruin')">Ruins</div>
+      <div class="layer-button" id="landmark-toggle" onclick="controller.toggleMapLayer('landmark')">Landmark</div>
     </div>
   </div>
 
   <div class="info-container">
-    <div id="info-title" onclick="toggleInfo()">
+    <div id="info-title" onclick="controller.toggleInfo()">
       <h1>Tap The Map To View Info</h1>
     </div>
     <div id="info-content">
