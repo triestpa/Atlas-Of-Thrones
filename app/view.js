@@ -7,59 +7,42 @@ export class ViewController {
   constructor () {
     this.api = new MapApi()
     this.mapController = new MapController((name, id, type) => this.showInfo(name, id, type))
+    this.locationSearch = new LocationSearch()
     this.loadMapData()
   }
 
   /** Load map data from the API */
   async loadMapData () {
     const iconBaseURL = 'https://cdn.patricktriest.com/icons/atlas_of_thrones/'
-    const locations = [
-      [ 'castle', `${iconBaseURL}castle.svg` ],
-      [ 'city', `${iconBaseURL}city.svg` ],
-      [ 'town', `${iconBaseURL}village.svg` ],
-      [ 'ruin', `${iconBaseURL}ruin.svg` ],
-      [ 'landmark', `${iconBaseURL}misc.svg` ]
-    ]
-
-    let searchbase = []
-
-    for (let location of locations) {
-      let [ name, icon ] = location
-      const geojson = await this.api.getLocations(name)
-      searchbase = searchbase.concat(geojson.map((entry) => {
-        return Object.assign({ layerName: name }, entry.properties)
-      }))
-
-      this.mapController.addLocationGeojson(name, geojson, icon)
+    const locationLayers = {
+      castle: `${iconBaseURL}castle.svg`,
+      city: `${iconBaseURL}city.svg`,
+      town: `${iconBaseURL}village.svg`,
+      ruin: `${iconBaseURL}ruin.svg`,
+      landmark: `${iconBaseURL}misc.svg`
     }
 
-    const boundaries = await this.api.getPoliticalBoundaries()
+    const locationTypes = Object.keys(locationLayers)
+    for (let locationType of locationTypes) {
+      const geojson = await this.api.getLocations(locationType)
+      this.locationSearch.addGeoJsonItems(geojson, locationType)
+      this.mapController.addLocationGeojson(locationType, geojson, locationLayers[locationType])
+    }
 
-    searchbase = searchbase.concat(boundaries.map((entry) => {
-      return Object.assign({ type: 'Kingdom', layerName: 'boundaries' }, entry.properties)
-    }))
-
-    this.mapController.addBoundaryGeojson(boundaries)
-
-    this.locationSearch = new LocationSearch(searchbase)
-
-
-    // this.toggleMapLayer('city')
-    // this.toggleMapLayer('town')
-    // this.toggleMapLayer('ruin')
-    // this.toggleMapLayer('landmark')
-    // this.toggleMapLayer('castle')
+    const boundariesGeoJson = await this.api.getPoliticalBoundaries()
+    this.locationSearch.addGeoJsonItems(boundariesGeoJson, 'boundaries')
+    this.mapController.addBoundaryGeojson(boundariesGeoJson)
     this.toggleMapLayer('boundaries')
+  }
 
-    setTimeout(() => {
-      const bestResult = this.locationSearch.search('north')[0]
+  search (term) {
+    const bestResult = this.locationSearch.search(term)[0]
 
-      if (!this.mapController.isLayerShowing(bestResult.layerName)) {
-        this.toggleMapLayer(bestResult.layerName)
-      }
+    if (!this.mapController.isLayerShowing(bestResult.layerName)) {
+      this.toggleMapLayer(bestResult.layerName)
+    }
 
-      this.mapController.selectLocation(bestResult.id, bestResult.layerName)
-    }, 2000)
+    this.mapController.selectLocation(bestResult.id, bestResult.layerName)
   }
 
   /** Show info when a map item is selected */
@@ -74,7 +57,6 @@ export class ViewController {
     if (id && type === 'regions') {
       let size = await this.api.getRegionSize(id)
       let sizeStr = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
-      console.log(sizeStr)
       infoContent.innerHTML += `<div>Size: ${sizeStr} km^2 (estimate)</div>`
 
       let castles = await this.api.getCastleCount(id)

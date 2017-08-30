@@ -1,8 +1,8 @@
 import Fuse from 'fuse.js'
 
 export class LocationSearch {
-  constructor (searchbase) {
-    var options = {
+  constructor () {
+    this.options = {
       keys: ['name'],
       shouldSort: true,
       threshold: 0.2,
@@ -12,7 +12,16 @@ export class LocationSearch {
       minMatchCharLength: 1
     }
 
-    this.fuse = new Fuse(searchbase, options)
+    this.searchbase = []
+    this.fuse = new Fuse([], this.options)
+  }
+
+  addGeoJsonItems (geojson, layerName) {
+    this.searchbase = this.searchbase.concat(geojson.map((item) => {
+      return { layerName, name: item.properties.name, id: item.properties.id }
+    }))
+
+    this.fuse = new Fuse(this.searchbase, this.options)
   }
 
   search (term) {
