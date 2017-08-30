@@ -44,32 +44,33 @@ router.get('/locations/search', async ctx => {
   ctx.body = results
 })
 
-router.get('/locations/castles/count/', async ctx => {
-  const regionId = ctx.query.id
-  const results = await database.countCastles(regionId)
+router.get('/locations/summary', async ctx => {
+  const id = ctx.query.id
+  const results = await database.getSummary('locations', id)
   ctx.body = results
 })
 
-router.get('/boundaries', async ctx => {
+router.get('/political/boundaries', async ctx => {
   const boundaries = await database.getPoliticalBoundaries()
   ctx.body = boundaries
 })
 
-router.get('/size', async ctx => {
+router.get('/political/size', async ctx => {
   const id = ctx.query.id
   const results = await database.getRegionSize(id)
   ctx.body = results
 })
 
-router.get('/details', async ctx => {
-  try {
-    const name = ctx.query.name
-    const details = await wiki.getArticleDetails(name)
-    ctx.body = details
-  } catch (err) {
-    console.error(`Error fetching details for ${ctx.url}`, err.message)
-    ctx.status = 404
-  }
+router.get('/political/summary', async ctx => {
+  const id = ctx.query.id
+  const results = await database.getSummary('political', id)
+  ctx.body = results
+})
+
+router.get('/political/castles/count/', async ctx => {
+  const regionId = ctx.query.id
+  const results = await database.countCastles(regionId)
+  ctx.body = results
 })
 
 router.get('/error', async ctx => {
