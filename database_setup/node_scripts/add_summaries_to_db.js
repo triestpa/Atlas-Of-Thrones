@@ -40,7 +40,16 @@ async function appendRegionSummaries () {
   }
 }
 
-client.connect()
-  .then(() => appendLocationSummaries())
-  .then(() => appendRegionSummaries())
-  .then(() => process.exit())
+async function run () {
+  try {
+    await client.connect()
+    await appendLocationSummaries()
+    await appendRegionSummaries()
+  } catch (err) {
+    console.error(err)
+  } finally {
+    process.exit()
+  }
+}
+
+run()

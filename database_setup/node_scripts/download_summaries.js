@@ -40,7 +40,6 @@ async function getPlaceSummaries () {
   let summaries = []
   for (let row of response.rows) {
     const summary = await getSummary(row.name)
-    console.log(summary)
     summaries.push({ row, summary })
   }
 
@@ -83,7 +82,7 @@ async function checkMediaWikiDump (title) {
       }
     }
 
-    const summaryResponse = await getSummaryFromWikia(results[0].item.pageid)
+    const summaryResponse = await getSummaryFromMediaWiki(results[0].item.pageid)
     const pageTitle = String(summaryResponse.title).replace(/'/g, '')
     const summaryText = String(summaryResponse.extract).replace(/'/g, '')
 
@@ -95,7 +94,8 @@ async function checkMediaWikiDump (title) {
   }
 }
 
-async function getSummaryFromWikia (id) {
+async function getSummaryFromMediaWiki (id) {
+  console.log(`Fetching AWOIAF Summary - ${id}`)
   const summaryResponse = await axios.get('http://awoiaf.westeros.org/api.php', {
     params: {
       prop: 'extracts',
@@ -122,8 +122,9 @@ async function searchWikia (url, name) {
   return searchResponse.data.items[0]
 }
 
-async function getMediaWikiSummary (mediaWikiUrl, pageId) {
-  // console.log(`${mediaWikiUrl}/api/v1/Articles/AsSimpleJson/?id=${pageId}`)
+async function getWikiaSummary (mediaWikiUrl, pageId) {
+  console.log(`Fetching Wikia Summary - ${pageId}`)
+  console.log(`${mediaWikiUrl}/api/v1/Articles/AsSimpleJson/?id=${pageId}`)
   let pageResponse = await axios.get(`${mediaWikiUrl}/api/v1/Articles/AsSimpleJson/`, {
     params: { id: pageId }
   })
@@ -147,12 +148,12 @@ async function searchWikias (title) {
   wikiSearchResponse = await searchWikia(gotWikiURL, title)
 
   if (wikiSearchResponse.title === title) {
-    wikiSummaryResponse = await getMediaWikiSummary(gotWikiURL, wikiSearchResponse.id)
+    wikiSummaryResponse = await getWikiaSummary(gotWikiURL, wikiSearchResponse.id)
   } else {
     wikiSearchResponse = await searchWikia(westerosWikiUrl, title)
 
     if (wikiSearchResponse.title === title) {
-      wikiSummaryResponse = await getMediaWikiSummary(westerosWikiUrl, wikiSearchResponse.id)
+      wikiSummaryResponse = await getWikiaSummary(westerosWikiUrl, wikiSearchResponse.id)
     }
   }
 
@@ -181,7 +182,16 @@ function writeFile (object, name) {
   })
 }
 
-client.connect()
-  .then(() => getPlaceSummaries())
-  .then(() => getRegionSummaries())
-  .then(() => process.exit())
+async function run () {
+  try {
+    await client.connect()
+    await getPlaceSummaries()
+    await getRegionSummaries()
+  } catch (err) {
+    console.error(err)
+  } finally {
+    process.exit()
+  }
+}
+
+run()
