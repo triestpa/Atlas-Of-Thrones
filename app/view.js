@@ -1,38 +1,24 @@
-import L from 'leaflet'
 import { MapApi } from './api'
 import { Search } from './search'
+import { MapController } from './map'
 
 export class ViewController {
-  constructor (mapId = 'mapid') {
-    this.map = L.map(mapId, {
-      center: [ 5, 20 ],
-      zoom: 4,
-      maxZoom: 10,
-      minZoom: 4,
-      maxBounds: [ [ 50, -30 ], [ -45, 100 ] ]
-    })
+  /** Initialize View Properties */
+  constructor () {
     this.api = new MapApi()
-    this.layers = { }
-    this.selectedRegion = null
+    this.mapController = new MapController((name, id, type) => this.showInfo(name, id, type))
+    this.loadMapData()
   }
 
-  icon (iconUrl, iconSize = [ 24, 56 ]) {
-    return L.icon({ iconUrl, iconSize })
-  }
-
+  /** Load map data from the API */
   async loadMapData () {
-    L.tileLayer(
-      'https://cartocdn-ashbu.global.ssl.fastly.net/ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
-        crs: L.CRS.EPSG4326
-      }).addTo(this.map)
-
     const iconBaseURL = 'https://cdn.patricktriest.com/icons/atlas_of_thrones/'
     const locations = [
-      [ 'castle', this.icon(`${iconBaseURL}castle.svg`) ],
-      [ 'city', this.icon(`${iconBaseURL}city.svg`) ],
-      [ 'town', this.icon(`${iconBaseURL}village.svg`) ],
-      [ 'ruin', this.icon(`${iconBaseURL}ruin.svg`) ],
-      [ 'landmark', this.icon(`${iconBaseURL}misc.svg`) ]
+      [ 'castle', `${iconBaseURL}castle.svg` ],
+      [ 'city', `${iconBaseURL}city.svg` ],
+      [ 'town', `${iconBaseURL}village.svg` ],
+      [ 'ruin', `${iconBaseURL}ruin.svg` ],
+      [ 'landmark', `${iconBaseURL}misc.svg` ]
     ]
 
     let searchbase = []
@@ -41,23 +27,25 @@ export class ViewController {
       let [ name, icon ] = location
       const geojson = await this.api.getLocations(name)
       searchbase = searchbase.concat(geojson.map((entry) => entry.properties))
-      this.layers[name] = await this.addLocationGeojson(geojson, icon)
+      this.mapController.addLocationGeojson(name, geojson, icon)
     }
 
     const boundaries = await this.api.getPoliticalBoundaries()
+
     searchbase = searchbase.concat(boundaries.map((entry) => {
       return Object.assign({ type: 'Kingdom' }, entry.properties)
     }))
 
-    this.layers.boundaries = this.addBoundaryGeojson(boundaries)
+    this.mapController.addBoundaryGeojson(boundaries)
 
-    this.search = new Search(searchbase)
+    // this.search = new Search(searchbase)
 
-    this.toggleLayer('city')
-    this.toggleLayer('town')
-    this.toggleLayer('boundaries')
+    this.toggleMapLayer('city')
+    this.toggleMapLayer('town')
+    this.toggleMapLayer('boundaries')
   }
 
+  /** Show info when a map item is selected */
   async showInfo (name, id, type) {
     const infoTitle = document.getElementById('info-title')
     infoTitle.innerHTML = `<h1>${name}</h1>`
@@ -89,67 +77,16 @@ export class ViewController {
     }
   }
 
-  async addLocationGeojson (locations, icon) {
-    const properties = {}
-    properties.pointToLayer = function (feature, latlng) {
-      return L.marker(latlng, { icon, title: feature.properties.name })
-    }
-
-    properties.onEachFeature = (feature, layer) => {
-      layer.bindPopup(feature.properties.name, { closeButton: false })
-      layer.on({
-        click: async (e) => {
-          this.showInfo(feature.properties.name, feature.properties.id, 'location')
-          this.setHighlightedRegion(null)
-        }
-      })
-    }
-
-    return L.geoJSON(locations, properties)
-  }
-
-  addBoundaryGeojson (geojson) {
-    const properties = {}
-    properties.onEachFeature = (feature, layer) => {
-      layer.on({
-        click: async (e) => {
-          this.showInfo(feature.properties.name, feature.properties.id, 'regions')
-          this.setHighlightedRegion(layer)
-        }
-      })
-    }
-
-    return L.geoJSON(geojson, properties)
-  }
-
-  setHighlightedRegion (layer) {
-    if (this.selected) {
-      this.layers.boundaries.resetStyle(this.selected)
-    }
-
-    this.selected = layer
-    if (this.selected) {
-      this.selected.bringToFront()
-      this.selected.setStyle({
-        'color': 'red'
-      })
-    }
-  }
-
+  /** Toggle the info container */
   toggleInfo () {
     const infoContainer = document.getElementsByClassName('info-container')[0]
     infoContainer.classList.toggle('info-active')
   }
 
-  toggleLayer (layerName) {
-    const layer = this.layers[layerName]
+  /** Toggle map layer visibility */
+  toggleMapLayer (layerName) {
     const button = document.getElementById(`${layerName}-toggle`)
     button.classList.toggle('toggle-active')
-
-    if (this.map.hasLayer(layer)) {
-      this.map.removeLayer(layer)
-    } else {
-      this.map.addLayer(layer)
-    }
+    this.mapController.toggleLayer(layerName)
   }
 }
