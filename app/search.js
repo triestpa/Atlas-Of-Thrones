@@ -1,19 +1,16 @@
 import Fuse from 'fuse.js'
 
-export class Search {
+export class LocationSearch {
   constructor (searchbase) {
     var options = {
-      keys: ['name', 'type'],
+      keys: ['name'],
       shouldSort: true,
-      includeScore: true,
-      threshold: 0.6,
+      threshold: 0.2,
       location: 0,
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1
     }
-
-    console.log(searchbase)
 
     this.fuse = new Fuse(searchbase, options)
   }

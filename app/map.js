@@ -31,6 +31,7 @@ export class MapController {
     }
 
     properties.onEachFeature = (feature, layer) => {
+      // layer._leaflet_id = feature.properties.id
       layer.bindPopup(feature.properties.name, { closeButton: false })
       layer.on({
         click: async (e) => {
@@ -47,6 +48,7 @@ export class MapController {
   addBoundaryGeojson (geojson) {
     const properties = {}
     properties.onEachFeature = (feature, layer) => {
+      // layer._leaflet_id = feature.properties.id
       layer.on({
         click: async (e) => {
           this.locationClickCallback(feature.properties.name, feature.properties.id, 'regions')
@@ -84,8 +86,22 @@ export class MapController {
     }
   }
 
+  isLayerShowing (layerName) {
+    return this.map.hasLayer(this.layers[layerName])
+  }
+
   /** Create a leaflet icon from a URL */
   getIcon (iconUrl, iconSize = [ 24, 56 ]) {
     return L.icon({ iconUrl, iconSize })
+  }
+
+  selectLocation (id, layerName) {
+    const geojsonLayer = this.layers[layerName]
+    const sublayers = geojsonLayer.getLayers()
+    const selectedSublayer = sublayers.find(layer => {
+      return layer.feature.geometry.properties.id === id
+    })
+
+    selectedSublayer.fireEvent('click')
   }
 }

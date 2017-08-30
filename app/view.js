@@ -1,5 +1,5 @@
 import { MapApi } from './api'
-import { Search } from './search'
+import { LocationSearch } from './search'
 import { MapController } from './map'
 
 export class ViewController {
@@ -26,23 +26,40 @@ export class ViewController {
     for (let location of locations) {
       let [ name, icon ] = location
       const geojson = await this.api.getLocations(name)
-      searchbase = searchbase.concat(geojson.map((entry) => entry.properties))
+      searchbase = searchbase.concat(geojson.map((entry) => {
+        return Object.assign({ layerName: name }, entry.properties)
+      }))
+
       this.mapController.addLocationGeojson(name, geojson, icon)
     }
 
     const boundaries = await this.api.getPoliticalBoundaries()
 
     searchbase = searchbase.concat(boundaries.map((entry) => {
-      return Object.assign({ type: 'Kingdom' }, entry.properties)
+      return Object.assign({ type: 'Kingdom', layerName: 'boundaries' }, entry.properties)
     }))
 
     this.mapController.addBoundaryGeojson(boundaries)
 
-    // this.search = new Search(searchbase)
+    this.locationSearch = new LocationSearch(searchbase)
 
-    this.toggleMapLayer('city')
-    this.toggleMapLayer('town')
+
+    // this.toggleMapLayer('city')
+    // this.toggleMapLayer('town')
+    // this.toggleMapLayer('ruin')
+    // this.toggleMapLayer('landmark')
+    // this.toggleMapLayer('castle')
     this.toggleMapLayer('boundaries')
+
+    setTimeout(() => {
+      const bestResult = this.locationSearch.search('north')[0]
+
+      if (!this.mapController.isLayerShowing(bestResult.layerName)) {
+        this.toggleMapLayer(bestResult.layerName)
+      }
+
+      this.mapController.selectLocation(bestResult.id, bestResult.layerName)
+    }, 2000)
   }
 
   /** Show info when a map item is selected */
