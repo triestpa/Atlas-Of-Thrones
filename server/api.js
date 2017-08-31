@@ -1,10 +1,14 @@
+/**
+ * API Routes Module
+ */
+
 const Router = require('koa-router')
 const database = require('./database')
 const cache = require('./cache')
 const router = new Router()
 
+// Check cache before continuing to any endpoint handlers
 router.use(async (ctx, next) => {
-  // Check cache before continuing to any endpoint handlers
   const cachedResponse = await cache.get(ctx.path + ctx.search)
   if (cachedResponse) { // If cache hit
     ctx.body = JSON.parse(cachedResponse) // return the cached response
@@ -13,6 +17,7 @@ router.use(async (ctx, next) => {
   }
 })
 
+// Insert response into cache on successful response
 router.use(async (ctx, next) => {
   await next() // Wait until other handlers have finished
   if (ctx.body && ctx.status === 200) { // If request was successful
@@ -21,6 +26,15 @@ router.use(async (ctx, next) => {
   }
 })
 
+/** Helper function to verify query parameters */
+function checkQuery (requiredKey) {
+  return (ctx, next) => {
+    if (ctx.query[requiredKey]) {
+      return next()
+    } else { return ctx.throw(401, `Must Include Query Parameter - ${requiredKey}`) }
+  }
+}
+
 // Test endpoint - get time from DB
 router.get('/time', async ctx => {
   const time = await database.queryTime()
@@ -28,46 +42,44 @@ router.get('/time', async ctx => {
 })
 
 // Response with locations of specified type
-router.get('/location/all', async ctx => {
+router.get('/location/all', checkQuery('type'), async ctx => {
   const type = ctx.query.type
   const locations = await database.getLocations(type)
   ctx.body = locations
 })
 
-// Respond with location summary based on id
-router.get('/location/summary', async ctx => {
+// Respond with location summary, by id
+router.get('/location/summary', checkQuery('id'), async ctx => {
   const id = ctx.query.id
   const results = await database.getSummary('locations', id)
   ctx.body = results
 })
 
-// Respond with kingdom boundary geojson
+// Respond with boundary geojson for all kingdoms
 router.get('/kingdom/all', async ctx => {
   const boundaries = await database.getPoliticalBoundaries()
   ctx.body = boundaries
 })
 
-// Response with calculated size of
-router.get('/kingdom/size', async ctx => {
+// Respond with calculated area of kingdom, by id
+router.get('/kingdom/size', checkQuery('id'), async ctx => {
   const id = ctx.query.id
   const results = await database.getRegionSize(id)
   ctx.body = results
 })
 
-router.get('/kingdom/summary', async ctx => {
+// Respond with summary of kingdom, by id
+router.get('/kingdom/summary', checkQuery('id'), async ctx => {
   const id = ctx.query.id
   const results = await database.getSummary('political', id)
   ctx.body = results
 })
 
-router.get('/kingdom/castle/count/', async ctx => {
+// Respond with number of castle in kingdom, by id
+router.get('/kingdom/castle/count/', checkQuery('id'), async ctx => {
   const regionId = ctx.query.id
   const results = await database.countCastles(regionId)
   ctx.body = results
-})
-
-router.get('/error', async ctx => {
-  throw new Error('Intentional Error')
 })
 
 module.exports = router
