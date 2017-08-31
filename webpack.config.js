@@ -5,7 +5,7 @@ const babelLoader = {
   test: /\.js$/,
   loader: 'babel-loader',
   include: [path.resolve(__dirname, '../app')],
-  query: { presets: ['es2017'] },
+  query: { presets: ['es2017'] }
 }
 
 const scssLoader = {
@@ -28,8 +28,10 @@ const webpackConfig = {
 }
 
 if (process.env.NODE_ENV === 'production') {
+  // Minify for production build
   webpackConfig.plugins = [ new BabiliPlugin({}) ]
 } else {
+  // Generate sourcemaps for dev build
   webpackConfig.devtool = 'eval-source-map'
 }
 
