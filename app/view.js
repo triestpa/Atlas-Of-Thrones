@@ -31,10 +31,10 @@ export class ViewController {
       this.mapController.addLocationGeojson(locationType, geojson, locationLayers[locationType])
     }
 
-    const boundariesGeoJson = await this.api.getPoliticalBoundaries()
-    this.locationSearch.addGeoJsonItems(boundariesGeoJson, 'boundaries')
-    this.mapController.addBoundaryGeojson(boundariesGeoJson)
-    this.toggleMapLayer('boundaries')
+    const kingdomsGeojson = await this.api.getKingdoms()
+    this.locationSearch.addGeoJsonItems(kingdomsGeojson, 'kingdom')
+    this.mapController.addKingdomGeojson(kingdomsGeojson)
+    this.toggleMapLayer('kingdom')
   }
 
   onSearch (value) {

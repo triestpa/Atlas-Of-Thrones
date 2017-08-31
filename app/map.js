@@ -47,25 +47,25 @@ export class MapController {
   }
 
   /** Add boundary (kingdom) geojson to the leaflet instance */
-  addBoundaryGeojson (geojson) {
+  addKingdomGeojson (geojson) {
     const properties = {}
     properties.onEachFeature = (feature, layer) => {
       layer.on({
         click: async (e) => {
-          this.locationClickCallback(feature.properties.name, feature.properties.id, 'regions')
+          this.locationClickCallback(feature.properties.name, feature.properties.id, 'kingdom')
           this.map.closePopup()
           this.setHighlightedRegion(layer)
         }
       })
     }
 
-    this.layers.boundaries = L.geoJSON(geojson, properties)
+    this.layers.kingdom = L.geoJSON(geojson, properties)
   }
 
   /** Highlight the selected region */
   setHighlightedRegion (layer) {
     if (this.selected) {
-      this.layers.boundaries.resetStyle(this.selected)
+      this.layers.kingdom.resetStyle(this.selected)
     }
 
     this.selected = layer

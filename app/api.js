@@ -14,26 +14,26 @@ export class MapApi {
   }
 
   async getLocations (type) {
-    return this.httpGet('locations', { type })
+    return this.httpGet('location/all', { type })
   }
 
   async getLocationDetails (id) {
-    return this.httpGet('locations/summary', { id })
+    return this.httpGet('location/summary', { id })
   }
 
-  async getPoliticalBoundaries () {
-    return this.httpGet('political/boundaries')
+  async getKingdoms () {
+    return this.httpGet('kingdom/all')
   }
 
   async getRegionSize (id) {
-    return this.httpGet('political/size', { id })
+    return this.httpGet('kingdom/size', { id })
   }
 
   async getRegionDetails (id) {
-    return this.httpGet('political/summary', { id })
+    return this.httpGet('kingdom/summary', { id })
   }
 
   async getCastleCount (id) {
-    return this.httpGet('political/castles/count', { id })
+    return this.httpGet('kingdom/castles/count', { id })
   }
 }
