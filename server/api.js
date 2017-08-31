@@ -22,10 +22,6 @@ router.use(async (ctx, next) => {
   }
 })
 
-router.get('/', async ctx => {
-  ctx.body = 'Hello World'
-})
-
 router.get('/time', async ctx => {
   const time = await database.queryTime()
   ctx.body = time
