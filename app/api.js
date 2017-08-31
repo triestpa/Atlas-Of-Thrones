@@ -34,6 +34,6 @@ export class MapApi {
   }
 
   async getCastleCount (id) {
-    return this.httpGet('kingdom/castles/count', { id })
+    return this.httpGet('kingdom/castle/count', { id })
   }
 }
