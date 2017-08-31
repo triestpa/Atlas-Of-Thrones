@@ -2,7 +2,7 @@
 
 /** Variables **/
 $footerHeight: 80px;
-$searchBarHeight: 30px;
+$searchBarHeight: 40px;
 
 
 /** Page Layout **/
@@ -77,33 +77,86 @@ body {
 
 #search-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  background: #222;
+  top: 24px;
+  left: 24px;
+  background: transparent;
   z-index: 1000;
   color: white;
   width: 400px;
   box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+
+  input[type=text] {
+    width: 30px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    cursor: pointer;
 }
 
-@media (max-width: 600px) {
-  #search-container {
-    width: 100%
+  /* When the input field gets focus, change its width to 100% */
+  input[type=text]:focus {
+      width: 100%;
+      outline: none;
+      cursor: text;
+  }
+}
+
+#search-results {
+  margin-top: 4px;
+  border-radius: 4px;
+  background: #222;
+
+  div {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  div:hover {
+    background:#333;
   }
 }
 
 #search-bar, #search-input {
-  width: 100%;
   height: $searchBarHeight;
 }
 
+#search-input {
+  background-color: #222;
+  color: white;
+  border: 3px #333 solid;
+  border-radius: 4px;
+  font-size: 1rem;
+  padding: 4px;
+  background-image: url('https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_search_white_18px.svg');
+  background-position: 7px 7px;
+  background-repeat: no-repeat;
+  padding-left: 30px;
+
+}
+
+@media (max-width: 600px) {
+  #search-container {
+    width: 100%;
+    top: 0;
+    left: 0;
+
+    #search-input {
+      border-radius: 0;
+    }
+
+    #search-results {
+      margin-top: 0;
+      border-radius: 0;
+    }
+  }
+}
 
 /** Layer Panel **/
 
 #layer-panel {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 24px;
+  right: 24px;
   padding: 12px;
   background: #222;
   z-index: 1000;
@@ -126,7 +179,9 @@ body {
 
 @media (max-width: 600px) {
   #layer-panel {
-    top: calc(#{$searchBarHeight} + 20px);
+    /* top: calc(#{$searchBarHeight} + 20px); */
+    top: 0;
+    right: 0;
   }
 }
 
