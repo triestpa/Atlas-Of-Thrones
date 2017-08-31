@@ -6,9 +6,14 @@
   "scripts": {
     "start": "node index.js",
     "local": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gsutil rsync -d -r ./public gs://atlas.patricktriest.com"
   },
   "author": "patrick.triest@gmail.com",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/triestpa/Atlas-Of-Thrones.git"
+  },
   "license": "MIT",
   "dependencies": {
     "axios": "0.16.2",
