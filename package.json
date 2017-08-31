@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "local": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "gsutil rsync -d -r ./public gs://atlas.patricktriest.com"
+    "dev": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
+    "deploy-frontend": "NODE_ENV=production webpack && gsutil rsync -d -r ./public gs://atlas.patricktriest.com"
   },
   "author": "patrick.triest@gmail.com",
   "repository" : {
