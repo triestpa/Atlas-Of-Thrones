@@ -1,7 +1,8 @@
 @import "~leaflet/dist/leaflet.css";
 
 /** Variables **/
-$footerHeight: 100px;
+$footerHeight: 80px;
+$searchBarHeight: 30px;
 
 
 /** Page Layout **/
@@ -11,10 +12,12 @@ body {
   font-family: 'MedievalSharp', cursive;
   background: #333;
   overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 #mapid {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   position: relative;
   top: 0;
@@ -52,16 +55,12 @@ body {
   left: 0;
   z-index: 1000;
   background: #333;
-  width: 300px;
+  width: 400px;
   height: 60vh;
   color: white;
   transition: all 0.3s ease-in-out;
   transform: translateY(calc(100% - #{$footerHeight}));
   overflow-y: scroll;
-}
-
-.info-active {
-  transform: translateY(0);
 }
 
 @media (max-width: 600px) {
@@ -70,9 +69,38 @@ body {
   }
 }
 
+.info-active {
+  transform: translateY(0);
+}
+
+/** Search Component **/
+
+#search-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #222;
+  z-index: 1000;
+  color: white;
+  width: 400px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  #search-container {
+    width: 100%
+  }
+}
+
+#search-bar, #search-input {
+  width: 100%;
+  height: $searchBarHeight;
+}
+
+
 /** Layer Panel **/
 
-#layer-panel{
+#layer-panel {
   position: absolute;
   top: 0;
   right: 0;
@@ -84,6 +112,7 @@ body {
   h3 {
     text-align: center;
     text-transform: uppercase;
+    margin: 0 auto;
   }
 }
 
@@ -92,6 +121,12 @@ body {
 
   :last-child {
     border-bottom: 1px solid white;
+  }
+}
+
+@media (max-width: 600px) {
+  #layer-panel {
+    top: calc(#{$searchBarHeight} + 20px);
   }
 }
 
@@ -137,4 +172,14 @@ body {
   background: #333 !important;
   color: white !important;
   border: none;
+}
+
+@media (max-width: 600px) {
+  .leaflet-bottom {
+    bottom: calc(#{$footerHeight} + 10px)
+  }
+}
+
+.leaflet-control-attribution {
+  display: none;
 }

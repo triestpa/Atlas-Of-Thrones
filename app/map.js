@@ -11,6 +11,9 @@ export class MapController {
       maxBounds: [ [ 50, -30 ], [ -45, 100 ] ]
     })
 
+    this.map.zoomControl.setPosition('bottomright')
+
+
     this.locationClickCallback = locationClickCallback
     this.layers = { }
     this.selectedRegion = null
@@ -50,6 +53,7 @@ export class MapController {
       layer.on({
         click: async (e) => {
           this.locationClickCallback(feature.properties.name, feature.properties.id, 'regions')
+          this.map.closePopup()
           this.setHighlightedRegion(layer)
         }
       })

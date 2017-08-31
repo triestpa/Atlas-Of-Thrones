@@ -5,10 +5,12 @@ import { MapController } from './map'
 export class ViewController {
   /** Initialize View Properties */
   constructor () {
+    // this.api = new MapApi('https://atlas-api.patricktriest.com/')
     this.api = new MapApi()
     this.mapController = new MapController((name, id, type) => this.showInfo(name, id, type))
     this.locationSearch = new LocationSearch()
     this.loadMapData()
+    this.searchDebounce = null
   }
 
   /** Load map data from the API */
@@ -35,14 +37,31 @@ export class ViewController {
     this.toggleMapLayer('boundaries')
   }
 
-  search (term) {
-    const bestResult = this.locationSearch.search(term)[0]
+  onSearch (value) {
+    clearTimeout(this.searchDebounce)
+    this.searchDebounce = setTimeout(() => this.search(value), 200)
+  }
 
-    if (!this.mapController.isLayerShowing(bestResult.layerName)) {
-      this.toggleMapLayer(bestResult.layerName)
+  search (term) {
+    const searchResultsView = document.getElementById('search-results')
+    searchResultsView.innerHTML = ''
+
+    this.searchResults = this.locationSearch.search(term).slice(0, 10)
+    for (let i = 0; i < this.searchResults.length; i++) {
+      searchResultsView.innerHTML += `<div onclick="ctrl.searchResultSelected(${i})">${this.searchResults[i].name}</div>`
+    }
+  }
+
+  searchResultSelected (resultIndex) {
+    document.getElementById('search-input').value = ''
+    document.getElementById('search-results').innerHTML = ''
+
+    const searchResult = this.searchResults[resultIndex]
+    if (!this.mapController.isLayerShowing(searchResult.layerName)) {
+      this.toggleMapLayer(searchResult.layerName)
     }
 
-    this.mapController.selectLocation(bestResult.id, bestResult.layerName)
+    this.mapController.selectLocation(searchResult.id, searchResult.layerName)
   }
 
   /** Show info when a map item is selected */
