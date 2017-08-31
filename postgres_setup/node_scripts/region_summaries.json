@@ -1,0 +1,101 @@
+[{
+  "row": {
+    "name": "The North",
+    "gid": 5
+  },
+  "summary": {
+    "summaryText": "The North is one of the constituent regions of Westeros and was a sovereign nation ruled by Kings in the North before Aegons Conquest. The largest region of the Seven Kingdoms, the dominion of House Stark extends from the border of the New Gift, which is controlled by the Nights Watch, to the southern edge of the Neck far to the south.The north has been ruled by the Starks for thousands of years from the castle known as Winterfell. Notable bannermen of the region include Bolton, Cerwyn, Dustin, Flint, Glover, Hornwood, Karstark, Manderly, Mormont, Reed, Ryswell, Tallhart, and Umber. Bastards of noble origin raised in the north are given the surname Snow.",
+    "pageTitle": "North",
+    "url": "https://awoiaf.westeros.org/index.php/North"
+  }
+}, {
+  "row": {
+    "name": "The Vale",
+    "gid": 8
+  },
+  "summary": {
+    "summaryText": "The Vale of Arryn or the Vale is one of the constituent regions of the Seven Kingdoms of Westeros. It was formerly a sovereign nation ruled by the Kings of Mountain and Vale before Aegons Conquest. The Mountains of the Moon surround the smaller Vale proper, although the valleys name is often applied to all of House Arryns realm.The Vale is ruled by the Arryns from the castle known as the Eyrie. Notable houses of this region include Baelish, Belmore, Corbray, Egen, Grafton, Hersy, Hunter, Melcolm, Redfort, Royce, Templeton, and Waynwood. Bastards of noble origin raised in the Vale are given the surname Stone.",
+    "pageTitle": "Vale of Arryn",
+    "url": "https://awoiaf.westeros.org/index.php/Vale%20of%20Arryn"
+  }
+}, {
+  "row": {
+    "name": "Gift",
+    "gid": 3
+  },
+  "summary": {
+    "summaryText": "The Gift, consisting of Brandons Gift and the New Gift, is the area in the north stretching fifty leagues south from the Wall, land given to the Nights Watch in perpetuity to support and aid the Watch. It is under the protection of both the Watch and Winterfell. The eastern lands of the Gift consist of large rolling plans that reach the Shivering Sea, while the western regions, which end at the Bay of Ice, are increasingly forested and mountainous.",
+    "pageTitle": "Gift",
+    "url": "https://awoiaf.westeros.org/index.php/Gift"
+  }
+}, {
+  "row": {
+    "name": "The Iron Islands",
+    "gid": 2
+  },
+  "summary": {
+    "summaryText": "The Iron Islands is one of the constituent regions of the Seven Kingdoms. Until Aegons Conquest it was ruled by the Kings of the Iron Islands and then briefly the Kings of the Isles and the Rivers.\nThe Iron Islands are home to a fierce seafaring people who call themselves the ironborn. While some say the archipelago is named after the abundant iron ore on the islands, the ironmen claim it is instead named after their own unyielding nature. It is often said that every captain is a king aboard his own ship, so the islands are also called \"the land of ten thousand kings\".The isles are ruled by House Greyjoy from their castle of Pyke. Notable houses have included Blacktyde, Botley, Drumm, Goodbrother, Greyiron, Harlaw, Hoare, Merlyn, Stonehouse, Sunderly, Tawney, and Wynch. Bastards of noble origin from the Iron Islands receive the surname Pyke.",
+    "pageTitle": "Iron Islands",
+    "url": "https://awoiaf.westeros.org/index.php/Iron%20Islands"
+  }
+}, {
+  "row": {
+    "name": "Dorne",
+    "gid": 6
+  },
+  "summary": {
+    "summaryText": "Dorne is the large peninsula which makes up the southernmost part of Westeros, and is one of the constituent regions of the Seven Kingdoms. The lords of the ruling House Nymeros Martell style themselves \"Prince\" and \"Princess\" in the Rhoynish fashion.The Martells rule from their capital, Sunspear, outside of which sprawls the shadow city. Notable houses include Allyrion, Blackmont, Dayne, Fowler, Jordayne, Qorgyle, Santagar, Toland, Uller, Vaith, Wyl, and Yronwood.",
+    "pageTitle": "Dorne",
+    "url": "https://awoiaf.westeros.org/index.php/Dorne"
+  }
+}, {
+  "row": {
+    "name": "Stormlands",
+    "gid": 7
+  },
+  "summary": {
+    "summaryText": "The Stormlands are one of the constituent regions of the Seven Kingdoms on the continent of Westeros. The Kingdom of the Storm was a sovereign nation until the War of Conquest, in which the last Storm King was slain. The region is so-named for the savage and frequent autumn storms that batter the coast after beginning in the Summer Sea.The stormlands are ruled from the castle of Storms End by House Baratheon. Notable bannermen of the region include Buckler, Caron, Connington, Dondarrion, Errol, Estermont, Penrose, Selmy, Staedmon, Swann, Tarth, and Wylde. Noble bastards raised in the stormlands are given the surname Storm.",
+    "pageTitle": "Stormlands",
+    "url": "https://awoiaf.westeros.org/index.php/Stormlands"
+  }
+}, {
+  "row": {
+    "name": "The Westerlands",
+    "gid": 9
+  },
+  "summary": {
+    "summaryText": "The Westerlands is a region in the west of the continent of Westeros.Before the Targaryen conquest, it was known as the Kingdom of the Rock. People from the westerlands are known as westermen. The customary surname of bastards of noble origin born in the westerlands is Hill.\nThe westerlands is ruled from Casterly Rock by House Lannister. Notable bannermen have included Banefort, Brax, Broom, Clegane, Crakehall, Farman, Lefford, Lydden, Marbrand, Payne, Prester, Reyne, Serrett, Swyft, Tarbeck, and Westerling.",
+    "pageTitle": "Westerlands",
+    "url": "https://awoiaf.westeros.org/index.php/Westerlands"
+  }
+}, {
+  "row": {
+    "name": "Riverlands",
+    "gid": 1
+  },
+  "summary": {
+    "summaryText": "The Riverlands is a central region of the Seven Kingdoms of Westeros, consisting of the rich, fertile, and populous areas around the three forks of the Trident and the northern Blackwater Rush. At the time of Aegons Conquest the riverlands and the Iron Islands were ruled by House Hoare, the Kings of the Isles and the Rivers, although native river kings ruled centuries earlier.Because of their central position in Westeros and lack of natural boundaries, the riverlands have been a frequent battleground. The people of the riverlands are known as \"rivermen\" or occasionally \"riverlanders\", and they are a mixture of hardy warriors, peaceful fisherfolk and devout smallfolk. Their lords have a reputation for being notoriously quarrelsome, and are refered to as \"river lords\". Noble bastards born in the riverlands are given the surname Rivers.\nThe riverlands are ruled from Riverrun by House Tully, the Lords Paramount of the Trident. Notable houses of the region have included Blackwood, Bracken, Darry, Frey, Lothston, Mallister, Mooton, Mudd, Piper, Ryger, Strong, Vance, and Whent.",
+    "pageTitle": "Riverlands",
+    "url": "https://awoiaf.westeros.org/index.php/Riverlands"
+  }
+}, {
+  "row": {
+    "name": "Crownsland",
+    "gid": 10
+  },
+  "summary": {
+    "summaryText": "The Crownlands is one of the nine constituent regions of the Seven Kingdoms of Westeros. It was never a sovereign nation, instead being contested by river kings, Storm Kings, and local petty kings until Aegon the Conqueror seized control of the area during his Wars of Conquest and made it his primary foothold on the continent. Since then, the crownlands have been ruled directly by the crown on the Iron Throne, first House Targaryen and, after Roberts Rebellion, House Baratheon. Bastards of noble origin raised in the crownlands are given the surname Waters.\nSome notable houses of the crownlands include Bar Emmon, Celtigar, Massey, Rosby, Rykker, Stokeworth, Sunglass, and Velaryon.",
+    "pageTitle": "Crownlands",
+    "url": "https://awoiaf.westeros.org/index.php/Crownlands"
+  }
+}, {
+  "row": {
+    "name": "The Reach",
+    "gid": 11
+  },
+  "summary": {
+    "summaryText": "The Reach is one of the constituent regions of the Seven Kingdoms on the continent of Westeros. It was formerly a sovereign nation ruled by the Kings of the Reach before the War of Conquest. It is the second-largest of the kingdoms behind the north and is considered the most fertile and heavily-populated part of Westeros.\nThe Reach is considered the home of chivalry in Westeros. It is the place where knighthood is looked upon with the greatest reverence and esteemed the most. It is also the place where the rules to tournaments are the most stringent and managed.The Reach is ruled from the castle of Highgarden by House Tyrell. Notable houses have included Ashford, Caswell, Crane, Florent, Fossoway, Gardener, Hightower, Merryweather, Mullendore, Oakheart, Redwyne, Rowan, Tarly, and Vyrwel. Noble bastards born in the Reach are given the surname Flowers.",
+    "pageTitle": "Reach",
+    "url": "https://awoiaf.westeros.org/index.php/Reach"
+  }
+}]
