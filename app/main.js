@@ -6,8 +6,12 @@ import { MapController } from './map'
 export class ViewController {
   /** Initialize View Properties */
   constructor () {
-    // this.api = new MapApi('https://atlas-api.patricktriest.com/')
-    this.api = new MapApi()
+    if (window.location.hostname === 'localhost') {
+      this.api = new MapApi('http://localhost:5000/')
+    } else {
+      this.api = new MapApi('https://atlas-api.patricktriest.com/')
+    }
+
     this.mapController = new MapController((name, id, type) => this.showInfo(name, id, type))
     this.locationSearch = new LocationSearch()
     this.loadMapData()
@@ -25,6 +29,7 @@ export class ViewController {
       landmark: `${iconBaseURL}misc.svg`
     }
 
+    // Download map locations
     const locationTypes = Object.keys(locationLayers)
     for (let locationType of locationTypes) {
       const geojson = await this.api.getLocations(locationType)
@@ -32,6 +37,7 @@ export class ViewController {
       this.mapController.addLocationGeojson(locationType, geojson, locationLayers[locationType])
     }
 
+    // Download kingdom boundaries
     const kingdomsGeojson = await this.api.getKingdoms()
     this.locationSearch.addGeoJsonItems(kingdomsGeojson, 'kingdom')
     this.mapController.addKingdomGeojson(kingdomsGeojson)
@@ -46,10 +52,14 @@ export class ViewController {
 
   /** Search for the input term, and display results in UI */
   search (term) {
+    // Clear search results
     const searchResultsView = document.getElementById('search-results')
     searchResultsView.innerHTML = ''
 
+    // Get the top ten search results
     this.searchResults = this.locationSearch.search(term).slice(0, 10)
+
+    // Display search results on UI
     for (let i = 0; i < this.searchResults.length; i++) {
       searchResultsView.innerHTML += `<div onclick="ctrl.searchResultSelected(${i})">${this.searchResults[i].name}</div>`
     }
