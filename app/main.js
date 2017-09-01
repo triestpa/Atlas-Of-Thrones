@@ -47,7 +47,7 @@ export class ViewController {
   /** Receive search bar input, and debounce by 200 ms */
   onSearch (value) {
     clearTimeout(this.searchDebounce)
-    this.searchDebounce = setTimeout(() => this.search(value), 200)
+    this.searchDebounce = setTimeout(() => this.search(value), 50)
   }
 
   /** Search for the input term, and display results in UI */
