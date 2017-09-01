@@ -26,15 +26,6 @@ router.use(async (ctx, next) => {
   }
 })
 
-/** Helper function to verify query parameters */
-function checkQuery (requiredKey) {
-  return (ctx, next) => {
-    if (ctx.query[requiredKey]) {
-      return next()
-    } else { return ctx.throw(401, `Must Include Query Parameter - ${requiredKey}`) }
-  }
-}
-
 // Test endpoint - get time from DB
 router.get('/time', async ctx => {
   const time = await database.queryTime()
@@ -42,42 +33,42 @@ router.get('/time', async ctx => {
 })
 
 // Response with locations of specified type
-router.get('/location/all', checkQuery('type'), async ctx => {
-  const type = ctx.query.type
+router.get('/locations/:type', async ctx => {
+  const type = ctx.params.type
   const locations = await database.getLocations(type)
   ctx.body = locations
 })
 
 // Respond with location summary, by id
-router.get('/location/summary', checkQuery('id'), async ctx => {
-  const id = ctx.query.id
+router.get('/locations/:id/summary', async ctx => {
+  const id = ctx.params.id
   const results = await database.getSummary('locations', id)
   ctx.body = results
 })
 
 // Respond with boundary geojson for all kingdoms
-router.get('/kingdom/all', async ctx => {
+router.get('/kingdoms', async ctx => {
   const boundaries = await database.getPoliticalBoundaries()
   ctx.body = boundaries
 })
 
 // Respond with calculated area of kingdom, by id
-router.get('/kingdom/size', checkQuery('id'), async ctx => {
-  const id = ctx.query.id
+router.get('/kingdoms/:id/size', async ctx => {
+  const id = ctx.params.id
   const results = await database.getRegionSize(id)
   ctx.body = results
 })
 
 // Respond with summary of kingdom, by id
-router.get('/kingdom/summary', checkQuery('id'), async ctx => {
-  const id = ctx.query.id
+router.get('/kingdoms/:id/summary', async ctx => {
+  const id = ctx.params.id
   const results = await database.getSummary('political', id)
   ctx.body = results
 })
 
 // Respond with number of castle in kingdom, by id
-router.get('/kingdom/castle/count/', checkQuery('id'), async ctx => {
-  const regionId = ctx.query.id
+router.get('/kingdoms/:id/castles', async ctx => {
+  const regionId = ctx.params.id
   const results = await database.countCastles(regionId)
   ctx.body = results
 })
