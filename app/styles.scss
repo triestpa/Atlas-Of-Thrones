@@ -2,7 +2,7 @@
 
 /** Variables **/
 $footerHeight: 80px;
-$searchBarHeight: 40px;
+$searchBarHeight: 60px;
 
 
 /** Page Layout **/
@@ -43,24 +43,33 @@ body {
 
 #info-content {
   font-family: 'Lato', sans-serif;
+  padding: 10%;
+  margin: 0 auto;
+  background: #333;
+  overflow-y: scroll;
+  letter-spacing: .8;
+  font-size: 1rem;
+  line-height: 1.25em;
+  font-weight: 300;
+}
 
-  img {
-    max-width: 100%;
-  }
+.info-content-container {
+  position: relative;
+  margin-bottom: 30px;
 }
 
 .info-container {
   position: absolute;
+  overflow-y: auto;
   bottom: 0;
   left: 0;
   z-index: 1000;
-  background: #333;
+  background: #222;
   width: 400px;
   height: 60vh;
   color: white;
   transition: all 0.3s ease-in-out;
   transform: translateY(calc(100% - #{$footerHeight}));
-  overflow-y: scroll;
 }
 
 @media (max-width: 600px) {
@@ -71,6 +80,11 @@ body {
 
 .info-active {
   transform: translateY(0);
+}
+
+.info-body {
+  overflow-y: scroll;
+  position: relative;
 }
 
 /** Search Component **/
@@ -87,7 +101,7 @@ body {
   font-family: 'Lato', sans-serif;
 
   input[type=text] {
-    width: 30px;
+    width: $searchBarHeight;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
     cursor: pointer;
@@ -107,7 +121,7 @@ body {
   background: #222;
 
   div {
-    padding: 8px;
+    padding: 16px;
     cursor: pointer;
   }
 
@@ -128,10 +142,10 @@ body {
   font-size: 1rem;
   padding: 4px;
   background-image: url('https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_search_white_18px.svg');
-  background-position: 7px 7px;
+  background-position: 20px 17px;
+  background-size: 24px 24px;
   background-repeat: no-repeat;
-  padding-left: 30px;
-
+  padding-left: $searchBarHeight;
 }
 
 @media (max-width: 600px) {

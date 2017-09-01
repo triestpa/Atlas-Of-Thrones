@@ -25,6 +25,7 @@
 
   <div id="search-container">
     <div id="search-bar">
+      <i class="search-icon"></i>
       <input type="text" name="search" placeholder="Search..." id="search-input" onkeyup="ctrl.onSearch(this.value)"></input>
     </div>
     <div id="search-results"></div>
@@ -34,7 +35,15 @@
     <div id="info-title" onclick="ctrl.toggleInfo()">
       <h1>Tap The Map To View Info</h1>
     </div>
-    <div id="info-content"></div>
+    <div class="info-body">
+      <div class="info-content-container">
+        <div id="info-content"></div>
+      </div>
+      <div class="info-footer">
+        Insert blog link
+        Add attribution
+      </div>
+    </div>
   </div>
 
   <script src="bundle.js"></script>
