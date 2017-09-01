@@ -1,6 +1,6 @@
 const postgres = require('pg')
-const placeSummaries = require('./place_summaries.json')
-const regionSummaries = require('./region_summaries.json')
+const placeSummaries = require('./data/place_summaries.json')
+const regionSummaries = require('./data/region_summaries.json')
 
 require('dotenv').config()
 

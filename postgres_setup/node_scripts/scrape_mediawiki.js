@@ -32,7 +32,7 @@ async function getArticlePages (fromPage) {
 
 function writeFile (object, iter) {
   return new Promise((resolve, reject) => {
-    let filename = path.resolve(__dirname, 'allpages.json')
+    let filename = path.resolve(__dirname, 'data', 'allpages.json')
     fs.writeFile(filename, JSON.stringify(object), (err) => {
       if (err) {
         console.error(err)
