@@ -1,17 +1,21 @@
 {
-  "name": "got-map",
-  "version": "0.0.1",
-  "description": "A PostGIS powered Game of Thrones map.",
+  "name": "atlas-of-thrones",
+  "version": "0.5.0",
+  "description": "Game of Thrones interactive map, powered by Leaflet, PostGIS, and Redis.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
     "deploy-frontend": "NODE_ENV=production webpack && gsutil rsync -d -r ./public gs://atlas.patricktriest.com"
   },
-  "author": "patrick.triest@gmail.com",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/triestpa/Atlas-Of-Thrones.git"
+  "author": {
+    "name":"Patrick Triest",
+    "email" :"patrick.triest@gmail.com",
+    "url":"https://blog.patricktriest.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/triestpa/Atlas-Of-Thrones.git"
   },
   "license": "MIT",
   "dependencies": {
@@ -20,6 +24,7 @@
     "fuse.js": "3.0.5",
     "kcors": "2.2.1",
     "koa": "2.3.0",
+    "koa-joi-validate": "0.5.1",
     "koa-router": "7.2.1",
     "leaflet": "1.2.0",
     "pg": "7.2.0",
