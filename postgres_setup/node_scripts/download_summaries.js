@@ -1,6 +1,6 @@
 const axios = require('axios')
 const postgres = require('pg')
-const articles = require('./allpages.json')
+const articles = require('./data/allpages.json')
 const Fuse = require('fuse.js')
 const fs = require('fs')
 const path = require('path')
@@ -40,6 +40,8 @@ async function getPlaceSummaries () {
   let summaries = []
   for (let row of response.rows) {
     const summary = await getSummary(row.name)
+    summary.summaryText = cleanText(summary.summaryText)
+    summary.pageTitle = cleanText(summary.pageTitle)
     summaries.push({ row, summary })
   }
 
@@ -57,10 +59,29 @@ async function getRegionSummaries () {
   let summaries = []
   for (let row of response.rows) {
     const summary = await getSummary(row.name)
+    summary.summaryText = cleanText(summary.summaryText)
+    summary.pageTitle = cleanText(summary.pageTitle)
     summaries.push({ row, summary })
   }
 
   await writeFile(summaries, 'region_summaries.json')
+}
+
+function cleanText (text) {
+  // Remove escape characters
+  let clean = text.replace(/'/g, '')
+
+  // Normalize comma spacing
+  clean = clean.replace(/,(?=[^\s])/g, ', ')
+
+  // Normalize period spaceing
+  clean = clean.replace(/\.(?=[^\s])/g, '. ')
+  clean = clean.replace('.  ', '. ')
+
+  // Remove trailing whitespace
+  clean = clean.trim()
+
+  return clean
 }
 
 async function getSummary (title) {
@@ -83,13 +104,10 @@ async function checkMediaWikiDump (title) {
     }
 
     const summaryResponse = await getSummaryFromMediaWiki(results[0].item.pageid)
-    const pageTitle = String(summaryResponse.title).replace(/'/g, '')
-    const summaryText = String(summaryResponse.extract).replace(/'/g, '')
-
     return {
-      summaryText,
-      pageTitle,
-      url: `https://awoiaf.westeros.org/index.php/${encodeURIComponent(pageTitle)}`
+      summaryText: summaryResponse.extract,
+      pageTitle: summaryResponse.title,
+      url: `https://awoiaf.westeros.org/index.php/${encodeURIComponent(summaryResponse.title)}`
     }
   }
 }
@@ -124,7 +142,6 @@ async function searchWikia (url, name) {
 
 async function getWikiaSummary (mediaWikiUrl, pageId) {
   console.log(`Fetching Wikia Summary - ${pageId}`)
-  console.log(`${mediaWikiUrl}/api/v1/Articles/AsSimpleJson/?id=${pageId}`)
   let pageResponse = await axios.get(`${mediaWikiUrl}/api/v1/Articles/AsSimpleJson/`, {
     params: { id: pageId }
   })
@@ -159,8 +176,8 @@ async function searchWikias (title) {
 
   if (wikiSummaryResponse) {
     return {
-      summaryText: wikiSummaryResponse.replace(/'/g, '').trim(),
-      pageTitle: wikiSearchResponse.title.replace(/'/g, ''),
+      summaryText: wikiSummaryResponse,
+      pageTitle: wikiSearchResponse.title,
       url: wikiSearchResponse.url
     }
   } else {
@@ -171,7 +188,7 @@ async function searchWikias (title) {
 
 function writeFile (object, name) {
   return new Promise((resolve, reject) => {
-    let filename = path.resolve(__dirname, name)
+    let filename = path.resolve(__dirname, 'data', name)
     fs.writeFile(filename, JSON.stringify(object), (err) => {
       if (err) {
         console.error(err)
