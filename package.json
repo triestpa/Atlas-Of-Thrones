@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
-    "deploy-frontend": "NODE_ENV=production webpack && gsutil rsync -d -r ./public gs://atlas.patricktriest.com"
+    "deploy-frontend": "NODE_ENV=production webpack && bash deploy.sh"
   },
   "author": {
     "name":"Patrick Triest",
