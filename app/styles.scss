@@ -130,7 +130,6 @@ a {
   background: transparent;
   z-index: 1000;
   color: $offWhite;
-  width: $leftPanelsWidth;
   box-sizing: border-box;
   font-family: 'Lato', sans-serif;
 
@@ -143,7 +142,7 @@ a {
 
   /* When the input field gets focus, change its width to 100% */
   input[type=text]:focus {
-      width: 100%;
+      width: $leftPanelsWidth;
       outline: none;
       cursor: text;
   }
