@@ -9,6 +9,8 @@ https://carto.com/blog/game-of-thrones-basemap
 
 Credit: Textures and Icons from https://www.textures.com/ & https://thenounproject.com/.
 
+The location summary text is from "A Wiki of Ice and Fire", "Game of Thrones Wiki", and "Westeroscraft Wiki".
+
 #### Location and Polygon Data is based of GIS files from -
 
 A Song of Ice and Fire Speculative World Map
