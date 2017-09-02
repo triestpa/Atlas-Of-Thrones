@@ -3,17 +3,26 @@
 /** Variables **/
 $footerHeight: 80px;
 $searchBarHeight: 60px;
+$offWhite: #faebd7;
+$offDark: #111;
+$midDark: #222;
+$lightDark: #333;
+$toggleLayerPanelButtonWidth: 40px;
 
 
 /** Page Layout **/
 
 body {
   margin: 0;
-  font-family: 'MedievalSharp', cursive;
-  background: #333;
+  font-family: 'Lato', sans-serif;
+  background: $lightDark;
   overflow: hidden;
   height: 100%;
   width: 100%;
+}
+
+a {
+  color: #BABA45;
 }
 
 #mapid {
@@ -24,15 +33,25 @@ body {
   left: 0;
 }
 
+#loading-container {
+  display: none;
+}
+
+#app-container {
+  display: block;
+}
+
 /** Info Window **/
 
 #info-title {
+  font-family: 'MedievalSharp', cursive;
   height: $footerHeight;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   user-select: none;
+  color: $offWhite;
 
   h1 {
     max-width: 100%;
@@ -42,10 +61,9 @@ body {
 }
 
 #info-content {
-  font-family: 'Lato', sans-serif;
-  padding: 10%;
+  padding: 0 8% 24px 8%;
   margin: 0 auto;
-  background: #333;
+  background: $lightDark;
   overflow-y: scroll;
   letter-spacing: .8;
   font-size: 1rem;
@@ -53,38 +71,46 @@ body {
   font-weight: 300;
 }
 
-.info-content-container {
-  position: relative;
-  margin-bottom: 30px;
-}
-
-.info-container {
+#info-container {
   position: absolute;
   overflow-y: auto;
   bottom: 0;
-  left: 0;
+  left: 24px;
   z-index: 1000;
-  background: #222;
+  background: $midDark;
   width: 400px;
   height: 60vh;
-  color: white;
-  transition: all 0.3s ease-in-out;
+  color: $offWhite;
+  transition: all 0.4s ease-in-out;
   transform: translateY(calc(100% - #{$footerHeight}));
 }
 
 @media (max-width: 600px) {
-  .info-container  {
+  #info-container  {
+    left: 0;
     width: 100%
   }
 }
 
-.info-active {
+#info-container.info-active {
   transform: translateY(0);
 }
 
-.info-body {
+#info-body {
   overflow-y: scroll;
+  overflow-x: hidden;
   position: relative;
+}
+
+#info-footer {
+  font-size: 0.4rem;
+  font-family: 'Lato', sans-serif;
+  padding: 8%;
+}
+
+#blog-link {
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
 /** Search Component **/
@@ -95,7 +121,7 @@ body {
   left: 24px;
   background: transparent;
   z-index: 1000;
-  color: white;
+  color: $offWhite;
   width: 400px;
   box-sizing: border-box;
   font-family: 'Lato', sans-serif;
@@ -118,7 +144,7 @@ body {
 #search-results {
   margin-top: 4px;
   border-radius: 4px;
-  background: #222;
+  background: $midDark;
 
   div {
     padding: 16px;
@@ -126,7 +152,7 @@ body {
   }
 
   div:hover {
-    background:#333;
+    background: $lightDark;
   }
 }
 
@@ -135,9 +161,9 @@ body {
 }
 
 #search-input {
-  background-color: #222;
-  color: white;
-  border: 3px #333 solid;
+  background-color: $midDark;
+  color: $offWhite;
+  border: 3px $lightDark solid;
   border-radius: 4px;
   font-size: 1rem;
   padding: 4px;
@@ -167,14 +193,18 @@ body {
 
 /** Layer Panel **/
 
+#layer-toggle {
+  display: none;
+}
+
 #layer-panel {
   position: absolute;
   top: 24px;
   right: 24px;
   padding: 12px;
-  background: #222;
+  background: $midDark;
   z-index: 1000;
-  color: white;
+  color: $offWhite;
 
   h3 {
     text-align: center;
@@ -187,20 +217,39 @@ body {
   text-transform: uppercase;
 
   :last-child {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid $offWhite;
   }
 }
 
 @media (max-width: 600px) {
   #layer-panel {
-    /* top: calc(#{$searchBarHeight} + 20px); */
-    top: 0;
+    display: inline-flex;
+    align-items: center;
+    top: 25%; //calc(#{$searchBarHeight} + 20px);
     right: 0;
+    // top: 0;
+    transform: translateX(calc(100% - #{$toggleLayerPanelButtonWidth}));
+    transition: all 0.3s ease-in-out;
+  }
+
+  #layer-panel.layer-panel-active {
+    transform: translateX(0);
+  }
+
+  #layer-toggle {
+    display: block;
+    width: $toggleLayerPanelButtonWidth;
+    transform: translateY(120%) rotate(-90deg);
+    padding: 10px;
+    margin-left: -20px;
+    letter-spacing: 1rem;
+
+    text-transform: uppercase;
   }
 }
 
 .layer-button {
-  border-top: 1px solid white;
+  border-top: 1px solid $offWhite;
   padding: 6px;
   cursor: pointer;
   user-select: none;
@@ -214,7 +263,7 @@ body {
 /** Leaflet Style Overrides **/
 
 .leaflet-container {
-  background: #333;
+  background: $lightDark;
 }
 
 .leaflet-popup {
@@ -227,9 +276,8 @@ body {
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-  font-family: 'MedievalSharp', cursive;
-  background: #333;
-  color: white;
+  background: $lightDark;
+  color: $offWhite;
   text-align: center;
 }
 
@@ -238,8 +286,8 @@ body {
 }
 
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-  background: #333 !important;
-  color: white !important;
+  background: $lightDark !important;
+  color: $offWhite !important;
   border: none;
 }
 

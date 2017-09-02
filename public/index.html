@@ -2,46 +2,76 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta name="robots" content="index,follow">
   <title>Game of Thrones Map</title>
-  <link href="https://fonts.googleapis.com/css?family=MedievalSharp" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato|MedievalSharp" rel="stylesheet">
+  <style>
+    html {
+      background: #222;
+    }
+
+    #app-container {
+      display: none;
+    }
+
+    #loading-container {
+      font-family: sans-serif;
+      position: absolute;
+      color: white;
+      letter-spacing: 0.8rem;
+      text-align: center;
+      top: 40%;
+      width: 100%;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="mapid"></div>
-  <div id="layer-panel">
-    <h3>Layers</h3>
-    <div id="layer-buttons">
-      <div class="layer-button" id="kingdom-toggle" onclick="ctrl.toggleMapLayer('kingdom')">Kingdoms</div>
-      <div class="layer-button" id="castle-toggle" onclick="ctrl.toggleMapLayer('castle')">Castles</div>
-      <div class="layer-button" id="city-toggle" onclick="ctrl.toggleMapLayer('city')">Cities</div>
-      <div class="layer-button" id="town-toggle" onclick="ctrl.toggleMapLayer('town')">Towns</div>
-      <div class="layer-button" id="ruin-toggle" onclick="ctrl.toggleMapLayer('ruin')">Ruins</div>
-      <div class="layer-button" id="landmark-toggle" onclick="ctrl.toggleMapLayer('landmark')">Landmarks</div>
-    </div>
+  <div id="loading-container">
+    <h1>Atlas of Thrones</h1>
   </div>
-
-  <div id="search-container">
-    <div id="search-bar">
-      <i class="search-icon"></i>
-      <input type="text" name="search" placeholder="Search..." id="search-input" onkeyup="ctrl.onSearch(this.value)"></input>
-    </div>
-    <div id="search-results"></div>
-  </div>
-
-  <div class="info-container">
-    <div id="info-title" onclick="ctrl.toggleInfo()">
-      <h1>Tap The Map To View Info</h1>
-    </div>
-    <div class="info-body">
-      <div class="info-content-container">
-        <div id="info-content"></div>
+  <div id="app-container">
+    <div id="mapid"></div>
+    <div id="layer-panel">
+      <div id="layer-toggle" onclick="ctrl.toggleLayerPanel()">Layers</div>
+      <div id="layer-panel-content">
+        <h3>Layers</h3>
+        <div id="layer-buttons">
+          <div class="layer-button" id="kingdom-toggle" onclick="ctrl.toggleMapLayer('kingdom')">Kingdoms</div>
+          <div class="layer-button" id="castle-toggle" onclick="ctrl.toggleMapLayer('castle')">Castles</div>
+          <div class="layer-button" id="city-toggle" onclick="ctrl.toggleMapLayer('city')">Cities</div>
+          <div class="layer-button" id="town-toggle" onclick="ctrl.toggleMapLayer('town')">Towns</div>
+          <div class="layer-button" id="ruin-toggle" onclick="ctrl.toggleMapLayer('ruin')">Ruins</div>
+          <div class="layer-button" id="landmark-toggle" onclick="ctrl.toggleMapLayer('landmark')">Landmarks</div>
+        </div>
       </div>
-      <div class="info-footer">
-        Insert blog link
-        Add attribution
+    </div>
+
+    <div id="search-container">
+      <div id="search-bar">
+        <input type="text" name="search" placeholder="Search..." id="search-input" onkeyup="ctrl.onSearch(this.value)"></input>
+      </div>
+      <div id="search-results"></div>
+    </div>
+
+    <div id="info-container">
+      <div id="info-title" onclick="ctrl.toggleInfo()">
+        <h1>Nothing Selected</h1>
+      </div>
+      <div id="info-body">
+        <div id="info-content-container">
+          <div id="info-content"></div>
+        </div>
+        <div id="info-footer">
+          <div id="blog-link">
+            <p>To learn how to build this app, <a href="https://blog.patricktriest.com" target="_blank" ref="noopener">check out the tutorial.</a></p>
+          </div>
+          <p>Built with Leaflet.js, Node.js, Koa, PostGIS, and Redis.</p>
+          <p>Source Code - <a href="https://github.com/triestpa/Atlas-Of-Thrones" target="_blank" rel="noopener">https://github.com/triestpa/Atlas-Of-Thrones</a></p>
+          <p>This work is licensed under <a href="https://github.com/triestpa/Atlas-Of-Thrones/blob/master/LICENSE" target="_blank" rel="noopener">Creative Commons Attribution-Non-Commercial-ShareAlike 3.0</a></p>
+        </div>
       </div>
     </div>
   </div>

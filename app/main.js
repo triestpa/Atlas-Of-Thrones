@@ -87,26 +87,33 @@ export class ViewController {
     infoTitle.innerHTML = `<h1>${name}</h1>`
 
     const infoContent = document.getElementById('info-content')
-    infoContent.innerHTML = ''
+
+    let infoContentText = ''
     let info = {}
 
     if (id && type === 'kingdom') {
       let size = await this.api.getRegionSize(id)
       let sizeStr = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
-      infoContent.innerHTML += `<div>Size: ${sizeStr} km^2 (estimate)</div>`
+
+      infoContentText += `<h3>Kingdom</h3>`
+
+      infoContentText += `<div>Size Estimate - ${sizeStr} km<sup>2</sup></div>`
 
       let castles = await this.api.getCastleCount(id)
-      infoContent.innerHTML += `<div>Castles: ${castles}</div>`
+      infoContentText += `<div>Number of Castles - ${castles}</div>`
 
       info = await this.api.getRegionDetails(id)
     } else {
       info = await this.api.getLocationDetails(id)
     }
+    infoContentText += `<h3>Summary</h3>`
+    infoContentText += `<div>${info.summaryText}</div>`
+    infoContentText += `<div><a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
 
-    infoContent.innerHTML += `<div>${info.summaryText}  <a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
+    infoContent.innerHTML = infoContentText
 
     // Show info window if hidden, and on desktop
-    const infoContainer = document.getElementsByClassName('info-container')[0]
+    const infoContainer = document.getElementById('info-container')
     if (!infoContainer.classList.contains('info-active') && window.innerWidth > 600) {
       this.toggleInfo()
     }
@@ -114,8 +121,13 @@ export class ViewController {
 
   /** Toggle the info container */
   toggleInfo () {
-    const infoContainer = document.getElementsByClassName('info-container')[0]
+    const infoContainer = document.getElementById('info-container')
     infoContainer.classList.toggle('info-active')
+  }
+
+  toggleLayerPanel () {
+    const infoContainer = document.getElementById('layer-panel')
+    infoContainer.classList.toggle('layer-panel-active')
   }
 
   /** Toggle map layer visibility */
