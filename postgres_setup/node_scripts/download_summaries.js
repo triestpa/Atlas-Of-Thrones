@@ -32,39 +32,43 @@ const client = new postgres.Client({
 async function getPlaceSummaries () {
   const pgQuery = `
   SELECT name, type, gid
-  FROM locations;
-  `
+  FROM locations;`
 
   const response = await client.query(pgQuery)
 
   let summaries = []
   for (let row of response.rows) {
     const summary = await getSummary(row.name)
-    summary.summaryText = cleanText(summary.summaryText)
-    summary.pageTitle = cleanText(summary.pageTitle)
-    summaries.push({ row, summary })
+
+    if (summary) {
+      summary.summaryText = cleanText(summary.summaryText)
+      summary.pageTitle = cleanText(summary.pageTitle)
+      summaries.push({ row, summary })
+    }
   }
 
   await writeFile(summaries, 'place_summaries.json')
 }
 
-async function getRegionSummaries () {
+async function getKingdomSummaries () {
   const pgQuery = `
   SELECT name, gid
-  FROM political;
-  `
+  FROM political;`
 
   const response = await client.query(pgQuery)
 
   let summaries = []
   for (let row of response.rows) {
     const summary = await getSummary(row.name)
-    summary.summaryText = cleanText(summary.summaryText)
-    summary.pageTitle = cleanText(summary.pageTitle)
-    summaries.push({ row, summary })
+
+    if (summary) {
+      summary.summaryText = cleanText(summary.summaryText)
+      summary.pageTitle = cleanText(summary.pageTitle)
+      summaries.push({ row, summary })
+    }
   }
 
-  await writeFile(summaries, 'region_summaries.json')
+  await writeFile(summaries, 'kingdom_summaries.json')
 }
 
 function cleanText (text) {
@@ -94,13 +98,8 @@ async function checkMediaWikiDump (title) {
     let results = fuse.search(title)
 
     if (results[0].score > 0.2) {
-      title.replace('the', '')
-      let results = fuse.search(title)
-
-      if (results[0].score > 0.2) {
-        const summary = await searchWikias(title)
-        return summary
-      }
+      const summary = await searchWikias(title)
+      return summary
     }
 
     const summaryResponse = await getSummaryFromMediaWiki(results[0].item.pageid)
@@ -182,7 +181,7 @@ async function searchWikias (title) {
     }
   } else {
     console.log('Failure!!', title)
-    return {}
+    return null
   }
 }
 
@@ -203,7 +202,7 @@ async function run () {
   try {
     await client.connect()
     await getPlaceSummaries()
-    await getRegionSummaries()
+    await getKingdomSummaries()
   } catch (err) {
     console.error(err)
   } finally {
