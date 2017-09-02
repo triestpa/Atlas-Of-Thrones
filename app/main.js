@@ -36,6 +36,7 @@ export class ViewController {
       const geojson = await this.api.getLocations(locationType)
       this.locationSearch.addGeoJsonItems(geojson, locationType)
       this.mapController.addLocationGeojson(locationType, geojson, locationLayers[locationType])
+      this.toggleMapLayer(locationType)
     }
 
     // Download kingdom boundaries
