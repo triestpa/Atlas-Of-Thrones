@@ -1,1 +1,1 @@
-gsutil rsync -d -x '\..*|./[.].*$' -r ./public gs://atlasofthrones.com
+gsutil rsync -d -x '.*\.DS_Store$' -r ./public gs://atlas.patricktriest.com
