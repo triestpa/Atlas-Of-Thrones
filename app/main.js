@@ -26,6 +26,7 @@ export class ViewController {
       city: `${iconBaseURL}city.svg`,
       town: `${iconBaseURL}village.svg`,
       ruin: `${iconBaseURL}ruin.svg`,
+      region: `${iconBaseURL}nature.svg`,
       landmark: `${iconBaseURL}misc.svg`
     }
 
@@ -106,8 +107,9 @@ export class ViewController {
     } else {
       info = await this.api.getLocationDetails(id)
     }
+
     infoContentText += `<h3>Summary</h3>`
-    infoContentText += `<div>${info.summaryText}</div>`
+    infoContentText += `<div>${info.summary}</div>`
     infoContentText += `<div><a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
 
     infoContent.innerHTML = infoContentText

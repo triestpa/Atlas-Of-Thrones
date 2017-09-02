@@ -43,7 +43,7 @@ const idValidator = validate({
 
 // Check that query param is valid location type
 const typeValidator = validate({
-  params: { type: joi.string().valid(['castle', 'city', 'town', 'ruin', 'landmark']).required() }
+  params: { type: joi.string().valid(['castle', 'city', 'town', 'ruin', 'landmark', 'region']).required() }
 })
 
 /**
@@ -76,7 +76,7 @@ router.get('/locations/:type', typeValidator, async ctx => {
 router.get('/locations/:id/summary', idValidator, async ctx => {
   const id = ctx.params.id
   const result = await database.getSummary('locations', id)
-  ctx.body = result ? result.summary : ctx.throw(404)
+  ctx.body = result || ctx.throw(404)
 })
 
 // Respond with boundary geojson for all kingdoms
@@ -109,7 +109,7 @@ router.get('/kingdoms/:id/size', idValidator, async ctx => {
 router.get('/kingdoms/:id/summary', idValidator, async ctx => {
   const id = ctx.params.id
   const result = await database.getSummary('political', id)
-  ctx.body = result ? result.summary : ctx.throw(404)
+  ctx.body = result || ctx.throw(404)
 })
 
 // Respond with number of castle in kingdom, by id
