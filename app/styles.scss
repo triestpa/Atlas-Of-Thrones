@@ -53,6 +53,10 @@ a {
   cursor: pointer;
   user-select: none;
   color: $offWhite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
 
   h1 {
     max-width: 100%;
@@ -74,7 +78,7 @@ a {
 
 #info-container {
   position: absolute;
-  overflow-y: auto;
+  overflow-y: hidden;
   bottom: 0;
   left: 24px;
   z-index: 1000;
@@ -99,9 +103,11 @@ a {
 }
 
 #info-body {
+  margin-top: $footerHeight;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
+  height: 80%;
 }
 
 #info-footer {
