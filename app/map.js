@@ -6,22 +6,19 @@ export class MapController {
     this.map = L.map(mapId, {
       center: [ 5, 20 ],
       zoom: 4,
-      maxZoom: 10,
+      maxZoom: 8,
       minZoom: 4,
       maxBounds: [ [ 50, -30 ], [ -45, 100 ] ]
     })
 
     this.map.zoomControl.setPosition('bottomright')
-
-
     this.locationClickCallback = locationClickCallback
     this.layers = { }
     this.selectedRegion = null
 
     L.tileLayer(
-      'https://cartocdn-ashbu.global.ssl.fastly.net/ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png', {
-        crs: L.CRS.EPSG4326
-      }).addTo(this.map)
+      'https://cartocdn-ashbu.global.ssl.fastly.net/ramirocartodb/api/v1/map/named/tpl_756aec63_3adb_48b6_9d14_331c6cbc47cf/all/{z}/{x}/{y}.png',
+      { crs: L.CRS.EPSG4326 }).addTo(this.map)
   }
 
   /** Add location geojson to the leaflet instance */

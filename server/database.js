@@ -67,8 +67,7 @@ module.exports = {
       FROM political, locations
       WHERE ST_intersects(political.geog, locations.geog)
       AND political.gid = $1
-      AND locations.type = 'Castle'
-      `
+      AND locations.type = 'Castle';`
     const result = await client.query(countQuery, [ regionId ])
     return result.rows[0]
   },
@@ -84,7 +83,6 @@ module.exports = {
       FROM ${table}
       WHERE gid = $1
       LIMIT(1);`
-
     const result = await client.query(summaryQuery, [ id ])
     return result.rows[0]
   }
