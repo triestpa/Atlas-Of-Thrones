@@ -15,7 +15,7 @@ const router = new Router()
 
 // Check cache before continuing to any endpoint handlers
 router.use(async (ctx, next) => {
-  const cachedResponse = await cache.get(ctx.path + ctx.search)
+  const cachedResponse = await cache.get(ctx.path)
   if (cachedResponse) { // If cache hit
     ctx.body = JSON.parse(cachedResponse) // return the cached response
   } else {
@@ -28,7 +28,7 @@ router.use(async (ctx, next) => {
   await next() // Wait until other handlers have finished
   if (ctx.body && ctx.status === 200) { // If request was successful
     // Cache the response
-    await cache.set(ctx.path + ctx.search, JSON.stringify(ctx.body))
+    await cache.set(ctx.path, JSON.stringify(ctx.body))
   }
 })
 
