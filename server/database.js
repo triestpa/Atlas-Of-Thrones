@@ -79,7 +79,7 @@ module.exports = {
     }
 
     const summaryQuery = `
-      SELECT summary
+      SELECT summary, url
       FROM ${table}
       WHERE gid = $1
       LIMIT(1);`

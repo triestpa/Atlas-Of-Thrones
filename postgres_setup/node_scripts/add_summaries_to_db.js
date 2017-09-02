@@ -1,6 +1,6 @@
 const postgres = require('pg')
 const placeSummaries = require('./data/place_summaries.json')
-const regionSummaries = require('./data/region_summaries.json')
+const kingdomSummaries = require('./data/kingdom_summaries.json')
 
 require('dotenv').config()
 
@@ -21,22 +21,22 @@ async function appendLocationSummaries () {
     console.log(entry.summary.summaryText)
     const pgQuery = `
     UPDATE locations
-    SET summary = $1
-    WHERE gid = $2;`
+    SET summary = $1, url = $2
+    WHERE gid = $3;`
 
-    await client.query(pgQuery, [ entry.summary, entry.row.gid ])
+    await client.query(pgQuery, [ entry.summary.summaryText, entry.summary.url, entry.row.gid ])
   }
 }
 
-async function appendRegionSummaries () {
-  for (let entry of regionSummaries) {
+async function appendkingdomSummaries () {
+  for (let entry of kingdomSummaries) {
     console.log(entry.summary.summaryText)
     const pgQuery = `
     UPDATE political
-    SET summary = $1
-    WHERE gid = $2;`
+    SET summary = $1, url = $2
+    WHERE gid = $3;`
 
-    await client.query(pgQuery, [ entry.summary, entry.row.gid ])
+    await client.query(pgQuery, [ entry.summary.summaryText, entry.summary.url, entry.row.gid ])
   }
 }
 
@@ -44,7 +44,7 @@ async function run () {
   try {
     await client.connect()
     await appendLocationSummaries()
-    await appendRegionSummaries()
+    await appendkingdomSummaries()
   } catch (err) {
     console.error(err)
   } finally {
