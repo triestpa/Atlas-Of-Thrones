@@ -102,6 +102,12 @@ export class MapController {
       return layer.feature.geometry.properties.id === id
     })
 
+    if (selectedSublayer.feature.geometry.type === 'Point') {
+      this.map.flyTo(selectedSublayer.getLatLng(), 4)
+    } else {
+      this.map.flyToBounds(selectedSublayer.getBounds(), 6)
+    }
+
     selectedSublayer.fireEvent('click')
   }
 }
