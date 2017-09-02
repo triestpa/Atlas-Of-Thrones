@@ -103,9 +103,9 @@ export class MapController {
     })
 
     if (selectedSublayer.feature.geometry.type === 'Point') {
-      this.map.flyTo(selectedSublayer.getLatLng(), 4)
+      this.map.flyTo(selectedSublayer.getLatLng(), 5)
     } else {
-      this.map.flyToBounds(selectedSublayer.getBounds(), 6)
+      this.map.flyToBounds(selectedSublayer.getBounds(), 5)
     }
 
     selectedSublayer.fireEvent('click')
