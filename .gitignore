@@ -7,3 +7,4 @@ public/bundle.js
 *.sql
 database_setup/**/*.json
 *.log
+ignore
