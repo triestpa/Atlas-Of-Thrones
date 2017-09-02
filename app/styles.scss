@@ -239,6 +239,7 @@ a {
   }
 
   #layer-toggle {
+    cursor: pointer;
     display: block;
     width: $toggleLayerPanelButtonWidth;
     transform: translateY(120%) rotate(-90deg);
