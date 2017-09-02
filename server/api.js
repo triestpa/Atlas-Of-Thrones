@@ -108,7 +108,7 @@ router.get('/kingdoms/:id/size', idValidator, async ctx => {
 // Respond with summary of kingdom, by id
 router.get('/kingdoms/:id/summary', idValidator, async ctx => {
   const id = ctx.params.id
-  const result = await database.getSummary('political', id)
+  const result = await database.getSummary('kingdoms', id)
   ctx.body = result || ctx.throw(404)
 })
 

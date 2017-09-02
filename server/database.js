@@ -40,11 +40,11 @@ module.exports = {
     return result.rows
   },
 
-  /** Query the political boundaries */
+  /** Query the kingdom boundaries */
   getPoliticalBoundaries: async () => {
     const boundaryQuery = `
       SELECT ST_AsGeoJSON(geog), name, claimedBy, gid
-      FROM political;`
+      FROM kingdoms;`
     const result = await client.query(boundaryQuery)
     return result.rows
   },
@@ -53,7 +53,7 @@ module.exports = {
   getRegionSize: async (id) => {
     const sizeQuery = `
       SELECT ST_AREA(geog) as size
-      FROM political
+      FROM kingdoms
       WHERE gid = $1
       LIMIT(1);`
     const result = await client.query(sizeQuery, [ id ])
@@ -64,9 +64,9 @@ module.exports = {
   countCastles: async (regionId) => {
     const countQuery = `
       SELECT count(*)
-      FROM political, locations
-      WHERE ST_intersects(political.geog, locations.geog)
-      AND political.gid = $1
+      FROM kingdoms, locations
+      WHERE ST_intersects(kingdoms.geog, locations.geog)
+      AND kingdoms.gid = $1
       AND locations.type = 'Castle';`
     const result = await client.query(countQuery, [ regionId ])
     return result.rows[0]
@@ -74,7 +74,7 @@ module.exports = {
 
   /** Get the summary for a location or region, by id */
   getSummary: async (table, id) => {
-    if (table !== 'political' && table !== 'locations') {
+    if (table !== 'kingdoms' && table !== 'locations') {
       throw new Error(`Invalid Table - ${table}`)
     }
 
