@@ -4,9 +4,7 @@
   "description": "Game of Thrones interactive map, powered by Leaflet, PostGIS, and Redis.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
-    "deploy-frontend": "NODE_ENV=production webpack && bash deploy.sh"
+    "start": "node index.js"
   },
   "author": {
     "name":"Patrick Triest",
@@ -19,32 +17,21 @@
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "0.16.2",
     "dotenv": "4.0.0",
-    "fuse.js": "3.0.5",
     "kcors": "2.2.1",
     "koa": "2.3.0",
     "koa-joi-validate": "0.5.1",
     "koa-router": "7.2.1",
-    "leaflet": "1.2.0",
     "pg": "7.2.0",
     "redis": "2.8.0",
     "winston": "2.3.1"
   },
   "devDependencies": {
-    "babel-loader": "7.1.2",
-    "babili-webpack-plugin": "0.1.2",
-    "css-loader": "0.28.5",
     "eslint": "4.5.0",
     "eslint-config-standard": "10.2.1",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-node": "5.1.1",
     "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-standard": "3.0.1",
-    "node-sass": "4.5.3",
-    "sass-loader": "6.0.6",
-    "style-loader": "0.18.2",
-    "url-loader": "0.5.9",
-    "webpack": "3.5.5"
+    "eslint-plugin-standard": "3.0.1"
   }
 }
