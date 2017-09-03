@@ -4,6 +4,10 @@ An interactive "Game of Thrones" map powered by Leaflet, PostGIS, and Redis.
 
 Visit https://atlasofthrones.com/ to explore the application.
 
+Visit http://blog.patricktriest.com/game-of-thrones-map-node-postgres-redis/ for a tutorial on building the backend, using Node.js, PostGIS, and Redis.
+
+The tutorial for the frontend web app is coming in one week.
+
 #### Structure
 - `app/` - The front-end web application source.
 - `public/` - The compiled and minified front-end code.
