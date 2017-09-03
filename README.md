@@ -2,6 +2,8 @@
 
 An interactive "Game of Thrones" map powered by Leaflet, PostGIS, and Redis.
 
+Visit https://atlasofthrones.com/ to explore the application.
+
 #### Structure
 - `app/` - The front-end web application source.
 - `public/` - The compiled and minified front-end code.
@@ -11,6 +13,8 @@ An interactive "Game of Thrones" map powered by Leaflet, PostGIS, and Redis.
 #### Setup
 
 To setup the project, simply download or clone the project to your local machine and `npm install`.
+
+You can find a SQL database dump here with all of the content pre-loaded and ready to be queried - https://cdn.patricktriest.com/atlas-of-thrones/atlas_of_thrones.sql
 
 The only extra step is adding a `.env` file in order to properly initialize the required environment variables.
 
@@ -23,7 +27,6 @@ REDIS_PORT=6379
 CORS_ORIGIN=http://localhost:8080
 ```
 
-You'll need to change the username in the DATABASE_URL entry to match your Postgres user credentials. Unless your name is "Patrick", that is, in which case it might already be fine.
-
+You'll need to change the username in the DATABASE_URL entry to match your PostgreSQL user credentials. Unless your name is "Patrick", that is, in which case it might already be fine.
 
 Run `npm run local` to start the API server on `localhost:5000`, and to build/watch/serve the frontend code from `localhost:8080`.
