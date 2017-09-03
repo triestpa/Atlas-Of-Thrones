@@ -4,9 +4,12 @@
 $footerHeight: 80px;
 $searchBarHeight: 60px;
 $offWhite: #faebd7;
+$grey: #666;
 $offDark: #111;
 $midDark: #222;
 $lightDark: #333;
+$highlight: #BABA45;
+$highlightSecondary: red;
 $toggleLayerPanelButtonWidth: 40px;
 $leftPanelsWidth: 500px;
 
@@ -23,7 +26,7 @@ body {
 }
 
 a {
-  color: #BABA45;
+  color: $highlight;
 }
 
 #mapid {
@@ -59,6 +62,7 @@ a {
   width: 100%;
 
   h1 {
+    letter-spacing: 0.3rem;
     max-width: 100%;
     padding: 20px;
     text-overflow: ellipsis;
@@ -84,7 +88,7 @@ a {
   z-index: 1000;
   background: $midDark;
   width: $leftPanelsWidth;
-  height: 40vh;
+  height: 45vh;
   color: $offWhite;
   transition: all 0.4s ease-in-out;
   transform: translateY(calc(100% - #{$footerHeight}));
@@ -111,13 +115,15 @@ a {
 }
 
 #info-footer {
-  font-size: 0.4rem;
+  font-size: 0.8rem;
   font-family: 'Lato', sans-serif;
   padding: 8%;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 #blog-link {
-  font-size: 0.8rem;
+  letter-spacing: 0.1rem;
   font-weight: bold;
 }
 
@@ -257,6 +263,7 @@ a {
 }
 
 .layer-button {
+  color: $grey;
   border-top: 1px solid $offWhite;
   padding: 6px;
   cursor: pointer;
@@ -265,7 +272,7 @@ a {
 }
 
 .toggle-active {
-  color: red;
+  color: $offWhite;
 }
 
 /** Leaflet Style Overrides **/
