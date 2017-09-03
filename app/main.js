@@ -9,7 +9,7 @@ export class ViewController {
     if (window.location.hostname === 'localhost') {
       this.api = new MapApi('http://localhost:5000/')
     } else {
-      this.api = new MapApi('https://atlas-api.patricktriest.com/')
+      this.api = new MapApi('https://api.atlasofthrones.com/')
     }
 
     this.mapController = new MapController((name, id, type) => this.showInfo(name, id, type))
@@ -97,7 +97,7 @@ export class ViewController {
       let size = await this.api.getRegionSize(id)
       let sizeStr = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
 
-      infoContentText += `<h3>Kingdom</h3>`
+      infoContentText += `<h3>KINGDOM</h3>`
 
       infoContentText += `<div>Size Estimate - ${sizeStr} km<sup>2</sup></div>`
 
@@ -107,6 +107,7 @@ export class ViewController {
       info = await this.api.getRegionDetails(id)
     } else {
       info = await this.api.getLocationDetails(id)
+      infoContentText += `<h3>${type.toUpperCase()}</h3>`
     }
 
     infoContentText += `<h3>Summary</h3>`
