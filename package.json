@@ -1,6 +1,6 @@
 {
   "name": "atlas-of-thrones",
-  "version": "0.8",
+  "version": "0.8.0",
   "description": "Game of Thrones interactive map, powered by Leaflet, PostGIS, and Redis.",
   "main": "index.js",
   "scripts": {
