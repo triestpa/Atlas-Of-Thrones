@@ -34,7 +34,7 @@ export class MapController {
       layer.bindPopup(feature.properties.name, { closeButton: false })
       layer.on({
         click: async (e) => {
-          this.locationClickCallback(feature.properties.name, feature.properties.id, 'location')
+          this.locationClickCallback(feature.properties.name, feature.properties.id, feature.properties.type)
           this.setHighlightedRegion(null)
         }
       })
@@ -45,7 +45,14 @@ export class MapController {
 
   /** Add boundary (kingdom) geojson to the leaflet instance */
   addKingdomGeojson (geojson) {
-    const properties = {}
+    const properties = {
+      style: {
+        'color': '#222',
+        'weight': 1,
+        'opacity': 0.65
+      }
+    }
+
     properties.onEachFeature = (feature, layer) => {
       layer.on({
         click: async (e) => {
@@ -69,7 +76,7 @@ export class MapController {
     if (this.selected) {
       this.selected.bringToFront()
       this.selected.setStyle({
-        'color': 'red'
+        'color': 'blue'
       })
     }
   }
