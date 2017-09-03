@@ -4,7 +4,7 @@
 
 const redis = require('redis')
 const log = require('./logger')
-const client = redis.createClient()
+const client = redis.createClient(process.env.REDIS_PORT, process.env.REDIS_HOST)
 
 // Catch and log Redis error
 client.on('error', function (err) {

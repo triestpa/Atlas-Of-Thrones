@@ -3,28 +3,18 @@
  */
 
 const postgres = require('pg')
-const dbUrl = process.env.DATABASE_URL
-let useSSL = true
-
-// Enable SSL based on ENV var
-if (process.env.POSTGRES_SSL && process.env.POSTGRES_SSL !== 'true') {
-  useSSL = false
-}
+const log = require('./logger')
+const connectionString = process.env.DATABASE_URL
 
 // Initialize postgres client
-const client = new postgres.Client({
-  connectionString: dbUrl,
-  ssl: useSSL
-})
+const client = new postgres.Client({ connectionString })
+
+client.connect().then(() => {
+  log.info(`Connected To ${client.database} at ${client.host}:${client.port}`)
+}).catch(log.error)
 
 module.exports = {
-  /** Connect to DB */
-  connect: async () => {
-    await client.connect()
-    return client
-  },
-
-  /** Test query - Query the current time */
+  /** Query the current time */
   queryTime: async () => {
     const result = await client.query('SELECT NOW() as now')
     return result.rows[0]
@@ -41,9 +31,9 @@ module.exports = {
   },
 
   /** Query the kingdom boundaries */
-  getPoliticalBoundaries: async () => {
+  getKingdomBoundaries: async () => {
     const boundaryQuery = `
-      SELECT ST_AsGeoJSON(geog), name, claimedBy, gid
+      SELECT ST_AsGeoJSON(geog), name, gid
       FROM kingdoms;`
     const result = await client.query(boundaryQuery)
     return result.rows

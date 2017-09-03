@@ -50,7 +50,12 @@ const typeValidator = validate({
  * Assign API routes and handlers
  */
 
-// Test - get time from DB
+// Hello World Test Endpoint
+router.get('/hello', async ctx => {
+  ctx.body = 'Hello World'
+})
+
+// Get time from DB
 router.get('/time', async ctx => {
   const result = await database.queryTime()
   ctx.body = result
@@ -72,7 +77,7 @@ router.get('/locations/:type', typeValidator, async ctx => {
   ctx.body = locations
 })
 
-// Respond with location summary, by id
+// Respond with summary of location, by id
 router.get('/locations/:id/summary', idValidator, async ctx => {
   const id = ctx.params.id
   const result = await database.getSummary('locations', id)
@@ -81,7 +86,7 @@ router.get('/locations/:id/summary', idValidator, async ctx => {
 
 // Respond with boundary geojson for all kingdoms
 router.get('/kingdoms', async ctx => {
-  const results = await database.getPoliticalBoundaries()
+  const results = await database.getKingdomBoundaries()
   if (results.length === 0) { ctx.throw(404) }
 
   // Add row metadata as geojson properties

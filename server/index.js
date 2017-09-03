@@ -1,27 +1,19 @@
 /**
- * Main Server Index File
+ * Koa Server Index File
  */
 
 const Koa = require('koa')
 const cors = require('kcors')
 const log = require('./logger')
-const database = require('./database')
 const api = require('./api')
 
-/** Setup Koa app */
+// Setup Koa app
 const app = new Koa()
-const port = process.env.PORT
+const port = process.env.PORT || 5000
 
-/** Connect to Postgres DB */
-async function setupDB () {
-  const client = await database.connect()
-  log.info(`Connected To ${client.database} at ${client.host}:${client.port}`)
-}
-
-/** Start node server */
-function startServer () {
-  app.listen(port, () => { log.info(`Server listening at ${port}`) })
-}
+// Apply CORS config
+const origin = process.env.CORS_ORIGIN | '*'
+app.use(cors({ origin }))
 
 /** Log all requests */
 app.use(async (ctx, next) => {
@@ -42,11 +34,8 @@ app.use(async (ctx, next) => {
   }
 })
 
-// Apply cors based on env variable
-app.use(cors({ origin: process.env.CORS_ORIGIN }))
-
 // Mount routes
 app.use(api.routes(), api.allowedMethods())
 
 // Start the app
-setupDB().then(startServer).catch(log.error)
+app.listen(port, () => { log.info(`Server listening at port ${port}`) })
