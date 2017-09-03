@@ -1,6 +1,6 @@
 {
   "name": "atlas-of-thrones",
-  "version": "0.5.0",
+  "version": "0.8",
   "description": "Game of Thrones interactive map, powered by Leaflet, PostGIS, and Redis.",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "license":{
     "type": "Creative Commons Attribution-Non-Commercial-ShareAlike 3.0",
     "url": "https://www.creativecommons.org/licenses/by-nc-sa/3.0/"
-    },
+  },
   "dependencies": {
     "axios": "0.16.2",
     "dotenv": "4.0.0",
