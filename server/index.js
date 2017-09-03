@@ -18,7 +18,7 @@ app.use(cors({ origin }))
 /** Log all requests */
 app.use(async (ctx, next) => {
   const start = Date.now()
-  await next()
+  await next() // This will pause the control flow until the endpoint handler has resolved
   const responseTime = Date.now() - start
   log.info(`${ctx.method} ${ctx.status} ${ctx.url} - ${responseTime} ms`)
 })
