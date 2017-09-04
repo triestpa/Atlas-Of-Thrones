@@ -21,6 +21,9 @@
     "type": "Creative Commons Attribution-Non-Commercial-ShareAlike 3.0",
     "url": "https://www.creativecommons.org/licenses/by-nc-sa/3.0/"
   },
+  "engines": {
+    "node": ">=7.6.0"
+  },
   "dependencies": {
     "axios": "0.16.2",
     "dotenv": "4.0.0",
