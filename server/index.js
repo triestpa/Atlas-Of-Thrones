@@ -34,6 +34,11 @@ app.use(async (ctx, next) => {
   }
 })
 
+app.use(async (ctx, next) => {
+  await next()
+  ctx.set('Cache-Control', 'public, max-age=3600')
+})
+
 // Mount routes
 app.use(api.routes(), api.allowedMethods())
 
