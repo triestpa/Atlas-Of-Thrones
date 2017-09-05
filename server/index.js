@@ -15,7 +15,7 @@ const port = process.env.PORT || 5000
 const origin = process.env.CORS_ORIGIN | '*'
 app.use(cors({ origin }))
 
-/** Log all requests */
+// Log all requests
 app.use(async (ctx, next) => {
   const start = Date.now()
   await next() // This will pause the control flow until the endpoint handler has resolved
@@ -23,7 +23,7 @@ app.use(async (ctx, next) => {
   log.info(`${ctx.method} ${ctx.status} ${ctx.url} - ${responseTime} ms`)
 })
 
-/** Error Handler - All uncaught exceptions will percolate up to here */
+// Error Handler - All uncaught exceptions will percolate up to here
 app.use(async (ctx, next) => {
   try {
     await next()
@@ -34,8 +34,11 @@ app.use(async (ctx, next) => {
   }
 })
 
+// Apply Response Default Headers
 app.use(async (ctx, next) => {
   await next()
+
+  // Allow browser to cache JSON responses
   ctx.set('Cache-Control', 'public, max-age=3600')
 })
 
