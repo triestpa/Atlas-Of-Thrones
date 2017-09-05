@@ -7,3 +7,4 @@ public/bundle.js
 database_setup/**/*.json
 *.log
 ignore
+envs
