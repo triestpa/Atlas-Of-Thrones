@@ -9,32 +9,11 @@ const joi = require('joi')
 const validate = require('koa-joi-validate')
 const router = new Router()
 
-/**
- * Declare route-wide middleware
- */
-
 // Check cache before continuing to any endpoint handlers
-router.use(async (ctx, next) => {
-  const cachedResponse = await cache.get(ctx.path)
-  if (cachedResponse) { // If cache hit
-    ctx.body = JSON.parse(cachedResponse) // return the cached response
-  } else {
-    await next() // only continue if result not in cache
-  }
-})
+router.use(cache.checkResponseCache)
 
-// Insert response into cache on successful response
-router.use(async (ctx, next) => {
-  await next() // Wait until other handlers have finished
-  if (ctx.body && ctx.status === 200) { // If request was successful
-    // Cache the response
-    await cache.set(ctx.path, JSON.stringify(ctx.body))
-  }
-})
-
-/**
- * Define validation helpers
- */
+// Insert response into cache
+router.use(cache.addResponseToCache)
 
 // Check that id param is valid number
 const idValidator = validate({
@@ -45,10 +24,6 @@ const idValidator = validate({
 const typeValidator = validate({
   params: { type: joi.string().valid(['castle', 'city', 'town', 'ruin', 'landmark', 'region']).required() }
 })
-
-/**
- * Assign API routes and handlers
- */
 
 // Hello World Test Endpoint
 router.get('/hello', async ctx => {
