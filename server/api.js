@@ -12,7 +12,7 @@ const router = new Router()
 // Check cache before continuing to any endpoint handlers
 router.use(cache.checkResponseCache)
 
-// Insert response into cache
+// Insert response into cache once handlers have finished
 router.use(cache.addResponseToCache)
 
 // Check that id param is valid number

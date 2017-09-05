@@ -15,7 +15,7 @@ module.exports = {
       await next() // only continue if result not in cache
     }
   },
-  /** Koa middleware function to insert response into cache if response if successful */
+  /** Koa middleware function to insert response into cache */
   async addResponseToCache (ctx, next) {
     await next() // Wait until other handlers have finished
     if (ctx.body && ctx.status === 200) { // If request was successful
