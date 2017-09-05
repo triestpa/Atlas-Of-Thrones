@@ -9,15 +9,15 @@
     "deploy-frontend": "NODE_ENV=production webpack && bash deploy.sh"
   },
   "author": {
-    "name":"Patrick Triest",
-    "email" :"patrick.triest@gmail.com",
-    "url":"https://blog.patricktriest.com"
+    "name": "Patrick Triest",
+    "email": "patrick.triest@gmail.com",
+    "url": "https://blog.patricktriest.com"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/triestpa/Atlas-Of-Thrones.git"
   },
-  "license":{
+  "license": {
     "type": "Creative Commons Attribution-Non-Commercial-ShareAlike 3.0",
     "url": "https://www.creativecommons.org/licenses/by-nc-sa/3.0/"
   },
@@ -28,13 +28,13 @@
     "axios": "0.16.2",
     "dotenv": "4.0.0",
     "fuse.js": "3.0.5",
+    "ioredis": "3.1.4",
     "kcors": "2.2.1",
     "koa": "2.3.0",
     "koa-joi-validate": "0.5.1",
     "koa-router": "7.2.1",
     "leaflet": "1.2.0",
     "pg": "7.2.0",
-    "redis": "2.8.0",
     "winston": "2.3.1"
   },
   "devDependencies": {
