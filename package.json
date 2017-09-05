@@ -29,6 +29,7 @@
     "dotenv": "4.0.0",
     "fuse.js": "3.0.5",
     "ioredis": "3.1.4",
+    "joi": "10.6.0",
     "kcors": "2.2.1",
     "koa": "2.3.0",
     "koa-joi-validate": "0.5.1",
