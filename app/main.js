@@ -4,6 +4,7 @@ import { LocationSearch } from './search'
 import { MapController } from './map'
 import { LayerPanelComponent } from './components/layer-panel/layer-panel'
 import { InfoPanelComponent } from './components/info-panel/info-panel'
+import { SearchPanelComponent } from './components/search-panel/search-panel'
 
 /** Main UI Controller Class */
 export class ViewController {
@@ -20,7 +21,6 @@ export class ViewController {
     this.locationSearch = new LocationSearch()
 
     this.loadMapData()
-    this.searchDebounce = null
   }
 
   /** Load map data from the API */
@@ -53,43 +53,8 @@ export class ViewController {
     this.locationSearch.addGeoJsonItems(kingdomsGeojson, 'kingdom')
     this.mapController.addKingdomGeojson(kingdomsGeojson)
     this.layerPanel.toggleMapLayer('kingdom')
-  }
 
-  /** Receive search bar input, and debounce by 200 ms */
-  onSearch (value) {
-    clearTimeout(this.searchDebounce)
-    this.searchDebounce = setTimeout(() => this.search(value), 50)
-  }
-
-  /** Search for the input term, and display results in UI */
-  search (term) {
-    // Clear search results
-    const searchResultsView = document.getElementById('search-results')
-    searchResultsView.innerHTML = ''
-
-    // Get the top ten search results
-    this.searchResults = this.locationSearch.search(term).slice(0, 10)
-
-    // Display search results on UI
-    for (let i = 0; i < this.searchResults.length; i++) {
-      searchResultsView.innerHTML += `<div onclick="ctrl.searchResultSelected(${i})">${this.searchResults[i].name}</div>`
-    }
-  }
-
-  /** Display the selected search result  */
-  searchResultSelected (resultIndex) {
-    // Clear search input and results
-    document.getElementById('search-input').value = ''
-    document.getElementById('search-results').innerHTML = ''
-
-    // Show result layer if currently hidden
-    const searchResult = this.searchResults[resultIndex]
-    if (!this.mapController.isLayerShowing(searchResult.layerName)) {
-      this.toggleMapLayer(searchResult.layerName)
-    }
-
-    // Highlight result on map
-    this.mapController.selectLocation(searchResult.id, searchResult.layerName)
+    this.searchPanel = new SearchPanelComponent('search-panel-placeholder', this.locationSearch, this.mapController, this.layerPanel)
   }
 }
 
