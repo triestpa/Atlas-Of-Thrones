@@ -53,49 +53,14 @@
   </div>
   <div id="app-container">
     <div id="mapid"></div>
-    <div id="layer-panel">
-      <div id="layer-toggle" onclick="ctrl.toggleLayerPanel()">Layers</div>
-      <div id="layer-panel-content">
-        <h3>Layers</h3>
-        <div id="layer-buttons">
-          <!-- <div class="layer-button" id="kingdom-toggle" onclick="ctrl.toggleMapLayer('kingdom')">Kingdoms</div>
-          <div class="layer-button" id="castle-toggle" onclick="ctrl.toggleMapLayer('castle')">Castles</div>
-          <div class="layer-button" id="city-toggle" onclick="ctrl.toggleMapLayer('city')">Cities</div>
-          <div class="layer-button" id="town-toggle" onclick="ctrl.toggleMapLayer('town')">Towns</div>
-          <div class="layer-button" id="ruin-toggle" onclick="ctrl.toggleMapLayer('ruin')">Ruins</div>
-          <div class="layer-button" id="region-toggle" onclick="ctrl.toggleMapLayer('region')">Regions</div>
-          <div class="layer-button" id="landmark-toggle" onclick="ctrl.toggleMapLayer('landmark')">Landmarks</div> -->
-        </div>
-      </div>
-    </div>
-
+    <div id="layer-panel-placeholder"></div>
     <div id="search-container">
       <div id="search-bar">
         <input type="text" name="search" placeholder="Search..." id="search-input" onkeyup="ctrl.onSearch(this.value)"></input>
       </div>
       <div id="search-results"></div>
     </div>
-
-    <div id="info-container">
-      <div id="info-title" onclick="ctrl.toggleInfo()">
-        <h1>Nothing Selected</h1>
-      </div>
-      <div id="info-body">
-        <div id="info-content-container">
-          <div id="info-content"></div>
-        </div>
-        <div id="info-footer">
-          <div id="blog-link">
-            <p>To learn how to build this app, <a href="https://blog.patricktriest.com/game-of-thrones-map-node-postgres-redis/" target="_blank" ref="noopener"> check out the tutorial.</a></p>
-          </div>
-          <p>
-            <a href="https://github.com/triestpa/Atlas-Of-Thrones" target="_blank" rel="noopener">Source Code</a> |
-            <a href="https://github.com/triestpa/Atlas-Of-Thrones/blob/master/attribution.md" target="_blank" rel="noopener">Attribution</a> |
-            <a href="https://github.com/triestpa/Atlas-Of-Thrones/blob/master/LICENSE" target="_blank" rel="noopener">License
-          </p>
-        </div>
-      </div>
-    </div>
+    <div id="info-panel-placeholder"></div>
   </div>
 
   <script src="bundle.js"></script>
