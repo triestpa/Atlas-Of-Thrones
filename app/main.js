@@ -1,4 +1,6 @@
 import './main.scss'
+import template from './main.html'
+
 import { ApiService } from './services/api'
 import { SearchService } from './services/search'
 import { MapController } from './components/map/map'
@@ -10,6 +12,8 @@ import { SearchPanelComponent } from './components/search-panel/search-panel'
 export class ViewController {
   /** Initialize View Properties */
   constructor () {
+    document.getElementById('app').outerHTML = template
+
     if (window.location.hostname === 'localhost') {
       this.api = new ApiService('http://localhost:5000/')
     } else {
