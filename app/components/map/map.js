@@ -1,5 +1,7 @@
+import './map.scss'
 import L from 'leaflet'
 
+/** Leaflet Map Controller Class */
 export class MapController {
   /** Initialize Map Properties */
   constructor (locationClickCallback, mapId = 'mapid') {

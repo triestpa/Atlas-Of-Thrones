@@ -1,0 +1,41 @@
+@import '../../_variables.scss';
+
+/** Leaflet Style Overrides **/
+.leaflet-container {
+  background: $lightDark;
+}
+
+.leaflet-popup {
+  bottom: 0 !important;
+}
+
+.leaflet-popup-content {
+  user-select: none;
+  cursor: pointer;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: $lightDark;
+  color: $offWhite;
+  text-align: center;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  background: $lightDark !important;
+  color: $offWhite !important;
+  border: none;
+}
+
+@media (max-width: 600px) {
+  .leaflet-bottom {
+    bottom: calc(#{$footerHeight} + 10px)
+  }
+}
+
+.leaflet-control-attribution {
+  display: none;
+}

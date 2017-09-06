@@ -1,7 +1,7 @@
-import './styles.scss'
-import { MapApi } from './api'
-import { LocationSearch } from './search'
-import { MapController } from './map'
+import './main.scss'
+import { ApiService } from './services/api'
+import { SearchService } from './services/search'
+import { MapController } from './components/map/map'
 import { LayerPanelComponent } from './components/layer-panel/layer-panel'
 import { InfoPanelComponent } from './components/info-panel/info-panel'
 import { SearchPanelComponent } from './components/search-panel/search-panel'
@@ -11,14 +11,14 @@ export class ViewController {
   /** Initialize View Properties */
   constructor () {
     if (window.location.hostname === 'localhost') {
-      this.api = new MapApi('http://localhost:5000/')
+      this.api = new ApiService('http://localhost:5000/')
     } else {
-      this.api = new MapApi('https://api.atlasofthrones.com/')
+      this.api = new ApiService('https://api.atlasofthrones.com/')
     }
 
     this.infoContainer = new InfoPanelComponent('info-panel-placeholder', this.api)
     this.mapController = new MapController((name, id, type) => this.infoContainer.showInfo(name, id, type))
-    this.locationSearch = new LocationSearch()
+    this.searchService = new SearchService()
 
     this.loadMapData()
   }
@@ -43,18 +43,18 @@ export class ViewController {
 
     for (let locationType of locationTypes) {
       const geojson = await this.api.getLocations(locationType)
-      this.locationSearch.addGeoJsonItems(geojson, locationType)
+      this.searchService.addGeoJsonItems(geojson, locationType)
       this.mapController.addLocationGeojson(locationType, geojson, locationLayers[locationType])
       // this.toggleMapLayer(locationType)
     }
 
     // Download kingdom boundaries
     const kingdomsGeojson = await this.api.getKingdoms()
-    this.locationSearch.addGeoJsonItems(kingdomsGeojson, 'kingdom')
+    this.searchService.addGeoJsonItems(kingdomsGeojson, 'kingdom')
     this.mapController.addKingdomGeojson(kingdomsGeojson)
     this.layerPanel.toggleMapLayer('kingdom')
 
-    this.searchPanel = new SearchPanelComponent('search-panel-placeholder', this.locationSearch, this.mapController, this.layerPanel)
+    this.searchPanel = new SearchPanelComponent('search-panel-placeholder', this.searchService, this.mapController, this.layerPanel)
   }
 }
 
