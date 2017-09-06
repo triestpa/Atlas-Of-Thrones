@@ -5,6 +5,9 @@ export class InfoPanelComponent {
   constructor (placeholderId, api) {
     document.getElementById(placeholderId).outerHTML = template
     this.api = api
+
+    const infoTitleElem = document.getElementById('info-title')
+    infoTitleElem.addEventListener('click', () => this.toggleInfo())
   }
 
   /** Show info when a map item is selected */

@@ -6,7 +6,7 @@ export class LayerPanelComponent {
     this.mapController = mapController
 
     document.getElementById(placeholderId).outerHTML = template
-    document.getElementById('layer-toggle').onclick = this.toggleMapLayer
+    document.getElementById('layer-toggle').addEventListener('click', () => this.toggleLayerPanel())
 
     const layerButtons = document.getElementById('layer-buttons')
     for (let layerName of layers) {
