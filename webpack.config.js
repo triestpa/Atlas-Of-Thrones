@@ -18,13 +18,18 @@ const urlLoader = {
   loader: 'url-loader?limit=100000'
 }
 
+const htmlLoader = {
+  test: /\.html$/,
+  loader: 'html-loader'
+}
+
 const webpackConfig = {
   entry: './app/main.js',
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js'
   },
-  module: { loaders: [ babelLoader, scssLoader, urlLoader ] }
+  module: { loaders: [ babelLoader, scssLoader, urlLoader, htmlLoader ] }
 }
 
 if (process.env.NODE_ENV === 'production') {

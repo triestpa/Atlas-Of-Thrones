@@ -1,7 +1,11 @@
+import './layer-panel.scss'
+import template from './layer-panel.html'
+
 export class LayerPanelComponent {
-  constructor (mapController, layers) {
+  constructor (placeholderId, mapController, layers) {
     this.mapController = mapController
 
+    document.getElementById(placeholderId).outerHTML = template
     document.getElementById('layer-toggle').onclick = this.toggleMapLayer
 
     const layerButtons = document.getElementById('layer-buttons')
