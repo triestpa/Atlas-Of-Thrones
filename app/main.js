@@ -2,7 +2,9 @@ import './styles.scss'
 import { MapApi } from './api'
 import { LocationSearch } from './search'
 import { MapController } from './map'
+import { LayerPanelComponent } from './components/layer-panel/layer-panel'
 
+/** Main UI Controller Class */
 export class ViewController {
   /** Initialize View Properties */
   constructor () {
@@ -14,6 +16,8 @@ export class ViewController {
 
     this.mapController = new MapController((name, id, type) => this.showInfo(name, id, type))
     this.locationSearch = new LocationSearch()
+
+
     this.loadMapData()
     this.searchDebounce = null
   }
@@ -32,6 +36,9 @@ export class ViewController {
 
     // Download map locations
     const locationTypes = Object.keys(locationLayers)
+
+    this.LayerPanelComponent = new LayerPanelComponent(this.mapController, locationTypes)
+
     for (let locationType of locationTypes) {
       const geojson = await this.api.getLocations(locationType)
       this.locationSearch.addGeoJsonItems(geojson, locationType)
@@ -144,18 +151,6 @@ export class ViewController {
   toggleInfo () {
     const infoContainer = document.getElementById('info-container')
     infoContainer.classList.toggle('info-active')
-  }
-
-  toggleLayerPanel () {
-    const infoContainer = document.getElementById('layer-panel')
-    infoContainer.classList.toggle('layer-panel-active')
-  }
-
-  /** Toggle map layer visibility */
-  toggleMapLayer (layerName) {
-    const button = document.getElementById(`${layerName}-toggle`)
-    button.classList.toggle('toggle-active')
-    this.mapController.toggleLayer(layerName)
   }
 }
 
