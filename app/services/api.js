@@ -1,6 +1,7 @@
 import { CancelToken, get } from 'axios'
 
-export class MapApi {
+/** API Wrapper Service Class */
+export class ApiService {
   constructor (url = 'http://localhost:5000/') {
     this.url = url
     this.cancelToken = CancelToken.source()

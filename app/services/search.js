@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js'
 
-export class LocationSearch {
+/** Location Search Service Class */
+export class SearchService {
   constructor () {
     this.options = {
       keys: ['name'],
