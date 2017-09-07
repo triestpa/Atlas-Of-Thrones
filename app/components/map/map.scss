@@ -30,12 +30,13 @@
   border: none;
 }
 
+.leaflet-control-attribution {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .leaflet-bottom {
     bottom: calc(#{$footerHeight} + 10px)
   }
 }
 
-.leaflet-control-attribution {
-  display: none;
-}

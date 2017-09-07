@@ -4,8 +4,8 @@ import L from 'leaflet'
 /** Leaflet Map Controller Class */
 export class MapController {
   /** Initialize Map Properties */
-  constructor (locationClickCallback, mapId = 'mapid') {
-    this.map = L.map(mapId, {
+  constructor (mapPlaceholderId, props) {
+    this.map = L.map(mapPlaceholderId, {
       center: [ 5, 20 ],
       zoom: 4,
       maxZoom: 8,
@@ -14,7 +14,7 @@ export class MapController {
     })
 
     this.map.zoomControl.setPosition('bottomright')
-    this.locationClickCallback = locationClickCallback
+    this.onLocationSelected = props.onLocationSelected
     this.layers = { }
     this.selectedRegion = null
 
@@ -26,7 +26,7 @@ export class MapController {
   /** Add location geojson to the leaflet instance */
   addLocationGeojson (layerTitle, geojson, iconUrl) {
     const properties = {}
-    const icon = this.getIcon(iconUrl)
+    const icon = L.icon({ iconUrl, iconSize: [ 24, 56 ] })
 
     properties.pointToLayer = function (feature, latlng) {
       return L.marker(latlng, { icon, title: feature.properties.name })
@@ -36,7 +36,7 @@ export class MapController {
       layer.bindPopup(feature.properties.name, { closeButton: false })
       layer.on({
         click: async (e) => {
-          this.locationClickCallback(feature.properties.name, feature.properties.id, feature.properties.type)
+          this.onLocationSelected(feature.properties.name, feature.properties.id, feature.properties.type)
           this.setHighlightedRegion(null)
         }
       })
@@ -58,7 +58,7 @@ export class MapController {
     properties.onEachFeature = (feature, layer) => {
       layer.on({
         click: async (e) => {
-          this.locationClickCallback(feature.properties.name, feature.properties.id, 'kingdom')
+          this.onLocationSelected(feature.properties.name, feature.properties.id, 'kingdom')
           this.map.closePopup()
           this.setHighlightedRegion(layer)
         }
@@ -96,11 +96,6 @@ export class MapController {
   /** Check if layer is added to map  */
   isLayerShowing (layerName) {
     return this.map.hasLayer(this.layers[layerName])
-  }
-
-  /** Create a leaflet icon from a URL */
-  getIcon (iconUrl, iconSize = [ 24, 56 ]) {
-    return L.icon({ iconUrl, iconSize })
   }
 
   /** Trigger "click" on layer with provided name */

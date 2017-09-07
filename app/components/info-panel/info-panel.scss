@@ -1,6 +1,6 @@
 @import '../../_variables.scss';
 
-#info-title {
+.info-title {
   font-family: 'MedievalSharp', cursive;
   height: $footerHeight;
   display: flex;
@@ -22,7 +22,7 @@
   }
 }
 
-#info-content {
+.info-content {
   padding: 0 8% 24px 8%;
   margin: 0 auto;
   background: $lightDark;
@@ -33,7 +33,7 @@
   font-weight: 300;
 }
 
-#info-container {
+.info-container {
   position: absolute;
   overflow-y: hidden;
   bottom: 0;
@@ -47,19 +47,11 @@
   transform: translateY(calc(100% - #{$footerHeight}));
 }
 
-@media (max-width: 600px) {
-  #info-container  {
-    left: 0;
-    width: 100%;
-    height: 80vh;
-  }
-}
-
-#info-container.info-active {
+.info-container.info-active {
   transform: translateY(0);
 }
 
-#info-body {
+.info-body {
   margin-top: $footerHeight;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -67,7 +59,7 @@
   height: 80%;
 }
 
-#info-footer {
+.info-footer {
   font-size: 0.8rem;
   font-family: 'Lato', sans-serif;
   padding: 8%;
@@ -75,7 +67,15 @@
   text-transform: uppercase;
 }
 
-#blog-link {
+.blog-link {
   letter-spacing: 0.1rem;
   font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .info-container  {
+    left: 0;
+    width: 100%;
+    height: 80vh;
+  }
 }

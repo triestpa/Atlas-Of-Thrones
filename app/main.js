@@ -14,51 +14,83 @@ export class ViewController {
   constructor () {
     document.getElementById('app').outerHTML = template
 
+    this.searchService = new SearchService()
+
     if (window.location.hostname === 'localhost') {
       this.api = new ApiService('http://localhost:5000/')
     } else {
       this.api = new ApiService('https://api.atlasofthrones.com/')
     }
 
-    this.infoContainer = new InfoPanelComponent('info-panel-placeholder', this.api)
-    this.mapController = new MapController((name, id, type) => this.infoContainer.showInfo(name, id, type))
-    this.searchService = new SearchService()
+    this.locationPointTypes = [ 'castle', 'city', 'town', 'ruin', 'region', 'landmark' ]
 
+    this.initializeComponents()
     this.loadMapData()
+  }
+
+  initializeComponents () {
+    this.infoContainer = new InfoPanelComponent('info-panel-placeholder', {
+      apiService: this.api
+    })
+
+    this.mapController = new MapController('map-placeholder', {
+      onLocationSelected: (name, id, type) => {
+        this.infoContainer.showInfo(name, id, type)
+      }
+    })
+
+    this.layerPanel = new LayerPanelComponent('layer-panel-placeholder', {
+      layerNames: ['kingdom', ...this.locationPointTypes],
+      onLayerToggle: layerName => this.mapController.toggleLayer(layerName)
+    })
+
+    this.searchPanel = new SearchPanelComponent('search-panel-placeholder', {
+      searchService: this.searchService,
+      onResultSelected: result => this.searchResultSelected(result)
+    })
   }
 
   /** Load map data from the API */
   async loadMapData () {
-    const iconBaseURL = 'https://cdn.patricktriest.com/icons/atlas_of_thrones/'
-    const locationLayers = {
-      castle: `${iconBaseURL}castle.svg`,
-      city: `${iconBaseURL}city.svg`,
-      town: `${iconBaseURL}village.svg`,
-      ruin: `${iconBaseURL}ruin.svg`,
-      region: `${iconBaseURL}nature.svg`,
-      landmark: `${iconBaseURL}misc.svg`
-    }
-
-    // Download map locations
-    const locationTypes = Object.keys(locationLayers)
-
-
-    this.layerPanel = new LayerPanelComponent('layer-panel-placeholder', this.mapController, ['kingdom', ...locationTypes])
-
-    for (let locationType of locationTypes) {
-      const geojson = await this.api.getLocations(locationType)
-      this.searchService.addGeoJsonItems(geojson, locationType)
-      this.mapController.addLocationGeojson(locationType, geojson, locationLayers[locationType])
-      // this.toggleMapLayer(locationType)
-    }
-
     // Download kingdom boundaries
     const kingdomsGeojson = await this.api.getKingdoms()
+
+    // Add boundary data to search service
     this.searchService.addGeoJsonItems(kingdomsGeojson, 'kingdom')
+
+    // Add data to map
     this.mapController.addKingdomGeojson(kingdomsGeojson)
+
+    // Show kingdom boundaries
     this.layerPanel.toggleMapLayer('kingdom')
 
-    this.searchPanel = new SearchPanelComponent('search-panel-placeholder', this.searchService, this.mapController, this.layerPanel)
+    // Download location point geodata
+    for (let locationType of this.locationPointTypes) {
+      // Download GeoJSON + metadata
+      const geojson = await this.api.getLocations(locationType)
+
+      // Add data to search service
+      this.searchService.addGeoJsonItems(geojson, locationType)
+
+      // Add data to map
+      this.mapController.addLocationGeojson(locationType, geojson, this.getIconUrl(locationType))
+    }
+  }
+
+  /** Display the selected search result  */
+  searchResultSelected (searchResult) {
+    // Show result layer if currently hidden
+    if (!this.mapController.isLayerShowing(searchResult.layerName)) {
+      this.layerPanel.toggleMapLayer(searchResult.layerName)
+    }
+
+    // Highlight result on map
+    this.mapController.selectLocation(searchResult.id, searchResult.layerName)
+  }
+
+  /** Format Icon Url For Layer Type  */
+  getIconUrl (layerName) {
+    return `https://cdn.patricktriest.com/atlas-of-thrones/icons/${layerName}.svg`
   }
 }
 

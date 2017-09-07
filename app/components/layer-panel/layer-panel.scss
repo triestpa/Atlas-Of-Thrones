@@ -1,10 +1,10 @@
 @import '../../_variables.scss';
 
-#layer-toggle {
+.layer-toggle {
   display: none;
 }
 
-#layer-panel {
+.layer-panel {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -20,39 +20,11 @@
   }
 }
 
-#layer-buttons {
+.layer-buttons {
   text-transform: uppercase;
 
   :last-child {
     border-bottom: 1px solid $offWhite;
-  }
-}
-
-@media (max-width: 600px) {
-  #layer-panel {
-    display: inline-flex;
-    align-items: center;
-    top: 15%; //calc(#{$searchBarHeight} + 20px);
-    right: 0;
-    // top: 0;
-    transform: translateX(calc(100% - #{$toggleLayerPanelButtonWidth}));
-    transition: all 0.3s ease-in-out;
-  }
-
-  #layer-panel.layer-panel-active {
-    transform: translateX(0);
-  }
-
-  #layer-toggle {
-    cursor: pointer;
-    display: block;
-    width: $toggleLayerPanelButtonWidth;
-    transform: translateY(120%) rotate(-90deg);
-    padding: 10px;
-    margin-left: -20px;
-    letter-spacing: 1rem;
-
-    text-transform: uppercase;
   }
 }
 
@@ -67,4 +39,32 @@
 
 .toggle-active {
   color: $offWhite;
+}
+
+@media (max-width: 600px) {
+  .layer-panel {
+    display: inline-flex;
+    align-items: center;
+    top: 15%; //calc(#{$searchBarHeight} + 20px);
+    right: 0;
+    // top: 0;
+    transform: translateX(calc(100% - #{$toggleLayerPanelButtonWidth}));
+    transition: all 0.3s ease-in-out;
+  }
+
+  .layer-panel.layer-panel-active {
+    transform: translateX(0);
+  }
+
+  .layer-toggle {
+    cursor: pointer;
+    display: block;
+    width: $toggleLayerPanelButtonWidth;
+    transform: translateY(120%) rotate(-90deg);
+    padding: 10px;
+    margin-left: -20px;
+    letter-spacing: 1rem;
+
+    text-transform: uppercase;
+  }
 }

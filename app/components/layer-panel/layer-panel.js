@@ -1,34 +1,38 @@
 import './layer-panel.scss'
 import template from './layer-panel.html'
+import { Component } from '../component'
 
-export class LayerPanelComponent {
-  constructor (placeholderId, mapController, layers) {
-    this.mapController = mapController
+export class LayerPanelComponent extends Component {
+  constructor (placeholderId, props) {
+    super(placeholderId, template)
+    this.onLayerToggle = props.onLayerToggle
+    this.layerPanelElem = this.componentElem.querySelector('[rel=panel]')
 
-    document.getElementById(placeholderId).outerHTML = template
-    document.getElementById('layer-toggle').addEventListener('click', () => this.toggleLayerPanel())
+    this.layerToggleElem = this.componentElem.querySelector('[rel=toggle]')
+    this.layerToggleElem.addEventListener('click', () => this.toggleLayerPanel())
 
-    const layerButtons = document.getElementById('layer-buttons')
-    for (let layerName of layers) {
+    const layerButtons = this.componentElem.querySelector('[rel=buttons]')
+    for (let layerName of props.layerNames) {
       let layerItem = document.createElement('div')
       layerItem.textContent = `${layerName}s`
-      layerItem.addEventListener('click', () => this.toggleMapLayer(layerName))
       layerItem.className = 'layer-button'
-      layerItem.id = `${layerName}-toggle`
+      layerItem.setAttribute('rel', `${layerName}-toggle`)
+      layerItem.addEventListener('click', () => this.toggleMapLayer(layerName))
       layerButtons.appendChild(layerItem)
     }
   }
 
   /** Toggle the info panel (only applies to mobile) */
   toggleLayerPanel () {
-    const infoContainer = document.getElementById('layer-panel')
-    infoContainer.classList.toggle('layer-panel-active')
+    this.layerPanelElem.classList.toggle('layer-panel-active')
   }
 
   /** Toggle map layer visibility */
   toggleMapLayer (layerName) {
-    const button = document.getElementById(`${layerName}-toggle`)
+    const button = this.componentElem.querySelector(`[rel=${layerName}-toggle]`)
     button.classList.toggle('toggle-active')
-    this.mapController.toggleLayer(layerName)
+
+    this.onLayerToggle(layerName)
+    // this.mapController.toggleLayer(layerName)
   }
 }

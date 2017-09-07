@@ -1,6 +1,6 @@
 @import '../../_variables.scss';
 
-#search-container {
+.search-container {
   position: absolute;
   top: 24px;
   left: 24px;
@@ -25,7 +25,7 @@
   }
 }
 
-#search-results {
+.search-results {
   margin-top: 4px;
   border-radius: 4px;
   background: $midDark;
@@ -40,11 +40,11 @@
   }
 }
 
-#search-bar, #search-input {
+.search-bar, .search-input {
   height: $searchBarHeight;
 }
 
-#search-input {
+.search-input {
   background-color: $midDark;
   color: $offWhite;
   border: 3px $lightDark solid;
@@ -59,16 +59,16 @@
 }
 
 @media (max-width: 600px) {
-  #search-container {
+  .search-container {
     width: 100%;
     top: 0;
     left: 0;
 
-    #search-input {
+    .search-input {
       border-radius: 0;
     }
 
-    #search-results {
+    .search-results {
       margin-top: 0;
       border-radius: 0;
     }

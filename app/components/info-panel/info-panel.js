@@ -1,30 +1,33 @@
 import './info-panel.scss'
 import template from './info-panel.html'
+import { Component } from '../component'
 
-export class InfoPanelComponent {
-  constructor (placeholderId, api) {
-    document.getElementById(placeholderId).outerHTML = template
-    this.api = api
+export class InfoPanelComponent extends Component {
+  constructor (placeholderId, props) {
+    super(placeholderId, template)
+    this.api = props.apiService
 
-    const infoTitleElem = document.getElementById('info-title')
-    infoTitleElem.addEventListener('click', () => this.toggleInfo())
+    // Bind UI elements
+    this.containerElem = this.componentElem.querySelector('[rel=container]')
+    this.infoTitleElem = this.componentElem.querySelector('[rel=title]')
+    this.infoContent = this.componentElem.querySelector('[rel=content]')
+
+    // Toggle info panel on title click
+    this.infoTitleElem.addEventListener('click', () => this.toggleInfo())
   }
 
   /** Show info when a map item is selected */
   async showInfo (name, id, type) {
-    const infoTitle = document.getElementById('info-title')
-    infoTitle.innerHTML = `<h1>${name}</h1>`
+    this.infoTitleElem.innerHTML = `<h1>${name}</h1>`
 
-    const infoContent = document.getElementById('info-content')
     if (id && type === 'kingdom') {
-      infoContent.innerHTML = await this.getKingdomDetailHtml(id)
+      this.infoContent.innerHTML = await this.getKingdomDetailHtml(id)
     } else {
-      infoContent.innerHTML = await this.getLocationDetailHtml(id, type)
+      this.infoContent.innerHTML = await this.getLocationDetailHtml(id, type)
     }
 
     // Show info window if hidden, and on desktop
-    const infoContainer = document.getElementById('info-container')
-    if (!infoContainer.classList.contains('info-active') && window.innerWidth > 600) {
+    if (!this.containerElem.classList.contains('info-active') && window.innerWidth > 600) {
       this.toggleInfo()
     }
   }
@@ -69,7 +72,6 @@ export class InfoPanelComponent {
 
   /** Toggle the info container */
   toggleInfo () {
-    const infoContainer = document.getElementById('info-container')
-    infoContainer.classList.toggle('info-active')
+    this.containerElem.classList.toggle('info-active')
   }
 }
