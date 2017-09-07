@@ -15,7 +15,7 @@ The tutorial for the frontend web app is coming in one week.
 - `public/` - The compiled and minified front-end code.
 - `server/` - The Node.js API server code.
 - `data_augmentation/` - A collection of scripts to augment the shapefile data with summary data scraped from various wikis.
-- `geo_json_preview` - A simple html page to preview geojson data on a map.
+- `geojson_preview` - A simple html page to preview geojson data on a map.
 
 #### Setup
 
@@ -36,4 +36,4 @@ CORS_ORIGIN=http://localhost:8080
 
 You'll need to change the username in the DATABASE_URL entry to match your PostgreSQL user credentials. Unless your name is "Patrick", that is, in which case it might already be fine.
 
-Run `npm run local` to start the API server on `localhost:5000`, and to build/watch/serve the frontend code from `localhost:8080`.
+Run `npm run dev` to start the API server on `localhost:5000`, and to build/watch/serve the frontend code from `localhost:8080`.
