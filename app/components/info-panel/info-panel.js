@@ -13,37 +13,40 @@ export class InfoPanelComponent extends Component {
     this.infoContent = this.componentElem.querySelector('[rel=content]')
 
     // Toggle info panel on title click
-    this.infoTitleElem.addEventListener('click', () => this.toggleInfo())
+    this.infoTitleElem.addEventListener('click', () => this.toggleInfoPanel())
   }
 
   /** Show info when a map item is selected */
   async showInfo (name, id, type) {
     this.infoTitleElem.innerHTML = `<h1>${name}</h1>`
 
+    // Download and display information, based on location type
     if (id && type === 'kingdom') {
       this.infoContent.innerHTML = await this.getKingdomDetailHtml(id)
     } else {
       this.infoContent.innerHTML = await this.getLocationDetailHtml(id, type)
     }
 
-    // Show info window if hidden, and on desktop
+    // Show info window if hidden, and always on desktop
     if (!this.containerElem.classList.contains('info-active') && window.innerWidth > 600) {
-      this.toggleInfo()
+      this.toggleInfoPanel()
     }
   }
 
   /** Create kingdom detail HTML string */
   async getKingdomDetailHtml (id) {
-    let size = await this.api.getRegionSize(id)
-    size = size.toLocaleString(undefined, { maximumFractionDigits: 0 })
+    // Get kingdom metadata
+    let { kingdomSize, castleCount, kingdomSummary } = await this.api.getAllKingdomDetails(id)
 
-    const castleCount = await this.api.getCastleCount(id)
-    const kingdomInfo = await this.api.getRegionDetails(id)
-    const summaryHTML = this.getInfoSummaryHtml(kingdomInfo)
+    // Convert size to an easily readable string
+    kingdomSize = kingdomSize.toLocaleString(undefined, { maximumFractionDigits: 0 })
+
+    // Format summary HTML
+    const summaryHTML = this.getInfoSummaryHtml(kingdomSummary)
 
     return `
       <h3>KINGDOM</h3>
-      <div>Size Estimate - ${size} km<sup>2</sup></div>
+      <div>Size Estimate - ${kingdomSize} km<sup>2</sup></div>
       <div>Number of Castles - ${castleCount}</div>
       ${summaryHTML}
       `
@@ -51,7 +54,7 @@ export class InfoPanelComponent extends Component {
 
   /** Create location detail HTML string */
   async getLocationDetailHtml (id, type) {
-    const locationInfo = await this.api.getLocationDetails(id)
+    const locationInfo = await this.api.getLocationSummary(id)
     const summaryHTML = this.getInfoSummaryHtml(locationInfo)
     return `
       <h3>${type.toUpperCase()}</h3>
@@ -70,8 +73,7 @@ export class InfoPanelComponent extends Component {
     `
   }
 
-  /** Toggle the info container */
-  toggleInfo () {
+  toggleInfoPanel () {
     this.containerElem.classList.toggle('info-active')
   }
 }

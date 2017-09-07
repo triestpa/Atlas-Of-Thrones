@@ -5,9 +5,10 @@ export class ApiService {
   constructor (url = 'http://localhost:5000/') {
     this.url = url
     this.cancelToken = CancelToken.source()
+    this.cancelTokens = {}
   }
 
-  async httpGet (endpoint = '', params = {}) {
+  async httpGet (endpoint = '') {
     this.cancelToken.cancel('Cancelled Ongoing Request')
     this.cancelToken = CancelToken.source()
     const response = await get(`${this.url}${endpoint}`, { cancelToken: this.cancelToken.token })
@@ -18,7 +19,7 @@ export class ApiService {
     return this.httpGet(`locations/${type}`)
   }
 
-  async getLocationDetails (id) {
+  async getLocationSummary (id) {
     return this.httpGet(`locations/${id}/summary`)
   }
 
@@ -26,15 +27,23 @@ export class ApiService {
     return this.httpGet('kingdoms')
   }
 
-  async getRegionSize (id) {
+  async getKingdomSize (id) {
     return this.httpGet(`kingdoms/${id}/size`)
-  }
-
-  async getRegionDetails (id) {
-    return this.httpGet(`kingdoms/${id}/summary`)
   }
 
   async getCastleCount (id) {
     return this.httpGet(`kingdoms/${id}/castles`)
+  }
+
+  async getKingdomSummary (id) {
+    return this.httpGet(`kingdoms/${id}/summary`)
+  }
+
+  async getAllKingdomDetails (id) {
+    return {
+      kingdomSize: await this.getKingdomSize(id),
+      castleCount: await this.getCastleCount(id),
+      kingdomSummary: await this.getKingdomSummary(id)
+    }
   }
 }
