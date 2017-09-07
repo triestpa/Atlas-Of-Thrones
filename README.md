@@ -8,11 +8,14 @@ Visit http://blog.patricktriest.com/game-of-thrones-map-node-postgres-redis/ for
 
 The tutorial for the frontend web app is coming in one week.
 
+![](https://cdn.patricktriest.com/blog/images/posts/got_map/got_map.jpg)
+
 #### Structure
 - `app/` - The front-end web application source.
 - `public/` - The compiled and minified front-end code.
 - `server/` - The Node.js API server code.
-- `setup/` - A collection of scripts to download the shapefiles and setup the postgresql database.
+- `data_augmentation/` - A collection of scripts to augment the shapefile data with summary data scraped from various wikis.
+- `geo_json_preview` - A simple html page to preview geojson data on a map.
 
 #### Setup
 
