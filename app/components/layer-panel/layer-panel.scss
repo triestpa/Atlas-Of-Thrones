@@ -23,23 +23,25 @@
 .layer-buttons {
   text-transform: uppercase;
 
+  div {
+    color: $grey;
+    border-top: 1px solid $offWhite;
+    padding: 6px;
+    cursor: pointer;
+    user-select: none;
+    font-family: 'Lato', sans-serif;
+  }
+
+  div.toggle-active {
+    color: $offWhite;
+  }
+
   :last-child {
     border-bottom: 1px solid $offWhite;
   }
 }
 
-.layer-button {
-  color: $grey;
-  border-top: 1px solid $offWhite;
-  padding: 6px;
-  cursor: pointer;
-  user-select: none;
-  font-family: 'Lato', sans-serif;
-}
 
-.toggle-active {
-  color: $offWhite;
-}
 
 @media (max-width: 600px) {
   .layer-panel {
