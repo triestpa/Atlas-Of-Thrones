@@ -23,30 +23,42 @@ export class ViewController {
     }
 
     this.locationPointTypes = [ 'castle', 'city', 'town', 'ruin', 'region', 'landmark' ]
-
     this.initializeComponents()
     this.loadMapData()
   }
 
   initializeComponents () {
     this.infoContainer = new InfoPanelComponent('info-panel-placeholder', {
-      apiService: this.api
+      data: {
+        apiService: this.api
+      }
     })
 
     this.mapController = new MapController('map-placeholder', {
-      onLocationSelected: (name, id, type) => {
-        this.infoContainer.showInfo(name, id, type)
+      events: {
+        locationSelected: event => {
+          const { name, id, type } = event.detail
+          this.infoContainer.showInfo(name, id, type)
+        }
       }
     })
 
     this.layerPanel = new LayerPanelComponent('layer-panel-placeholder', {
-      layerNames: ['kingdom', ...this.locationPointTypes],
-      onLayerToggle: layerName => this.mapController.toggleLayer(layerName)
+      data: {
+        layerNames: ['kingdom', ...this.locationPointTypes]
+      },
+      events: {
+        layerToggle: event => { this.mapController.toggleLayer(event.detail) }
+      }
     })
 
     this.searchPanel = new SearchPanelComponent('search-panel-placeholder', {
-      searchService: this.searchService,
-      onResultSelected: result => this.searchResultSelected(result)
+      data: {
+        searchService: this.searchService
+      },
+      events: {
+        resultSelected: event => this.searchResultSelected(event.detail)
+      }
     })
   }
 
