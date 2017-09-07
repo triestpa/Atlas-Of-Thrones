@@ -4,14 +4,10 @@ import { Component } from '../component'
 
 export class SearchPanelComponent extends Component {
   constructor (placeholderId, props) {
-    super(placeholderId, template)
-    this.searchService = props.searchService
-    this.onResultSelected = props.onResultSelected
-
+    super(placeholderId, template, props.events)
+    this.searchService = props.data.searchService
     this.searchDebounce = null
-    this.inputElem = this.componentElem.querySelector('[rel=input]')
-    this.inputElem.addEventListener('keyup', (e) => this.onSearch(e.target.value))
-    this.resultsElem = this.componentElem.querySelector('[rel=results]')
+    this.refs.input.addEventListener('keyup', (e) => this.onSearch(e.target.value))
   }
 
   /** Receive search bar input, and debounce by 200 ms */
@@ -23,27 +19,25 @@ export class SearchPanelComponent extends Component {
   /** Search for the input term, and display results in UI */
   search (term) {
     // Clear search results
-    this.resultsElem.innerHTML = ''
+    this.refs.results.innerHTML = ''
 
     // Get the top ten search results
     this.searchResults = this.searchService.search(term).slice(0, 10)
 
     // Display search results on UI
-    for (let i = 0; i < this.searchResults.length; i++) {
-      let searchResult = this.searchResults[i]
+    for (let searchResult of this.searchResults) {
       let layerItem = document.createElement('div')
       layerItem.textContent = searchResult.name
       layerItem.addEventListener('click', () => this.searchResultSelected(searchResult))
-      this.resultsElem.appendChild(layerItem)
+      this.refs.results.appendChild(layerItem)
     }
   }
 
   /** Display the selected search result  */
   searchResultSelected (searchResult) {
     // Clear search input and results
-    this.inputElem.value = ''
-    this.resultsElem.innerHTML = ''
-
-    this.onResultSelected(searchResult)
+    this.refs.input.value = ''
+    this.refs.results.innerHTML = ''
+    this.triggerEvent('resultSelected', searchResult)
   }
 }

@@ -5,30 +5,25 @@ import { Component } from '../component'
 export class InfoPanelComponent extends Component {
   constructor (placeholderId, props) {
     super(placeholderId, template)
-    this.api = props.apiService
-
-    // Bind UI elements
-    this.containerElem = this.componentElem.querySelector('[rel=container]')
-    this.infoTitleElem = this.componentElem.querySelector('[rel=title]')
-    this.infoContent = this.componentElem.querySelector('[rel=content]')
+    this.api = props.data.apiService
 
     // Toggle info panel on title click
-    this.infoTitleElem.addEventListener('click', () => this.toggleInfoPanel())
+    this.refs.title.addEventListener('click', () => this.toggleInfoPanel())
   }
 
   /** Show info when a map item is selected */
   async showInfo (name, id, type) {
-    this.infoTitleElem.innerHTML = `<h1>${name}</h1>`
+    this.refs.title.innerHTML = `<h1>${name}</h1>`
 
     // Download and display information, based on location type
     if (id && type === 'kingdom') {
-      this.infoContent.innerHTML = await this.getKingdomDetailHtml(id)
+      this.refs.content.innerHTML = await this.getKingdomDetailHtml(id)
     } else {
-      this.infoContent.innerHTML = await this.getLocationDetailHtml(id, type)
+      this.refs.content.innerHTML = await this.getLocationDetailHtml(id, type)
     }
 
     // Show info window if hidden, and always on desktop
-    if (!this.containerElem.classList.contains('info-active') && window.innerWidth > 600) {
+    if (!this.refs.container.classList.contains('info-active') && window.innerWidth > 600) {
       this.toggleInfoPanel()
     }
   }
@@ -74,6 +69,6 @@ export class InfoPanelComponent extends Component {
   }
 
   toggleInfoPanel () {
-    this.containerElem.classList.toggle('info-active')
+    this.refs.container.classList.toggle('info-active')
   }
 }

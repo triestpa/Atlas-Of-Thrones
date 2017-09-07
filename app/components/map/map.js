@@ -1,10 +1,12 @@
 import './map.scss'
 import L from 'leaflet'
+import { Component } from '../component'
 
 /** Leaflet Map Controller Class */
-export class MapController {
+export class MapController extends Component {
   /** Initialize Map Properties */
   constructor (mapPlaceholderId, props) {
+    super(mapPlaceholderId, null, props.events)
     // Initialize Leaflet map
     this.map = L.map(mapPlaceholderId, {
       center: [ 5, 20 ],
@@ -16,9 +18,6 @@ export class MapController {
 
     // Position zoom control
     this.map.zoomControl.setPosition('bottomright')
-
-    // Assign location selected callback
-    this.onLocationSelected = props.onLocationSelected
 
     // Initialize state variables
     this.layers = {}
@@ -46,7 +45,8 @@ export class MapController {
         layer.on({
           click: async (e) => {
             this.setHighlightedRegion(null) // Deselect highlighed region
-            this.onLocationSelected(feature.properties.name, feature.properties.id, feature.properties.type)
+            const { name, id, type } = feature.properties
+            this.triggerEvent('locationSelected', { name, id, type })
           }
         })
       }
@@ -67,7 +67,8 @@ export class MapController {
       onEachFeature: (feature, layer) => {
         layer.on({
           click: async (e) => {
-            this.onLocationSelected(feature.properties.name, feature.properties.id, 'kingdom')
+            const { name, id } = feature.properties
+            this.triggerEvent('locationSelected', { name, id, type: 'kingdom' })
             this.map.closePopup() // Deselect selected location marker
             this.setHighlightedRegion(layer)
           }

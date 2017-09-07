@@ -4,32 +4,24 @@ import { Component } from '../component'
 
 export class LayerPanelComponent extends Component {
   constructor (placeholderId, props) {
-    super(placeholderId, template)
-
-    // Assign onLayerToggle callback
-    this.onLayerToggle = props.onLayerToggle
-
-    // Bind UI elements
-    this.layerPanelElem = this.componentElem.querySelector('[rel=panel]')
-    this.layerToggleElem = this.componentElem.querySelector('[rel=toggle]')
-    const layerButtons = this.componentElem.querySelector('[rel=buttons]')
+    super(placeholderId, template, props.events)
 
     // Toggle layer panel on click (mobile only)
-    this.layerToggleElem.addEventListener('click', () => this.toggleLayerPanel())
+    this.refs.toggle.addEventListener('click', () => this.toggleLayerPanel())
 
     // Add a toggle button for each layer
-    for (let layerName of props.layerNames) {
+    for (let layerName of props.data.layerNames) {
       let layerItem = document.createElement('div')
       layerItem.textContent = `${layerName}s`
       layerItem.setAttribute('rel', `${layerName}-toggle`)
       layerItem.addEventListener('click', (e) => this.toggleMapLayer(layerName))
-      layerButtons.appendChild(layerItem)
+      this.refs.buttons.appendChild(layerItem)
     }
   }
 
   /** Toggle the info panel (only applies to mobile) */
   toggleLayerPanel () {
-    this.layerPanelElem.classList.toggle('layer-panel-active')
+    this.refs.panel.classList.toggle('layer-panel-active')
   }
 
   /** Toggle map layer visibility */
@@ -38,6 +30,6 @@ export class LayerPanelComponent extends Component {
     this.componentElem.querySelector(`[rel=${layerName}-toggle]`).classList.toggle('toggle-active')
 
     // Trigger layer toggle callback
-    this.onLayerToggle(layerName)
+    this.triggerEvent('layerToggle', layerName)
   }
 }
