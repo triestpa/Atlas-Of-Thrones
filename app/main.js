@@ -3,10 +3,10 @@ import template from './main.html'
 
 import { ApiService } from './services/api'
 import { SearchService } from './services/search'
-import { MapController } from './components/map/map'
-import { LayerPanelComponent } from './components/layer-panel/layer-panel'
-import { InfoPanelComponent } from './components/info-panel/info-panel'
-import { SearchPanelComponent } from './components/search-panel/search-panel'
+import { Map } from './components/map/map'
+import { LayerPanel } from './components/layer-panel/layer-panel'
+import { InfoPanel } from './components/info-panel/info-panel'
+import { SearchPanel } from './components/search-panel/search-panel'
 
 /** Main UI Controller Class */
 export class ViewController {
@@ -14,8 +14,9 @@ export class ViewController {
   constructor () {
     document.getElementById('app').outerHTML = template
 
-    this.searchService = new SearchService()
+    this.searchService = new SearchService() // Initialize search service
 
+    // Initialize API service
     if (window.location.hostname === 'localhost') {
       this.api = new ApiService('http://localhost:5000/')
     } else {
@@ -27,38 +28,43 @@ export class ViewController {
     this.loadMapData()
   }
 
+  /** Initialize Components with data and event listeners */
   initializeComponents () {
-    this.infoContainer = new InfoPanelComponent('info-panel-placeholder', {
-      data: {
-        apiService: this.api
+    // Initialize Info Panel
+    this.infoComponent = new InfoPanel('info-panel-placeholder', {
+      data: { apiService: this.api }
+    })
+
+    // Initialize Map
+    this.mapComponent = new Map('map-placeholder', {
+      events: { locationSelected: event => {
+        // Show data in infoComponent on "locationSelected" event
+        const { name, id, type } = event.detail
+        this.infoComponent.showInfo(name, id, type)
+      }}
+    })
+
+    // Initialize Layer Toggle Panel
+    this.layerPanel = new LayerPanel('layer-panel-placeholder', {
+      data: { layerNames: ['kingdom', ...this.locationPointTypes] },
+      events: { layerToggle:
+        // Toggle layer in map controller on "layerToggle" event
+        event => { this.mapComponent.toggleLayer(event.detail) }
       }
     })
 
-    this.mapController = new MapController('map-placeholder', {
-      events: {
-        locationSelected: event => {
-          const { name, id, type } = event.detail
-          this.infoContainer.showInfo(name, id, type)
+    // Initialize Search Panel
+    this.searchPanel = new SearchPanel('search-panel-placeholder', {
+      data: { searchService: this.searchService },
+      events: { resultSelected: event => {
+        // Show result on map when selected from search results
+        let searchResult = event.detail
+        if (!this.mapComponent.isLayerShowing(searchResult.layerName)) {
+          // Show result layer if currently hidden
+          this.layerPanel.toggleMapLayer(searchResult.layerName)
         }
-      }
-    })
-
-    this.layerPanel = new LayerPanelComponent('layer-panel-placeholder', {
-      data: {
-        layerNames: ['kingdom', ...this.locationPointTypes]
-      },
-      events: {
-        layerToggle: event => { this.mapController.toggleLayer(event.detail) }
-      }
-    })
-
-    this.searchPanel = new SearchPanelComponent('search-panel-placeholder', {
-      data: {
-        searchService: this.searchService
-      },
-      events: {
-        resultSelected: event => this.searchResultSelected(event.detail)
-      }
+        this.mapComponent.selectLocation(searchResult.id, searchResult.layerName)
+      }}
     })
   }
 
@@ -71,7 +77,7 @@ export class ViewController {
     this.searchService.addGeoJsonItems(kingdomsGeojson, 'kingdom')
 
     // Add data to map
-    this.mapController.addKingdomGeojson(kingdomsGeojson)
+    this.mapComponent.addKingdomGeojson(kingdomsGeojson)
 
     // Show kingdom boundaries
     this.layerPanel.toggleMapLayer('kingdom')
@@ -81,23 +87,12 @@ export class ViewController {
       // Download GeoJSON + metadata
       const geojson = await this.api.getLocations(locationType)
 
-      // Add data to search service
+      // Add location data to search service
       this.searchService.addGeoJsonItems(geojson, locationType)
 
       // Add data to map
-      this.mapController.addLocationGeojson(locationType, geojson, this.getIconUrl(locationType))
+      this.mapComponent.addLocationGeojson(locationType, geojson, this.getIconUrl(locationType))
     }
-  }
-
-  /** Display the selected search result  */
-  searchResultSelected (searchResult) {
-    // Show result layer if currently hidden
-    if (!this.mapController.isLayerShowing(searchResult.layerName)) {
-      this.layerPanel.toggleMapLayer(searchResult.layerName)
-    }
-
-    // Highlight result on map
-    this.mapController.selectLocation(searchResult.id, searchResult.layerName)
   }
 
   /** Format Icon Url For Layer Type  */

@@ -2,11 +2,17 @@ import './search-panel.scss'
 import template from './search-panel.html'
 import { Component } from '../component'
 
-export class SearchPanelComponent extends Component {
+/**
+ * Search Panel Component
+ * Render and manage search-bar and search results.
+ */
+export class SearchPanel extends Component {
   constructor (placeholderId, props) {
     super(placeholderId, template, props.events)
     this.searchService = props.data.searchService
     this.searchDebounce = null
+
+    // Trigger search function for new input in searchbar
     this.refs.input.addEventListener('keyup', (e) => this.onSearch(e.target.value))
   }
 
@@ -25,12 +31,15 @@ export class SearchPanelComponent extends Component {
     this.searchResults = this.searchService.search(term).slice(0, 10)
 
     // Display search results on UI
-    for (let searchResult of this.searchResults) {
-      let layerItem = document.createElement('div')
-      layerItem.textContent = searchResult.name
-      layerItem.addEventListener('click', () => this.searchResultSelected(searchResult))
-      this.refs.results.appendChild(layerItem)
-    }
+    this.searchResults.forEach((result) => this.displaySearchResult(result))
+  }
+
+  /** Add search result row to UI */
+  displaySearchResult (searchResult) {
+    let layerItem = document.createElement('div')
+    layerItem.textContent = searchResult.name
+    layerItem.addEventListener('click', () => this.searchResultSelected(searchResult))
+    this.refs.results.appendChild(layerItem)
   }
 
   /** Display the selected search result  */
@@ -38,6 +47,8 @@ export class SearchPanelComponent extends Component {
     // Clear search input and results
     this.refs.input.value = ''
     this.refs.results.innerHTML = ''
+
+    // Send selected result to listeners
     this.triggerEvent('resultSelected', searchResult)
   }
 }

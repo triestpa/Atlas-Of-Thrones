@@ -2,30 +2,28 @@ import './info-panel.scss'
 import template from './info-panel.html'
 import { Component } from '../component'
 
-export class InfoPanelComponent extends Component {
+/**
+ * Info Panel Component
+ * Download and display metadata for selected items.
+ */
+export class InfoPanel extends Component {
   constructor (placeholderId, props) {
     super(placeholderId, template)
     this.api = props.data.apiService
 
     // Toggle info panel on title click
-    this.refs.title.addEventListener('click', () => this.toggleInfoPanel())
+    this.refs.title.addEventListener('click', () => this.refs.container.classList.toggle('info-active'))
   }
 
   /** Show info when a map item is selected */
   async showInfo (name, id, type) {
+    // Display location title
     this.refs.title.innerHTML = `<h1>${name}</h1>`
 
     // Download and display information, based on location type
-    if (id && type === 'kingdom') {
-      this.refs.content.innerHTML = await this.getKingdomDetailHtml(id)
-    } else {
-      this.refs.content.innerHTML = await this.getLocationDetailHtml(id, type)
-    }
-
-    // Show info window if hidden, and always on desktop
-    if (!this.refs.container.classList.contains('info-active') && window.innerWidth > 600) {
-      this.toggleInfoPanel()
-    }
+    this.refs.content.innerHTML = (type === 'kingdom')
+      ? await this.getKingdomDetailHtml(id)
+      : await this.getLocationDetailHtml(id, type)
   }
 
   /** Create kingdom detail HTML string */
@@ -39,6 +37,7 @@ export class InfoPanelComponent extends Component {
     // Format summary HTML
     const summaryHTML = this.getInfoSummaryHtml(kingdomSummary)
 
+    // Return filled HTML template
     return `
       <h3>KINGDOM</h3>
       <div>Size Estimate - ${kingdomSize} km<sup>2</sup></div>
@@ -49,26 +48,23 @@ export class InfoPanelComponent extends Component {
 
   /** Create location detail HTML string */
   async getLocationDetailHtml (id, type) {
+    // Get location metadata
     const locationInfo = await this.api.getLocationSummary(id)
+
+    // Format summary template
     const summaryHTML = this.getInfoSummaryHtml(locationInfo)
+
+    // Return filled HTML template
     return `
       <h3>${type.toUpperCase()}</h3>
-      ${summaryHTML}
-      `
+      ${summaryHTML}`
   }
 
-  /** Format location summary HTML */
+  /** Format location summary HTML template */
   getInfoSummaryHtml (info) {
     return `
       <h3>Summary</h3>
       <div>${info.summary}</div>
-      <div>
-        <a href="${info.url}" target="_blank" rel="noopener">Read More...</a>
-      </div>
-    `
-  }
-
-  toggleInfoPanel () {
-    this.refs.container.classList.toggle('info-active')
+      <div><a href="${info.url}" target="_blank" rel="noopener">Read More...</a></div>`
   }
 }

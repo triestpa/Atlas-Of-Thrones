@@ -2,11 +2,15 @@ import './map.scss'
 import L from 'leaflet'
 import { Component } from '../component'
 
-/** Leaflet Map Controller Class */
-export class MapController extends Component {
+/**
+ * Leaflet Map Component
+ * Render GoT map items, and provide user interactivity.
+ */
+export class Map extends Component {
   /** Initialize Map Properties */
   constructor (mapPlaceholderId, props) {
     super(mapPlaceholderId, null, props.events)
+
     // Initialize Leaflet map
     this.map = L.map(mapPlaceholderId, {
       center: [ 5, 20 ],
@@ -16,12 +20,9 @@ export class MapController extends Component {
       maxBounds: [ [ 50, -30 ], [ -45, 100 ] ]
     })
 
-    // Position zoom control
-    this.map.zoomControl.setPosition('bottomright')
-
-    // Initialize state variables
-    this.layers = {}
-    this.selectedRegion = null
+    this.map.zoomControl.setPosition('bottomright') // Position zoom control
+    this.layers = {} // Map layer dict (key/value = title/layer)
+    this.selectedRegion = null // Store currently selected region
 
     // Render Carto GoT tile baselayer
     L.tileLayer(
@@ -39,18 +40,19 @@ export class MapController extends Component {
           icon: L.icon({ iconUrl, iconSize: [ 24, 56 ] }),
           title: feature.properties.name })
       },
-      // Assign on click listener to each location
-      onEachFeature: (feature, layer) => {
-        layer.bindPopup(feature.properties.name, { closeButton: false })
-        layer.on({
-          click: async (e) => {
-            this.setHighlightedRegion(null) // Deselect highlighed region
-            const { name, id, type } = feature.properties
-            this.triggerEvent('locationSelected', { name, id, type })
-          }
-        })
-      }
+      onEachFeature: this.onEachLocation.bind(this)
     })
+  }
+
+  /** Assign Popup and click listener for each location point */
+  onEachLocation (feature, layer) {
+    // Bind popup to marker
+    layer.bindPopup(feature.properties.name, { closeButton: false })
+    layer.on({ click: (e) => {
+      this.setHighlightedRegion(null) // Deselect highlighed region
+      const { name, id, type } = feature.properties
+      this.triggerEvent('locationSelected', { name, id, type })
+    }})
   }
 
   /** Add boundary (kingdom) geojson to the leaflet instance */
@@ -63,18 +65,18 @@ export class MapController extends Component {
         'weight': 1,
         'opacity': 0.65
       },
-      // Assign on click listener to each location
-      onEachFeature: (feature, layer) => {
-        layer.on({
-          click: async (e) => {
-            const { name, id } = feature.properties
-            this.triggerEvent('locationSelected', { name, id, type: 'kingdom' })
-            this.map.closePopup() // Deselect selected location marker
-            this.setHighlightedRegion(layer)
-          }
-        })
-      }
+      onEachFeature: this.onEachKingdom.bind(this)
     })
+  }
+
+  /** Assign click listener for each kingdom GeoJSON item  */
+  onEachKingdom (feature, layer) {
+    layer.on({ click: (e) => {
+      const { name, id } = feature.properties
+      this.map.closePopup() // Deselect selected location marker
+      this.setHighlightedRegion(layer) // Highlight kingdom polygon
+      this.triggerEvent('locationSelected', { name, id, type: 'kingdom' })
+    }})
   }
 
   /** Highlight the selected region */
@@ -86,9 +88,7 @@ export class MapController extends Component {
     this.selected = layer
     if (this.selected) {
       this.selected.bringToFront()
-      this.selected.setStyle({
-        'color': 'blue'
-      })
+      this.selected.setStyle({ color: 'blue' })
     }
   }
 

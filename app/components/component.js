@@ -1,3 +1,6 @@
+/**
+ * Base component class to provide view ref binding, template insertion, and event listener setup
+ */
 export class Component {
   constructor (placeholderId, template, events) {
     this.componentElem = document.getElementById(placeholderId)
@@ -15,12 +18,14 @@ export class Component {
     if (events) { this.createEvents(events) }
   }
 
+  /** Read "event" component parameters, and attach event listeners for each */
   createEvents (events) {
     Object.keys(events).forEach((eventName) => {
       this.componentElem.addEventListener(eventName, events[eventName], false)
     })
   }
 
+  /** Trigger a component event with the provided "detail" payload */
   triggerEvent (eventName, detail) {
     const event = new window.CustomEvent(eventName, { detail })
     this.componentElem.dispatchEvent(event)
