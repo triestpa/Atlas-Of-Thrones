@@ -4,11 +4,7 @@
   "description": "Game of Thrones interactive map, powered by Leaflet, PostGIS, and Redis.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "serve": "webpack --watch & http-server ./public",
-    "dev": "NODE_ENV=local npm start & npm run serve",
-    "build": "NODE_ENV=production webpack",
-    "deploy-frontend": "npm run build && bash deploy.sh"
+    "start": "node index.js"
   },
   "author": {
     "name": "Patrick Triest",
