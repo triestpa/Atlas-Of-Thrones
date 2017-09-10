@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "NODE_ENV=local npm start & webpack --watch & http-server ./public",
-    "deploy-frontend": "NODE_ENV=production webpack && bash deploy.sh"
+    "serve": "webpack --watch & http-server ./public",
+    "dev": "NODE_ENV=local npm start & npm run serve",
+    "build": "NODE_ENV=production webpack",
+    "deploy-frontend": "npm run build && bash deploy.sh"
   },
   "author": {
     "name": "Patrick Triest",
