@@ -5,10 +5,14 @@ import { Component } from '../component'
 /**
  * Layer Panel Component
  * Render and control layer-toggle side-panel
+ * @extends Component
  */
 export class LayerPanel extends Component {
+  /** LayerPanel Component Constructor
+   * @param { Object } props.events.layerToggle Layer toggle event listener
+   */
   constructor (placeholderId, props) {
-    super(placeholderId, template, props.events)
+    super(placeholderId, props, template)
 
     // Toggle layer panel on click (mobile only)
     this.refs.toggle.addEventListener('click', () => this.toggleLayerPanel())

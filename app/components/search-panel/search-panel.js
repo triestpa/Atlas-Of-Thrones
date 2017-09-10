@@ -5,10 +5,15 @@ import { Component } from '../component'
 /**
  * Search Panel Component
  * Render and manage search-bar and search results.
+ * @extends Component
  */
 export class SearchPanel extends Component {
+  /** SearchPanel Component Constructor
+   * @param { Object } props.events.resultSelected Result selected event listener
+   * @param { Object } props.data.searchService SearchService instance to use
+   */
   constructor (placeholderId, props) {
-    super(placeholderId, template, props.events)
+    super(placeholderId, props, template)
     this.searchService = props.data.searchService
     this.searchDebounce = null
 

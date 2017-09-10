@@ -5,11 +5,15 @@ import { Component } from '../component'
 /**
  * Leaflet Map Component
  * Render GoT map items, and provide user interactivity.
+ * @extends Component
  */
 export class Map extends Component {
-  /** Initialize Map Properties */
+  /** Map Component Constructor
+   * @param { String } placeholderId Element ID to inflate the map into
+   * @param { Object } props.events.click Map item click listener
+   */
   constructor (mapPlaceholderId, props) {
-    super(mapPlaceholderId, null, props.events)
+    super(mapPlaceholderId, props.events, null)
 
     // Initialize Leaflet map
     this.map = L.map(mapPlaceholderId, {
@@ -42,6 +46,8 @@ export class Map extends Component {
       },
       onEachFeature: this.onEachLocation.bind(this)
     })
+
+    this.toggleLayer(layerTitle)
   }
 
   /** Assign Popup and click listener for each location point */
@@ -67,6 +73,8 @@ export class Map extends Component {
       },
       onEachFeature: this.onEachKingdom.bind(this)
     })
+
+    this.toggleLayer('kingdom')
   }
 
   /** Assign click listener for each kingdom GeoJSON item  */
