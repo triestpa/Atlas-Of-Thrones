@@ -1,14 +1,14 @@
-import './search-panel.scss'
-import template from './search-panel.html'
+import './search-bar.scss'
+import template from './search-bar.html'
 import { Component } from '../component'
 
 /**
- * Search Panel Component
+ * Search Bar Component
  * Render and manage search-bar and search results.
  * @extends Component
  */
-export class SearchPanel extends Component {
-  /** SearchPanel Component Constructor
+export class SearchBar extends Component {
+  /** SearchBar Component Constructor
    * @param { Object } props.events.resultSelected Result selected event listener
    * @param { Object } props.data.searchService SearchService instance to use
    */
@@ -21,10 +21,10 @@ export class SearchPanel extends Component {
     this.refs.input.addEventListener('keyup', (e) => this.onSearch(e.target.value))
   }
 
-  /** Receive search bar input, and debounce by 200 ms */
+  /** Receive search bar input, and debounce by 500 ms */
   onSearch (value) {
     clearTimeout(this.searchDebounce)
-    this.searchDebounce = setTimeout(() => this.search(value), 50)
+    this.searchDebounce = setTimeout(() => this.search(value), 500)
   }
 
   /** Search for the input term, and display results in UI */

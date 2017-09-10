@@ -6,11 +6,11 @@ import { SearchService } from './services/search'
 import { Map } from './components/map/map'
 import { LayerPanel } from './components/layer-panel/layer-panel'
 import { InfoPanel } from './components/info-panel/info-panel'
-import { SearchPanel } from './components/search-panel/search-panel'
+import { SearchBar } from './components/search-bar/search-bar'
 
 /** Main UI Controller Class */
-export class ViewController {
-  /** Initialize View Properties */
+class ViewController {
+  /** Initialize Application */
   constructor () {
     document.getElementById('app').outerHTML = template
 
@@ -54,7 +54,7 @@ export class ViewController {
     })
 
     // Initialize Search Panel
-    this.searchPanel = new SearchPanel('search-panel-placeholder', {
+    this.searchBar = new SearchBar('search-panel-placeholder', {
       data: { searchService: this.searchService },
       events: { resultSelected: event => {
         // Show result on map when selected from search results
@@ -84,7 +84,7 @@ export class ViewController {
 
     // Download location point geodata
     for (let locationType of this.locationPointTypes) {
-      // Download GeoJSON + metadata
+      // Download location type GeoJSON
       const geojson = await this.api.getLocations(locationType)
 
       // Add location data to search service
@@ -95,7 +95,7 @@ export class ViewController {
     }
   }
 
-  /** Format Icon Url For Layer Type  */
+  /** Format icon url for layer type  */
   getIconUrl (layerName) {
     return `https://cdn.patricktriest.com/atlas-of-thrones/icons/${layerName}.svg`
   }
