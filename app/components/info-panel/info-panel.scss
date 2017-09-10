@@ -1,7 +1,7 @@
 @import '../../_variables.scss';
 
 .info-title {
-  font-family: 'MedievalSharp', cursive;
+  font-family: $fontFancy;
   height: $footerHeight;
   display: flex;
   justify-content: center;
@@ -19,6 +19,7 @@
     max-width: 100%;
     padding: 20px;
     text-overflow: ellipsis;
+    text-align: center;
   }
 }
 
@@ -27,7 +28,7 @@
   margin: 0 auto;
   background: $lightDark;
   overflow-y: scroll;
-  letter-spacing: .8;
+  // letter-spacing: 0.1rem;
   font-size: 1rem;
   line-height: 1.25em;
   font-weight: 300;
@@ -41,7 +42,7 @@
   z-index: 1000;
   background: $midDark;
   width: $leftPanelsWidth;
-  height: 45vh;
+  height: 60vh;
   color: $offWhite;
   transition: all 0.4s ease-in-out;
   transform: translateY(calc(100% - #{$footerHeight}));
@@ -61,7 +62,7 @@
 
 .info-footer {
   font-size: 0.8rem;
-  font-family: 'Lato', sans-serif;
+  font-family: $fontNormal;
   padding: 8%;
   text-align: center;
   text-transform: uppercase;

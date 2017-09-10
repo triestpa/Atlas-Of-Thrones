@@ -29,7 +29,7 @@
     padding: 6px;
     cursor: pointer;
     user-select: none;
-    font-family: 'Lato', sans-serif;
+    font-family: $fontNormal;
   }
 
   div.toggle-active {
@@ -41,15 +41,12 @@
   }
 }
 
-
-
 @media (max-width: 600px) {
   .layer-panel {
     display: inline-flex;
     align-items: center;
-    top: 15%; //calc(#{$searchBarHeight} + 20px);
+    top: 15%;
     right: 0;
-    // top: 0;
     transform: translateX(calc(100% - #{$toggleLayerPanelButtonWidth}));
     transition: all 0.3s ease-in-out;
   }
@@ -66,7 +63,6 @@
     padding: 10px;
     margin-left: -20px;
     letter-spacing: 1rem;
-
     text-transform: uppercase;
   }
 }
