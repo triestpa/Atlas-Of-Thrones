@@ -13,7 +13,7 @@ export class Map extends Component {
    * @param { Object } props.events.click Map item click listener
    */
   constructor (mapPlaceholderId, props) {
-    super(mapPlaceholderId, props.events, null)
+    super(mapPlaceholderId, props, null)
 
     // Initialize Leaflet map
     this.map = L.map(mapPlaceholderId, {
