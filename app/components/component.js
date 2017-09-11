@@ -19,6 +19,8 @@ export class Component {
       // Find all refs in component
       this.refs = {}
       const refElems = this.componentElem.querySelectorAll('[ref]')
+
+      // Assign each ref to "this.refs" dict
       refElems.forEach((elem) => { this.refs[elem.getAttribute('ref')] = elem })
     }
 

@@ -21,10 +21,10 @@ export class SearchBar extends Component {
     this.refs.input.addEventListener('keyup', (e) => this.onSearch(e.target.value))
   }
 
-  /** Receive search bar input, and debounce by 500 ms */
+  /** Receive search bar input, and debounce by 200 ms */
   onSearch (value) {
     clearTimeout(this.searchDebounce)
-    this.searchDebounce = setTimeout(() => this.search(value), 500)
+    this.searchDebounce = setTimeout(() => this.search(value), 200)
   }
 
   /** Search for the input term, and display results in UI */

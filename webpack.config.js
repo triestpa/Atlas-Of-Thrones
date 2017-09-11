@@ -21,7 +21,7 @@ const urlLoader = {
   loader: 'url-loader?limit=100000'
 }
 
-// HTML load to allow us to import HTML templated into our JS files
+// HTML load to allow us to import HTML templates into our JS files
 const htmlLoader = {
   test: /\.html$/,
   loader: 'html-loader'

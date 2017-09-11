@@ -5,7 +5,6 @@ export class ApiService {
   constructor (url = 'http://localhost:5000/') {
     this.url = url
     this.cancelToken = CancelToken.source()
-    this.cancelTokens = {}
   }
 
   async httpGet (endpoint = '') {
