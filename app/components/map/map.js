@@ -2,6 +2,8 @@ import './map.scss'
 import L from 'leaflet'
 import { Component } from '../component'
 
+const template = '<div ref="mapContainer" class="map-container"></div>'
+
 /**
  * Leaflet Map Component
  * Render GoT map items, and provide user interactivity.
@@ -13,10 +15,10 @@ export class Map extends Component {
    * @param { Object } props.events.click Map item click listener
    */
   constructor (mapPlaceholderId, props) {
-    super(mapPlaceholderId, props, null)
+    super(mapPlaceholderId, props, template)
 
     // Initialize Leaflet map
-    this.map = L.map(mapPlaceholderId, {
+    this.map = L.map(this.refs.mapContainer, {
       center: [ 5, 20 ],
       zoom: 4,
       maxZoom: 8,
@@ -46,8 +48,6 @@ export class Map extends Component {
       },
       onEachFeature: this.onEachLocation.bind(this)
     })
-
-    this.toggleLayer(layerTitle)
   }
 
   /** Assign Popup and click listener for each location point */
@@ -73,8 +73,6 @@ export class Map extends Component {
       },
       onEachFeature: this.onEachKingdom.bind(this)
     })
-
-    this.toggleLayer('kingdom')
   }
 
   /** Assign click listener for each kingdom GeoJSON item  */
