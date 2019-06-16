@@ -51,7 +51,7 @@
 
 - Read top level README for details on AOT project written by [@Patrick Triest]( https://github.com/triestpa )
 
-# Whats next
+# What's next
 - Secure envars in etcd or a configuration managemend vault like ansible's.
 - Encrypt endpoints traffic using a reverse proxy SSL terminator, and generate automated certs with letsencrypt.
 - Put services behind a resiliant load balancer with KA.
