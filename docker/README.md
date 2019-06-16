@@ -53,7 +53,7 @@
 
 # Whats next
 - Secure envars in etcd or a configuration managemend vault like ansible's.
-- Secure endpoints using a reverse proxy SSL terminator, and generate automated certs with letsencrypt.
+- Encrypt endpoints traffic using a reverse proxy SSL terminator, and generate automated certs with letsencrypt.
 - Put services behind a resiliant load balancer with KA.
 - The DB and cache services are not scalable, Redis and Postgis need to have logic for clustering.
 - Transfer everything into a cloud-ready template like cloudformation, terraform, ansible.
