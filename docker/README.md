@@ -15,14 +15,17 @@
    - aot_db:\
 ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/mdillon/postgis.svg)
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/mdillon/postgis.svg)
+[![](https://images.microbadger.com/badges/image/mdillon/postgis.svg)](https://microbadger.com/images/mdillon/postgis)
 ![Docker Pulls](https://img.shields.io/docker/pulls/mdillon/postgis.svg)
 
    - aot_cache:\
-        image: redis
+        image: redis\
+[![](https://images.microbadger.com/badges/image/redis.svg)](https://microbadger.com/images/redis "Get your own image badge on microbadger.com")
 ![Docker Pulls](https://img.shields.io/docker/pulls/_/redis.svg)
 
    - aot_adminer:\
-        image: adminer
+        image: adminer\
+[![](https://images.microbadger.com/badges/image/adminer.svg)](https://microbadger.com/images/adminer "Get your own image badge on microbadger.com")
 ![Docker Pulls](https://img.shields.io/docker/pulls/_/adminer.svg)
 
 - How to run:
