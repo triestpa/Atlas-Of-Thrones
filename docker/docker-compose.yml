@@ -1,0 +1,80 @@
+version: '3.1'
+
+services:
+
+  aot_frontend:
+    image: m3hran/aot_frontend
+    container_name: aot_frontend
+    restart: always
+    volumes:
+      - ./src/.env:/u/apps/Atlas-Of-Thrones/.env 
+    ports:
+      - 8080:8080
+    networks:
+      - aot_net
+    depends_on:
+      - aot_backend
+
+  aot_backend:
+    image: m3hran/aot_backend
+    container_name: aot_backend
+    restart: always
+    volumes:
+      - ./src/.env:/u/apps/Atlas-Of-Thrones/.env
+    ports:
+      - 5000:5000
+    networks:
+      - aot_net
+    depends_on:
+      - aot_db
+      - aot_cache
+
+  aot_db:
+    image: mdillon/postgis:latest
+    container_name: aot_db
+    restart: always
+    shm_size: '256MB'
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_passwd
+      POSTGRES_DB_FILE: /run/secrets/postgres_db
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      - ./src/atlas_of_thrones.sql:/docker-entrypoint-initdb.d/atlas_of_thrones.sql
+    secrets:
+      - postgres_user
+      - postgres_passwd
+      - postgres_db
+    networks:
+      - aot_net
+
+  aot_cache:
+    image: redis
+    command: ["redis-server", "--appendonly", "yes"]
+    container_name: aot_cache
+    restart: always    
+    volumes:
+      - ./cache_data:/data
+    networks:
+      - aot_net
+
+  aot_adminer:
+    image: adminer
+    container_name: aot_adminer
+    restart: always
+    ports:
+      - 8081:8080
+    networks:
+      - aot_net
+
+secrets:
+  postgres_user:
+    file: ./postgres_user
+  postgres_passwd:
+    file: ./postgres_passwd
+  postgres_db:
+    file: ./postgres_db
+
+networks:
+  aot_net:
+
