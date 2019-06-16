@@ -51,3 +51,10 @@
 
 - Read top level README for details on AOT project written by [@Patrick Triest]( https://github.com/triestpa )
 
+# Whats next
+    - Secure envars in etcd or a configuration managemend vault like ansible's
+    - Secure endpoints using a reverse proxy SSL terminator, and generate automated certs with letsencrypt
+    - Put services behind a resiliant load balancer with KA.
+    - The DB and cache services are not scalble, Redis and Postgis need to have logic for clustering
+    - Tranfer everything into a cloud ready template like cloudformation, terraform, ansible.
+
