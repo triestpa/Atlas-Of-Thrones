@@ -22,7 +22,7 @@
 - How to run:
 
 ##
-     git clone https://github.com/M3hran/Atlas-Of-Thrones.git && cd ./Atlas-Of-Thronse/docker && docker-compose up -d
+     git clone https://github.com/M3hran/Atlas-Of-Thrones.git && cd ./Atlas-Of-Thrones/docker && docker-compose up -d
 
 
 ## 
