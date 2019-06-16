@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 
 services:
 
@@ -19,6 +19,14 @@ services:
     image: m3hran/aot_backend
     container_name: aot_backend
     restart: always
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_passwd
+      POSTGRES_DB_FILE: /run/secrets/postgres_db
+    secrets:
+      - postgres_user
+      - postgres_passwd
+      - postgres_db
     volumes:
       - ./src/.env:/u/apps/Atlas-Of-Thrones/.env
     ports:
@@ -38,13 +46,18 @@ services:
       POSTGRES_USER_FILE: /run/secrets/postgres_user
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_passwd
       POSTGRES_DB_FILE: /run/secrets/postgres_db
-    volumes:
-      - ./db_data:/var/lib/postgresql/data
-      - ./src/atlas_of_thrones.sql:/docker-entrypoint-initdb.d/atlas_of_thrones.sql
     secrets:
       - postgres_user
       - postgres_passwd
       - postgres_db
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      - ./src/atlas_of_thrones.sql:/docker-entrypoint-initdb.d/atlas_of_thrones.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - aot_net
 
