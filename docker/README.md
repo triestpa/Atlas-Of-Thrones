@@ -1,6 +1,6 @@
 
-# Atlas Of Thrones containerized - demo
-- This is a demo and is not intended for production use and only as a demo on how to start contairizing your services.
+# Atlas Of Thrones Microservice - POC
+- This is a POC and is not intended for production use and only as a demo on how to start contairizing your services.
 - Services:
    - aot_frontend:\
 ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/m3hran/aot_frontend.svg)
@@ -23,7 +23,22 @@
 
 ##
      git clone https://github.com/M3hran/Atlas-Of-Thrones.git && cd ./Atlas-Of-Thrones/docker && docker-compose up -d
-
-
 ## 
-- read top level README for details on AOT project written by @tristpa
+
+- How to Access:\
+    - After the stack is deployed using the docker-compose file 
+      Web UI will be listening at:  
+      ##
+         http://localhost:8080
+      ##
+      GeoSpatial API will be serving GeoJSON objects at:
+      ##
+         http://localhost:5000/kingdoms
+      ##
+      Included there is also a Web UI to interface with the DB at:
+      ##
+         http://localhost:8081
+      ##
+
+- read top level README for details on AOT project written by [@Patrick Triest]( https://github.com/triestpa )
+
