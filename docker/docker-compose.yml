@@ -62,6 +62,8 @@ services:
     image: adminer
     container_name: aot_adminer
     restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: aot_db
     ports:
       - 8081:8080
     networks:
