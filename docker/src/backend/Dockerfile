@@ -20,4 +20,4 @@ RUN clean_install.sh --no-install-recommends \
 WORKDIR /u/apps/Atlas-Of-Thrones
 
 EXPOSE 5000
-ENTRYPOINT ./wait_for_postgres.sh aot_db && NODE_ENV=local npm start
+ENTRYPOINT ./wait_for_postgres.sh aot_db && npm start

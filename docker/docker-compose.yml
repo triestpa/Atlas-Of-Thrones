@@ -10,6 +10,11 @@ services:
       - ./src/.env:/u/apps/Atlas-Of-Thrones/.env 
     ports:
       - 8080:8080
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080 || false"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - aot_net
     depends_on:
@@ -31,6 +36,11 @@ services:
       - ./src/.env:/u/apps/Atlas-Of-Thrones/.env
     ports:
       - 5000:5000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/kingdoms || false"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - aot_net
     depends_on:
@@ -54,7 +64,7 @@ services:
       - ./db_data:/var/lib/postgresql/data
       - ./src/atlas_of_thrones.sql:/docker-entrypoint-initdb.d/atlas_of_thrones.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d atlas_of_thrones || false"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -68,6 +78,11 @@ services:
     restart: always    
     volumes:
       - ./cache_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -h localhost ping || false"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - aot_net
 
@@ -79,16 +94,21 @@ services:
       ADMINER_DEFAULT_SERVER: aot_db
     ports:
       - 8081:8080
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080 || false"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - aot_net
 
 secrets:
   postgres_user:
-    file: ./postgres_user
+    file: ./src/postgres_user
   postgres_passwd:
-    file: ./postgres_passwd
+    file: ./src/postgres_passwd
   postgres_db:
-    file: ./postgres_db
+    file: ./src/postgres_db
 
 networks:
   aot_net:
