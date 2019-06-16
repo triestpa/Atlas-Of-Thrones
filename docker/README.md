@@ -34,7 +34,7 @@
      git clone https://github.com/M3hran/Atlas-Of-Thrones.git && cd ./Atlas-Of-Thrones/docker && docker-compose up -d
 ## 
 
-- How to Access:
+- How to Access:\
   After the stack is deployed using the docker-compose file 
     - Web UI will be listening at:  
       
