@@ -1,6 +1,5 @@
 .DS_STORE
 node_modules
-.env
 data
 .vscode
 public/bundle.js
