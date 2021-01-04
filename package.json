@@ -27,7 +27,7 @@
     "node": ">=7.6.0"
   },
   "dependencies": {
-    "axios": "0.16.2",
+    "axios": "0.21.1",
     "dotenv": "4.0.0",
     "file-loader": "^2.0.0",
     "fuse.js": "3.0.5",
